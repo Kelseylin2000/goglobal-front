@@ -3,6 +3,7 @@ import { SaveContext } from '../context/SaveContext';
 import { ChatContext } from '../context/ChatContext';
 import ChatSessionsModal from './ChatSessionsModal';
 import { useNavigate } from 'react-router-dom';
+import { UserContext } from '../context/UserContext';
 
 
 const Header = () => {
@@ -10,6 +11,7 @@ const Header = () => {
   const { toggleSavedPostsModal } = useContext(SaveContext);
   const [isSessionsModalOpen, setIsSessionsModalOpen] = useState(false);
   const { loadSessions } = useContext(ChatContext);
+  const { meUserProfile } = useContext(UserContext);
 
   const openSessionsModal = () => {
     loadSessions();
@@ -29,6 +31,7 @@ const Header = () => {
         <h1>Goglobal</h1>
       </div>
       <div className='header-actions'>
+        {meUserProfile && <p>你好，{meUserProfile.name}</p>}
         <button className="saved-button" onClick={toggleSavedPostsModal}>
           <img src="/img/saved.png" alt="我的收藏" />
         </button>

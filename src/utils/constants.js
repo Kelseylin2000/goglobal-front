@@ -1,7 +1,7 @@
-// export const API_HOST = 'https://kelseynet.com/api/1.0';
-export const API_HOST = 'http://localhost:8080/api/1.0';
-// export const WS_BASE_URL = 'https://kelseynet.com/ws';
-export const WS_BASE_URL = 'http://localhost:8080/ws';
+export const API_HOST = 'https://kelseynet.com/api/1.0';
+// export const API_HOST = 'http://localhost:8080/api/1.0';
+export const WS_BASE_URL = 'https://kelseynet.com/ws';
+// export const WS_BASE_URL = 'http://localhost:8080/ws';
 
 export const API_POST_URL = `${API_HOST}/posts`;
 export const API_AUTH_URL = `${API_HOST}/auth`;

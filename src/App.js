@@ -12,6 +12,8 @@ import { PostProvider } from './context/PostContext';
 import { SaveProvider } from './context/SaveContext';
 import { ChatProvider } from './context/ChatContext';
 import { AuthProvider } from './context/AuthContext';
+import { UserProvider } from './context/UserContext';
+
 
 const Layout = ({ children }) => {
   const location = useLocation();
@@ -28,41 +30,42 @@ const Layout = ({ children }) => {
   );
 };
 
-
 function App() {
 return (
   <AuthProvider>
-    <SaveProvider>
-      <PostProvider>
-        <ChatProvider>
-          <Router>
-            <Layout>
-              <Routes>
-                <Route 
-                  path="/" 
-                  element={
-                    <PrivateRoute>
-                      <HomePage />
-                    </PrivateRoute>
-                  } 
-                  exact 
-                />
-                <Route 
-                  path="/post/:postId" 
-                  element={
-                    <PrivateRoute>
-                      <PostPage />
-                    </PrivateRoute>
-                  } 
-                />
-                <Route path="/signin" element={<SignInPage />} />
-                <Route path="/signup" element={<SignUpPage />} />
-              </Routes>
-            </Layout>
-          </Router>
-        </ChatProvider>
-      </PostProvider>
-    </SaveProvider>
+    <UserProvider>
+      <SaveProvider>
+        <PostProvider>
+          <ChatProvider>
+            <Router>
+              <Layout>
+                <Routes>
+                  <Route 
+                    path="/" 
+                    element={
+                      <PrivateRoute>
+                        <HomePage />
+                      </PrivateRoute>
+                    } 
+                    exact 
+                  />
+                  <Route 
+                    path="/post/:postId" 
+                    element={
+                      <PrivateRoute>
+                        <PostPage />
+                      </PrivateRoute>
+                    } 
+                  />
+                  <Route path="/signin" element={<SignInPage />} />
+                  <Route path="/signup" element={<SignUpPage />} />
+                </Routes>
+              </Layout>
+            </Router>
+          </ChatProvider>
+        </PostProvider>
+      </SaveProvider>
+    </UserProvider>
   </AuthProvider>
 );
 }
