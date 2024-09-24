@@ -1,0 +1,104 @@
+import React, { useState } from 'react';
+import { createNewPost } from '../utils/api';
+import { tagsList } from '../utils/constants';
+
+const PostForm = ({ token, onPostCreated, showLoading, hideLoading }) => {
+  const [content, setContent] = useState('');
+  const [selectedTags, setSelectedTags] = useState([]);
+  const [images, setImages] = useState([]); // 保存File對象的陣列
+
+  // 選擇/取消標籤
+  const toggleTag = (tag) => {
+    if (selectedTags.includes(tag)) {
+      setSelectedTags(selectedTags.filter((t) => t !== tag));
+    } else {
+      if (selectedTags.length >= 3) {
+        alert('最多只能選擇 3 個標籤');
+        return;
+      }
+      setSelectedTags([...selectedTags, tag]);
+    }
+  };
+
+  // 處理圖片選擇，保存到狀態中
+  const handleImageChange = (e) => {
+    const files = Array.from(e.target.files); // 將 FileList 轉為陣列
+    setImages(files); // 不疊加，直接保存新選擇的圖片
+    e.target.value = '';
+  };
+
+  // 預覽圖片
+  const previewImages = () => {
+    return images.map((image) => URL.createObjectURL(image));
+  };
+
+  // 提交表單
+  const handleSubmit = () => {
+    if (!content.trim()) {
+      alert('貼文內容不可為空');
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append('content', content); // 貼文內容
+    selectedTags.forEach((tag) => formData.append('tags', tag)); // 標籤
+    images.forEach((image) => formData.append('imagesFiles', image)); // 圖片
+
+
+    createNewPost(formData, token)
+      .then((response) => {
+        alert('貼文創建成功！');
+        setContent(''); // 清空貼文內容
+        setSelectedTags([]); // 清空標籤選擇
+        setImages([]); // 清空已選圖片
+        onPostCreated(response.data); // 如果需要，通知父組件
+      })
+      .catch((error) => {
+        console.error('後端錯誤:', error.message);
+      })
+      .finally(() => {
+        hideLoading();
+      });
+  };
+
+  return (
+    <div className="post-form">
+      <h2>創建新貼文</h2>
+      <textarea
+        value={content}
+        onChange={(e) => setContent(e.target.value)}
+        placeholder="分享你的想法..."
+      ></textarea>
+      <label className="image-upload">
+        <span>拖曳或點擊此處上傳圖片</span>
+        <input
+          type="file"
+          accept="image/*"
+          multiple
+          onChange={handleImageChange} // 更新圖片選擇
+        />
+        <div className="image-preview">
+          {previewImages().map((src, index) => (
+            <img key={index} src={src} alt="預覽" />
+          ))}
+        </div>
+      </label>
+      <div className="tag-selection">
+        {tagsList.map((tag) => (
+          <button
+            key={tag}
+            className={selectedTags.includes(tag) ? 'selected' : ''}
+            onClick={() => toggleTag(tag)}
+          >
+            {tag}
+          </button>
+        ))}
+      </div>
+      <button className="btn-primary" onClick={handleSubmit}>
+        發佈
+      </button>
+    </div>
+  );
+};
+
+export default PostForm;

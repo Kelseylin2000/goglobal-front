@@ -1,38 +1,472 @@
-.App {
+/* src/styles/global.css */
+
+/* 基本樣式 */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f0f2f5;
+  margin: 0;
+  padding: 0;
+  color: #333;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* Header 樣式 */
+header {
+  background-color: #1e3d59;
+  color: #fff;
+  padding: 15px 30px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+header .brand {
+  display: flex;
+  align-items: center;
+}
+
+header .brand img {
+  height: 40px;
+  margin-right: 10px;
+}
+
+header .brand h1 {
+  margin: 0;
+  font-size: 24px;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+}
+
+header .saved-button,
+header .chat-button{
+  background-color: #c3c3c3;
+  color: #fff;
+  border: none;
+  padding: 10px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  transition: background-color 0.3s;
+  margin-left: 15px;
+}
+
+header .saved-button img,
+header .chat-button img{
+  width: 20px;
+  height: 20px;
+}
+
+header .saved-button:hover,
+header .chat-button:hover {
+  background-color: #aeaeae;
+}
+
+/* 主要內容區域 */
+main {
+  width: 60%;
+  margin: 30px auto;
+}
+
+/* 表單樣式 */
+.post-form,
+.comment-form,
+.modal-content {
+  background-color: #fff;
+  padding: 20px;
+  margin-bottom: 30px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.post-form h2,
+.modal-content h2 {
+  margin-top: 0;
+  margin-bottom: 15px;
+  font-size: 20px;
+  color: #1e3d59;
+}
+
+.post-form textarea,
+.comment-form textarea,
+.modal-content textarea {
+  width: 100%;
+  padding: 15px;
+  margin-bottom: 15px;
+  resize: vertical;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+}
+
+.tag-selection {
+  margin-bottom: 15px;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.tag-selection button {
+  background-color: #e4e6eb;
+  color: #050505;
+  border: none;
+  border-radius: 20px;
+  padding: 8px 12px;
+  margin: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.tag-selection button.selected {
+  background-color: #1e3d59;
+  color: #fff;
+}
+
+.tag-selection button:hover {
+  background-color: #cbd5e0;
+}
+
+/* 圖片上傳樣式 */
+.image-upload {
+  border: 2px dashed #ccc;
+  border-radius: 8px;
+  padding: 20px;
+  margin-top: 5px;
+  margin-bottom: 10px;
   text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+  position: relative;
+  cursor: pointer;
+  transition: border-color 0.3s, background-color 0.3s;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
 }
 
-.App-link {
-  color: #61dafb;
+.image-upload:hover {
+  border-color: #1e3d59;
+  background-color: #f9fafb;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.image-upload input {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.image-upload span {
+  font-weight: bold;
+  color: #1e3d59;
+  margin-bottom: 10px;
+  pointer-events: none; /* 防止文字接收點擊事件 */
+}
+
+.image-preview {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 10px;
+  justify-content: center;
+}
+
+.image-preview img {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+/* 按鈕樣式 */
+.btn-primary {
+  background-color: #ff6e40;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 15px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s;
+}
+
+.btn-primary:hover {
+  background-color: #e65c34;
+}
+
+/* 貼文樣式 */
+.post {
+  background-color: #fff;
+  padding: 20px;
+  margin-bottom: 25px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: background-color 0.3s;
+  position: relative;
+}
+
+.post:hover {
+  background-color: #f9fafb;
+}
+
+.post-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.post-header img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  margin-right: 15px;
+  object-fit: cover;
+}
+
+.post-header .author-info {
+  font-size: 14px;
+  color: #555;
+}
+
+.post-header .author-info h3 {
+  margin: 0;
+  font-size: 16px;
+  color: #1e3d59;
+}
+
+.post-header .author-info p {
+  margin: 3px 0 0 0;
+  font-size: 12px;
+  color: #888;
+}
+
+.post-content {
+  font-size: 16px;
+  color: #333;
+  margin-bottom: 15px;
+}
+
+.post-tags {
+  margin-bottom: 15px;
+}
+
+.post-tags span {
+  background-color: #e4e6eb;
+  color: #050505;
+  border-radius: 20px;
+  padding: 5px 10px;
+  margin-right: 5px;
+  font-size: 12px;
+  display: inline-block;
+}
+
+.post-images {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 15px;
+  justify-content: center;
+}
+
+.post-images img {
+  width: 70%;
+  object-fit: cover;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+
+
+.post-actions {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  display: flex;
+  align-items: center;
+}
+
+.post-actions button {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  margin-left: 10px;
+  transition: transform 0.2s;
+}
+
+.post-actions button:hover {
+  transform: scale(1.2);
+}
+
+.post-actions button img {
+  width: 20px;
+  height: 20px;
+}
+
+/* 評論區域樣式 */
+/* 評論區域樣式 */
+.comments-section {
+  margin-top: 30px;
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.comments-section h4 {
+  margin-bottom: 20px;
+  color: #1e3d59;
+  font-size: 20px;
+  border-bottom: 2px solid #e2e8f0;
+  padding-bottom: 5px;
+}
+
+.comment {
+  display: flex;
+  align-items: flex-start;
+  background-color: #f9fafb;
+  padding: 15px;
+  margin-bottom: 15px;
+  border-radius: 8px;
+  transition: background-color 0.3s;
+}
+
+.comment:hover {
+  background-color: #f1f5f9;
+}
+
+.comment .avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 15px;
+  flex-shrink: 0;
+}
+
+.comment-content {
+  flex: 1;
+}
+
+.comment-content .comment-author {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: bold;
+  color: #1e3d59;
+}
+
+.comment-content .comment-timestamp {
+  font-size: 12px;
+  color: #888;
+  margin-left: 10px;
+}
+
+.comment-content p {
+  margin: 0;
+  font-size: 16px;
+  color: #333;
+}
+
+.comment-actions {
+  margin-top: 10px;
+  text-align: right;
+}
+
+.comment-actions button {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 5px;
+  transition: transform 0.3s, opacity 0.3s;
+  display: inline-flex;
+  align-items: center;
+}
+
+.comment-actions button img {
+  width: 20px;
+  height: 20px;
+  transition: transform 0.3s, filter 0.3s;
+}
+
+.comment-actions button:hover img {
+  transform: scale(1.2);
+  filter: brightness(0.8);
+}
+
+.navigate-back {
+  margin-top: 20px;
+  display: inline-block;
+  background-color: #e2e8f0;
+  color: #1e3d59;
+  padding: 10px 20px;
+  border-radius: 5px;
+  text-decoration: none;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.navigate-back:hover {
+  background-color: #cbd5e0;
+  color: #1e3d59;
+}
+
+/* Modal 樣式 */
+.modal {
+  display: block;
+  position: fixed;
+  z-index: 999;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+  background-color: #fff;
+  margin: 5% auto;
+  padding: 20px;
+  border-radius: 8px;
+  width: 60%;
+  position: relative;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+.modal-content h2 {
+  margin-top: 0;
+  color: #1e3d59;
+}
+
+.modal-close {
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  background-color: transparent;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: #888;
+  transition: color 0.3s;
+}
+
+.modal-close:hover {
+  color: #1e3d59;
 }
