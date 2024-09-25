@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { addComment, deleteComment } from '../utils/api';
 import PostItem from './PostItem';
+import { toast } from 'react-toastify';
 
 const PostDetail = ({
   post,
@@ -19,7 +20,7 @@ const PostDetail = ({
 
     const handleAddComment = () => {
       if (!commentContent.trim()) {
-        alert('評論內容不可為空');
+        toast.error('留言內容不可為空');
         return;
       }
   
@@ -33,6 +34,7 @@ const PostDetail = ({
             content: commentContent,
             timestamp: data.data.timestamp
             });
+            toast.success("已留言");
         })
         .catch((error) => {
             console.error('後端錯誤:', error.message);
@@ -45,10 +47,11 @@ const PostDetail = ({
       deleteComment(post.postId, commentId, token)
         .then(() => {
           loadPostDetail();
+          toast.success("留言已刪除");
         })
         .catch((error) => {
           console.error('後端錯誤:', error.message);
-          alert('評論刪除失敗，請稍後再試。');
+          toast.error('留言刪除失敗，請稍後再試。');
         });
     };
 
@@ -114,18 +117,20 @@ const PostDetail = ({
               </div>
             ))
           ) : (
-            <p>暫無評論，快來成為第一個評論者吧！</p>
+            <p>目前還沒有人留言，快來成為第一個留言的人吧！</p>
           )}
         </div>
         <div className="comment-form">
           <textarea
             value={commentContent}
             onChange={(e) => setCommentContent(e.target.value)}
-            placeholder="添加評論..."
+            placeholder="寫下你的想法..."
           ></textarea>
-          <button className="btn-primary" onClick={handleAddComment}>
-            評論
-          </button>
+          <div className="submit-button-container">
+            <button className="btn-primary" onClick={handleAddComment}>
+              留言
+            </button>
+          </div>
         </div>
         {/* <a href="#" className="navigate-back" onClick={navigateBack}>
           返回貼文列表

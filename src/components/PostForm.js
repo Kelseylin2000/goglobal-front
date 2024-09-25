@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { createNewPost } from '../utils/api';
 import { tagsList } from '../utils/constants';
+import { toast } from 'react-toastify';
 
 const PostForm = ({ token, onPostCreated, showLoading, hideLoading }) => {
   const [content, setContent] = useState('');
@@ -13,7 +14,7 @@ const PostForm = ({ token, onPostCreated, showLoading, hideLoading }) => {
       setSelectedTags(selectedTags.filter((t) => t !== tag));
     } else {
       if (selectedTags.length >= 3) {
-        alert('最多只能選擇 3 個標籤');
+        toast.error('最多只能選擇 3 個標籤');
         return;
       }
       setSelectedTags([...selectedTags, tag]);
@@ -35,7 +36,7 @@ const PostForm = ({ token, onPostCreated, showLoading, hideLoading }) => {
   // 提交表單
   const handleSubmit = () => {
     if (!content.trim()) {
-      alert('貼文內容不可為空');
+      toast.error('貼文內容不可為空');
       return;
     }
 
@@ -47,7 +48,7 @@ const PostForm = ({ token, onPostCreated, showLoading, hideLoading }) => {
 
     createNewPost(formData, token)
       .then((response) => {
-        alert('貼文創建成功！');
+        toast.success('已成功創建貼文！');
         setContent(''); // 清空貼文內容
         setSelectedTags([]); // 清空標籤選擇
         setImages([]); // 清空已選圖片
@@ -94,9 +95,11 @@ const PostForm = ({ token, onPostCreated, showLoading, hideLoading }) => {
           </button>
         ))}
       </div>
-      <button className="btn-primary" onClick={handleSubmit}>
-        發佈
-      </button>
+      <div className="submit-button-container">
+        <button className="btn-primary" onClick={handleSubmit}>
+          發佈
+        </button>
+      </div>
     </div>
   );
 };

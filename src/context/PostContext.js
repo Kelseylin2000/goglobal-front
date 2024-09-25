@@ -6,6 +6,7 @@ import {
   getPostDetail as apiGetPostDetail
 } from '../utils/api';
 import { AuthContext } from '../context/AuthContext';
+import { toast } from 'react-toastify';
 
 export const PostContext = createContext();
 
@@ -35,7 +36,7 @@ export const PostProvider = ({ children }) => {
     if (window.confirm('你確定要刪除這篇貼文嗎？')) {
       apiDeletePost(postId, token)
         .then(() => {
-          alert('貼文已刪除！');
+          toast.success('貼文已刪除！');
           setPosts((prevPosts) => prevPosts.filter((post) => post.postId !== postId));
         })
         .catch((error) => {

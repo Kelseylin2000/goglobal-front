@@ -1,13 +1,13 @@
 // src/pages/PostPage.js
 import React, { useEffect, useContext, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import Header from '../components/Header';
+
 import PostDetail from '../components/PostDetail';
 import EditPostModal from '../components/EditPostModal';
 import LoadingSpinner from '../components/LoadingSpinner';
+
 import { PostContext } from '../context/PostContext';
 import { SaveContext } from '../context/SaveContext';
-import SavedPostsModal from '../components/SavedPostsModal';
 import { AuthContext } from '../context/AuthContext';
 
 const PostPage = () => {
@@ -16,7 +16,7 @@ const PostPage = () => {
   const { postId } = useParams();
   const navigate = useNavigate();
   const { getPostDetail, handlePostUpdated} = useContext(PostContext);
-  const { handleSavedPostUpdated, isSavedModalOpen, savedPosts, toggleSavedPostsModal} = useContext(SaveContext);
+  const { handleSavedPostUpdated} = useContext(SaveContext);
 
   const [post, setPost] = useState(null);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
@@ -66,13 +66,6 @@ const PostPage = () => {
           onClose={() => setIsEditModalOpen(false)}
           onPostUpdated={onPostUpdated}
           handleSavedPostUpdated={handleSavedPostUpdated}
-        />
-      )}
-      {isSavedModalOpen && (
-        <SavedPostsModal
-          savedPosts={savedPosts}
-          toggleSavedPostsModal={toggleSavedPostsModal}
-          userId={userId}
         />
       )}
     </>

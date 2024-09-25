@@ -121,12 +121,28 @@ export const getUserProfile = (userId, token) =>
     headers: headers(token),
   }).then((res) => res.json());
 
-export const updateUserProfile = (token, profileData) =>
-  fetch(`${API_USER_URL}/profile`, {
+// export const updateUserProfileApi = (token, profileData) =>
+//   fetch(`${API_USER_URL}/profile`, {
+//     method: 'PUT',
+//     headers: {
+//       ...headers(token),
+//       'Content-Type': 'application/json',
+//     },
+//     body: JSON.stringify(profileData),
+//   }).then((res) => res.json());
+
+export const updateUserProfileApi = (token, profileData) => {
+  // 印出 token 和 profileData
+  console.log('Token:', token);
+  console.log('Profile Data:', profileData);
+
+  return fetch(`${API_USER_URL}/profile`, {
     method: 'PUT',
     headers: {
       ...headers(token),
       'Content-Type': 'application/json',
     },
     body: JSON.stringify(profileData),
-  }).then((res) => res.json());
+  })
+  .then((res) => res.json());
+};

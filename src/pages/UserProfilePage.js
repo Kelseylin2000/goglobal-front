@@ -1,4 +1,3 @@
-
 import React, { useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { UserContext } from '../context/UserContext';
@@ -8,25 +7,25 @@ import PostList from '../components/PostList';
 import UserProfileInfo from '../components/UserProfileInfo';
 
 const UserProfilePage = () => {
-  const { userId } = useParams();
-  const { meUserProfile, otherUserProfile, fetchUserProfile } = useContext(UserContext);
-  const { userId: currentUserId } = useContext(AuthContext);
+  const { userId } = useParams(); // URL 中的 userId
+  const { meUserProfile, otherUserProfile, fetchUserProfile } = useContext(UserContext); // 從 UserContext 獲取當前使用者和其他使用者資料
+  const { userId: currentUserId, token } = useContext(AuthContext); // 當前登入者的 userId
   const [posts, setPosts] = useState([]);
 
-  const isCurrentUser = Number(userId) === Number(currentUserId);
-  const profile = isCurrentUser ? meUserProfile : otherUserProfile;
+  const isCurrentUser = Number(userId) === Number(currentUserId); // 檢查是否是當前使用者
+  const profile = isCurrentUser ? meUserProfile : otherUserProfile; // 決定顯示哪個使用者資料
 
   useEffect(() => {
     if (!isCurrentUser) {
-      fetchUserProfile(userId);
+      fetchUserProfile(userId); // 如果不是當前使用者，抓取指定用戶的資料
     }
-    fetchUserPostsData(userId);
+    fetchUserPostsData(userId); // 抓取指定用戶的發文
     // eslint-disable-next-line
   }, [userId]);
 
   const fetchUserPostsData = async (userId) => {
     try {
-      const response = await getUserPosts(userId);
+      const response = await getUserPosts(userId, token);
       setPosts(response.data);
     } catch (error) {
       console.error('獲取用戶 post 時出錯:', error);
@@ -38,10 +37,13 @@ const UserProfilePage = () => {
   }
 
   return (
-    <div>
+    <main>
       <UserProfileInfo profile={profile} isCurrentUser={isCurrentUser} />
-      <PostList posts={posts} />
-    </div>
+      <PostList 
+        posts={posts}
+        userId={currentUserId}
+       />
+    </main>
   );
 };
 

@@ -5,6 +5,7 @@ import {
   unsavePost as apiUnsavePost,
 } from '../utils/api';
 import { AuthContext } from '../context/AuthContext';
+import { toast } from 'react-toastify';
 
 export const SaveContext = createContext();
 
@@ -40,6 +41,7 @@ export const SaveProvider = ({ children }) => {
     apiSavePost(postId, token)
       .then(() => {
         loadSavedPosts();
+        toast.success("已收藏貼文");
       })
       .catch((error) => {
         console.error('後端錯誤:', error.message);
@@ -51,6 +53,7 @@ export const SaveProvider = ({ children }) => {
       .then(() => {
         setSavedPostIds((prevIds) => prevIds.filter((id) => id !== postId));
         setSavedPosts((prevPosts) => prevPosts.filter((post) => post.postId !== postId));
+        toast.success("已取消收藏貼文");
       })
       .catch((error) => {
         console.error('取消收藏時出錯:', error.message);

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { editPost } from '../utils/api';  // 確保這個 API 存在
 import { tagsList } from '../utils/constants';  // 確保有導入 tagsList 常量
+import { toast } from 'react-toastify';
 
 const EditPostModal = ({
   post,
@@ -13,7 +14,7 @@ const EditPostModal = ({
 
   // 設置初始內容
   const [content, setContent] = useState(post.content);
-  const [selectedTags, setSelectedTags] = useState([...post.tags]);
+  const [selectedTags, setSelectedTags] = useState(Array.isArray(post.tags) ? [...post.tags] : []);
   const [images, setImages] = useState([]);  // 保存新上傳的圖片
   const [existingImages, setExistingImages] = useState(post.images ? [...post.images] : []); // 確保 post.images 存在
 
@@ -23,7 +24,7 @@ const EditPostModal = ({
       setSelectedTags(selectedTags.filter((t) => t !== tag));
     } else {
       if (selectedTags.length >= 3) {
-        alert('最多只能選擇 3 個標籤');
+        toast.error('最多只能選擇 3 個標籤');
         return;
       }
       setSelectedTags([...selectedTags, tag]);
@@ -36,7 +37,7 @@ const EditPostModal = ({
 
   const handleSubmit = () => {
     if (!content.trim()) {
-      alert('貼文內容不可為空');
+      toast.error('貼文內容不可為空');
       return;
     }
 
@@ -47,7 +48,7 @@ const EditPostModal = ({
 
     editPost(post.postId, formData, token)
       .then((data) => {
-        alert('貼文已更新！');
+        toast.success('貼文已更新！');
         onPostUpdated(data.data);
         handleSavedPostUpdated(data.data)
         if(handleUploadInDetails != null){
@@ -103,9 +104,11 @@ const EditPostModal = ({
             </button>
           ))}
         </div>
-        <button className="btn-primary" onClick={handleSubmit}>
-          保存更改
-        </button>
+        <div className="submit-button-container">
+          <button className="btn-primary" onClick={handleSubmit}>
+            保存更改
+          </button>
+        </div>
       </div>
     </div>
   );

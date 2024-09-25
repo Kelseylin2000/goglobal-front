@@ -1,17 +1,16 @@
 import React, { useContext, useEffect, useState } from 'react';
-import Header from '../components/Header';
+
 import PostForm from '../components/PostForm';
 import PostList from '../components/PostList';
-import SavedPostsModal from '../components/SavedPostsModal';
 import LoadingSpinner from '../components/LoadingSpinner';
-import { SaveContext } from '../context/SaveContext';
+
 import { PostContext } from '../context/PostContext';
 import { AuthContext } from '../context/AuthContext';
 
 const HomePage = () => {
   const {token, userId} = useContext(AuthContext);
 
-  const { isSavedModalOpen, savedPosts,toggleSavedPostsModal} = useContext(SaveContext);
+  // const { isSavedModalOpen, savedPosts,toggleSavedPostsModal} = useContext(SaveContext);
   const { posts, setPosts, loadPosts } = useContext(PostContext);
 
   const [loading, setLoading] = useState(false);
@@ -41,13 +40,6 @@ const HomePage = () => {
           />
         )}
       </main>
-      {isSavedModalOpen && (
-        <SavedPostsModal
-          savedPosts={savedPosts}
-          toggleSavedPostsModal={toggleSavedPostsModal}
-          userId={userId}
-        />
-      )}
     </>
   );
 };

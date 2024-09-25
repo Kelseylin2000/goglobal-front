@@ -20,6 +20,40 @@ a {
   color: inherit;
 }
 
+/* .Toastify__toast-container {
+  top: 100px !important; 
+  right: 20px !important; 
+} */
+
+.custom-toast-container {
+  position: fixed;
+  top: 7%; /* 控制垂直位置，這裡是畫面中上 */
+  left: 50%;
+  transform: translateX(-50%); /* 使其水平居中 */
+  z-index: 9999; /* 確保 Toast 在最上層顯示 */
+}
+
+.Toastify__toast {
+  color: #282828;
+}
+
+.Toastify__toast--success {
+  background-color: #f4fff7;
+}
+
+.Toastify__toast--error {
+  background-color: #fff2f4;
+}
+
+/* .Toastify__toast--warning {
+  background-color: hsl(45, 100%, 83%);
+}
+
+.Toastify__toast--info {
+  background-color: #c3e9ef; 
+} */ 
+
+
 /* Header 樣式 */
 header {
   background-color: #1e3d59;
@@ -51,8 +85,7 @@ header .brand h1 {
   align-items: center;
 }
 
-header .saved-button,
-header .chat-button{
+.header-actions button{
   background-color: #c3c3c3;
   color: #fff;
   border: none;
@@ -66,14 +99,12 @@ header .chat-button{
   margin-left: 15px;
 }
 
-header .saved-button img,
-header .chat-button img{
+.header-actions button img{
   width: 20px;
   height: 20px;
 }
 
-header .saved-button:hover,
-header .chat-button:hover {
+.header-actions button:hover{
   background-color: #aeaeae;
 }
 
@@ -88,7 +119,7 @@ main {
 .comment-form,
 .modal-content {
   background-color: #fff;
-  padding: 20px;
+  padding: 30px;
   margin-bottom: 30px;
   border-radius: 8px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
@@ -104,7 +135,19 @@ main {
 
 .post-form textarea,
 .comment-form textarea,
-.modal-content textarea {
+.modal-content textarea
+ {
+  width: 100%;
+  height: 150px;
+  padding: 15px;
+  margin-bottom: 15px;
+  resize: vertical;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+}
+
+.modal-content input{
   width: 100%;
   padding: 15px;
   margin-bottom: 15px;
@@ -197,6 +240,11 @@ main {
 }
 
 /* 按鈕樣式 */
+.submit-button-container {
+  display: flex;
+  justify-content: flex-end; /* 發布按鈕靠右 */
+}
+
 .btn-primary {
   background-color: #ff6e40;
   color: #fff;
@@ -213,15 +261,18 @@ main {
 }
 
 /* 貼文樣式 */
-.post {
+.post, .user-profile-info {
   background-color: #fff;
-  padding: 20px;
+  padding: 30px;
   margin-bottom: 25px;
   border-radius: 8px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  cursor: pointer;
   transition: background-color 0.3s;
   position: relative;
+}
+
+.post{
+  cursor: pointer;
 }
 
 .post:hover {
@@ -265,18 +316,29 @@ main {
   margin-bottom: 15px;
 }
 
-.post-tags {
+.post-tags, .user-interests{
   margin-bottom: 15px;
 }
 
-.post-tags span {
-  background-color: #e4e6eb;
+.user-interests{
+  margin-top: 50px;
+}
+
+.post-tags span, .user-interests span{
   color: #050505;
   border-radius: 20px;
   padding: 5px 10px;
   margin-right: 5px;
-  font-size: 12px;
+  font-size: 13px;
   display: inline-block;
+}
+
+.post-tags span{
+  background-color: #e4e6eb;
+}
+.user-interests span{
+  background-color: #d6e9e8;
+
 }
 
 .post-images {
@@ -294,9 +356,7 @@ main {
   border: 1px solid #ccc;
 }
 
-
-
-.post-actions {
+.post-actions, .profile-actions {
   position: absolute;
   top: 20px;
   right: 20px;
@@ -304,7 +364,8 @@ main {
   align-items: center;
 }
 
-.post-actions button {
+.post-actions button, 
+.profile-actions button{
   background-color: transparent;
   border: none;
   cursor: pointer;
@@ -312,11 +373,14 @@ main {
   transition: transform 0.2s;
 }
 
-.post-actions button:hover {
+.post-actions button:hover,
+.profile-actions button:hover
+ {
   transform: scale(1.2);
 }
 
-.post-actions button img {
+.post-actions button img,
+.profile-actions button img {
   width: 20px;
   height: 20px;
 }
@@ -469,4 +533,48 @@ main {
 
 .modal-close:hover {
   color: #1e3d59;
+}
+
+/* user profile */
+
+/* .user-profile-info h2 {
+  font-size: 24px;
+  color: #333;
+  margin-bottom: 10px;
+} */
+
+.user-profile-info p {
+  font-size: 16px;
+  color: #000000;
+  margin: 5px 0;
+}
+
+.user-profile-info p span {
+  font-weight: bold;
+}
+
+.profile-details {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.profile-details p {
+  padding: 5px 10px;
+  margin-right: 5px;
+  font-size: 13px;
+  border-radius: 20px;
+}
+
+.phase {
+  background-color: #ffecaf;
+}
+
+.origin-school, .exchange-school {
+  background-color: #fff6dd;
+}
+
+.profile-details-arrow{
+  margin-right: 3px;
+  font-size: 8px;
 }
