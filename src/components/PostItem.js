@@ -44,6 +44,7 @@ const PostItem = ({ post, userId, handleUploadInDetails = null }) => {
           />
         <div className="author-info" onClick={(e) => {
           e.stopPropagation(); // 阻止事件冒泡
+          setIsSavedModalOpen(false); 
           navigate(`/user/${post.userId}`);
         }}>
             <h3>{post.name}</h3>
