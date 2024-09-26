@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import EditPostModal from './EditPostModal';
 import { SaveContext } from '../context/SaveContext';
 import { PostContext } from '../context/PostContext';
+import {phaseMapping} from '../utils/constants';
 
 const PostItem = ({ post, userId, handleUploadInDetails = null }) => {
 
@@ -41,11 +42,20 @@ const PostItem = ({ post, userId, handleUploadInDetails = null }) => {
             src={`https://i.pravatar.cc/200?u=${post.userId}`}
             alt="Avatar"
           />
-          <div className="author-info">
+        <div className="author-info" onClick={(e) => {
+          e.stopPropagation(); // 阻止事件冒泡
+          navigate(`/user/${post.userId}`);
+        }}>
             <h3>{post.name}</h3>
-            <p>{new Date(post.createdAt).toLocaleString()}</p>
+              <div className="profile-details">
+                <p className="phase">{post.phase ? phaseMapping[post.phase] : '未設定階段'}</p>
+                <p className="origin-school">{post.originSchoolName ? post.originSchoolName : '未設定原學校'}</p>
+                <span className='profile-details-arrow'>▶</span>
+                <p className="exchange-school"> {post.exchangeSchoolName ? post.exchangeSchoolName : '未設定目的學校'}</p>
+            </div>
           </div>
         </div>
+        <p className="post-create-time">於 {new Date(post.createdAt).toLocaleString()} 發表文章</p>
         <div className="post-content">{post.content}</div>
         <div className="post-tags">
           {post.tags && post.tags.map((tag) => (

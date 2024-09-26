@@ -286,26 +286,27 @@ main {
 }
 
 .post-header img {
-  width: 50px;
-  height: 50px;
+  width: 55px;
+  height: 55px;
   border-radius: 50%;
   margin-right: 15px;
   object-fit: cover;
+  margin-bottom: auto;
 }
 
 .post-header .author-info {
-  font-size: 14px;
-  color: #555;
+  font-size: 15px;
+  color: #000000;
 }
 
 .post-header .author-info h3 {
-  margin: 0;
-  font-size: 16px;
+  margin: 0 0 -8px 0;
+  font-size: 18px;
   color: #1e3d59;
 }
 
-.post-header .author-info p {
-  margin: 3px 0 0 0;
+.post-create-time {
+  margin-bottom: 10px;
   font-size: 12px;
   color: #888;
 }
@@ -316,11 +317,16 @@ main {
   margin-bottom: 15px;
 }
 
-.post-tags, .user-interests{
+.post-tags{
   margin-bottom: 15px;
 }
 
 .user-interests{
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.user-interests-main{
   margin-top: 50px;
 }
 
@@ -332,6 +338,21 @@ main {
   font-size: 13px;
   display: inline-block;
 }
+
+.mutual-info span{
+  margin-left: 5px;
+}
+.mutual-info span:first-of-type {
+  margin-left: 10px;
+}
+
+.mutual-info{
+  background-color: #f6f5f0;
+  border-radius: 20px;
+  padding: 20px 30px;
+  margin-top: 20px;
+}
+
 
 .post-tags span{
   background-color: #e4e6eb;
@@ -556,7 +577,6 @@ main {
 .profile-details {
   display: flex;
   align-items: center;
-  margin-bottom: 10px;
 }
 
 .profile-details p {
@@ -578,3 +598,4 @@ main {
   margin-right: 3px;
   font-size: 8px;
 }
+

@@ -56,3 +56,11 @@ export const interestsOptions = [
     '騎自行車',
   ];
   
+
+  export const phaseMapping = {
+    'APPLYING': '申請中',
+    'ADMITTED': '已申請上',
+    'STUDYING_ABROAD': '出國中',
+    'RETURNED': '已回國',
+  };
+  
