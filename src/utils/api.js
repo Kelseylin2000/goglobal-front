@@ -1,4 +1,4 @@
-import { API_POST_URL, API_AUTH_URL, API_CHAT_URL, API_USER_URL } from './constants';
+import { API_POST_URL, API_AUTH_URL, API_CHAT_URL, API_USER_URL, API_FRIEND_URL } from './constants';
 
 export const headers = (token) => ({
   Authorization: `Bearer ${token}`,

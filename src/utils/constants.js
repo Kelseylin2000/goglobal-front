@@ -8,6 +8,7 @@ export const API_POST_URL = `${API_HOST}/posts`;
 export const API_AUTH_URL = `${API_HOST}/auth`;
 export const API_CHAT_URL = `${API_HOST}/chat`;
 export const API_USER_URL = `${API_HOST}/users`;
+export const API_FRIEND_URL = `${API_HOST}/friends`;
 
 export const tagsList = [
     '語言檢定',
