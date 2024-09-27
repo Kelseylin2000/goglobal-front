@@ -7,13 +7,16 @@ import { UserContext } from '../context/UserContext';
 
 import ChatSessionsModal from './ChatSessionsModal';
 import SavedPostsModal from '../components/SavedPostsModal';
+import FriendsModal from '../components/FriendsModal';
 
 const Header = () => {
   const navigate = useNavigate();
   const { toggleSavedPostsModal, savedPosts, isSavedModalOpen } = useContext(SaveContext);
-  const [isSessionsModalOpen, setIsSessionsModalOpen] = useState(false);
   const { loadSessions } = useContext(ChatContext);
   const { meUserProfile, userId } = useContext(UserContext);
+
+  const [isSessionsModalOpen, setIsSessionsModalOpen] = useState(false);
+  const [isFriendsModalOpen, setIsFriendsModalOpen] = useState(false);
 
   const openSessionsModal = () => {
     loadSessions();
@@ -22,6 +25,14 @@ const Header = () => {
 
   const closeSessionsModal = () => {
     setIsSessionsModalOpen(false);
+  };
+
+  const openFriendsModal = () => {
+    setIsFriendsModalOpen(true); // 打開好友 modal
+  };
+
+  const closeFriendsModal = () => {
+    setIsFriendsModalOpen(false); // 關閉好友 modal
   };
 
   const goToHome = () => {
@@ -47,6 +58,9 @@ const Header = () => {
         <button className="chat-button" onClick={openSessionsModal}>
           <img src="/img/chat.png" alt="聊天" />
         </button>
+        <button className="friends-button" onClick={openFriendsModal}>
+          <img src="/img/friends.png" alt="好友" />
+        </button>
         <button className="user-button" onClick={goToUserProfile}>
           <img src="/img/user.png" alt="使用者" />
         </button>
@@ -60,6 +74,9 @@ const Header = () => {
           toggleSavedPostsModal={toggleSavedPostsModal}
           userId={userId}
         />
+      )}
+      {isFriendsModalOpen && (
+        <FriendsModal onClose={closeFriendsModal} />
       )}
     </header>
   );

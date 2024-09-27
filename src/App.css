@@ -110,7 +110,7 @@ header .brand h1 {
 
 /* 主要內容區域 */
 main {
-  width: 55%;
+  width: 60%;
   margin: 30px auto;
 }
 
@@ -377,7 +377,7 @@ main {
   border: 1px solid #ccc;
 }
 
-.post-actions, .profile-actions {
+.post-actions, .profile-actions, .relationship-actions {
   position: absolute;
   top: 20px;
   right: 20px;
@@ -599,3 +599,57 @@ main {
   font-size: 8px;
 }
 
+
+
+
+.relationship-actions button{
+  border: none;
+  cursor: pointer;
+  margin-left: 10px;
+  transition: transform 0.2s;
+}
+
+.relationship-status {
+  font-size: 16px;
+  color: #333;
+}
+
+.request-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.accept-button, .reject-button, .send-request-button {
+  padding: 8px 12px;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s;
+}
+
+.accept-button {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.reject-button {
+  background-color: #f44336;
+  color: white;
+}
+
+.send-request-button {
+  background-color: #1e3d59;
+  color: white;
+}
+
+.accept-button:hover {
+  background-color: #45a049;
+}
+
+.reject-button:hover {
+  background-color: #e53935;
+}
+
+.send-request-button:hover {
+  background-color: #153744;
+}

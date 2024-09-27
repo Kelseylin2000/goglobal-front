@@ -180,7 +180,7 @@ export const ChatProvider = ({ children }) => {
   const loadPendingFriendRequests = async () => {
     try {
       const data = await getPendingFriendRequests(token);
-      setPendingRequests(data);
+      setPendingRequests(data.data);
     } catch (error) {
       console.error('Error fetching pending friend requests:', error);
     }
@@ -189,7 +189,7 @@ export const ChatProvider = ({ children }) => {
   const loadUserFriends = async () => {
     try {
       const data = await getUserFriends(token);
-      setFriends(data);
+      setFriends(data.data);
     } catch (error) {
       console.error('Error fetching friends list:', error);
     }
@@ -211,6 +211,8 @@ export const ChatProvider = ({ children }) => {
       if (stompClient) {
           const request = { userId, targetUserId };
           stompClient.send('/app/friend.sendRequest', {}, JSON.stringify(request));
+
+          console.log(request);
       }
     };
 
@@ -260,7 +262,9 @@ export const ChatProvider = ({ children }) => {
         loadSessions,
         acceptFriendRequest,
         sendFriendRequest,
-        rejectFriendRequest
+        rejectFriendRequest,
+        pendingRequests,
+        friends
       }}
     >
       {children}
