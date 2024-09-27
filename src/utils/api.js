@@ -121,20 +121,7 @@ export const getUserProfile = (userId, token) =>
     headers: headers(token),
   }).then((res) => res.json());
 
-// export const updateUserProfileApi = (token, profileData) =>
-//   fetch(`${API_USER_URL}/profile`, {
-//     method: 'PUT',
-//     headers: {
-//       ...headers(token),
-//       'Content-Type': 'application/json',
-//     },
-//     body: JSON.stringify(profileData),
-//   }).then((res) => res.json());
-
 export const updateUserProfileApi = (token, profileData) => {
-  // 印出 token 和 profileData
-  console.log('Token:', token);
-  console.log('Profile Data:', profileData);
 
   return fetch(`${API_USER_URL}/profile`, {
     method: 'PUT',
@@ -145,4 +132,26 @@ export const updateUserProfileApi = (token, profileData) => {
     body: JSON.stringify(profileData),
   })
   .then((res) => res.json());
+};
+
+// Friend APIs
+export const getPendingFriendRequests = (token) =>
+  fetch(`${API_FRIEND_URL}/pending`, {
+    headers: headers(token),
+  }).then((res) => res.json());
+
+export const getUserFriends = (token) =>
+  fetch(`${API_FRIEND_URL}/list`, {
+    headers: headers(token),
+  }).then((res) => res.json());
+
+export const rejectFriendRequestApi = (token, userId, targetUserId) => {
+  fetch(`${API_FRIEND_URL}/rejectRequest`, {
+      method: 'POST',
+      headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+      },
+      body: JSON.stringify({ userId, targetUserId })
+  }).then((res) => res.json());
 };

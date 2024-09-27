@@ -14,9 +14,9 @@ export const PostProvider = ({ children }) => {
   const {token} = useContext(AuthContext);
   const [posts, setPosts] = useState([]);
 
-  useEffect(() => {
-    loadPosts();
-  }, []);
+  // useEffect(() => {
+  //   loadPosts();
+  // }, []);
 
   useEffect(() => {
     loadPosts();

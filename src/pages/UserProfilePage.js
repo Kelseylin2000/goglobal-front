@@ -8,7 +8,7 @@ import UserProfileInfo from '../components/UserProfileInfo';
 
 const UserProfilePage = () => {
   const { userId } = useParams(); // URL 中的 userId
-  const { meUserProfile, otherUserProfile, fetchUserProfile } = useContext(UserContext); // 從 UserContext 獲取當前使用者和其他使用者資料
+  const { meUserProfile, otherUserProfile, fetchUserProfile, setOtherUserProfile } = useContext(UserContext); // 從 UserContext 獲取當前使用者和其他使用者資料
   const { userId: currentUserId, token } = useContext(AuthContext); // 當前登入者的 userId
   const [posts, setPosts] = useState([]);
 
@@ -16,8 +16,10 @@ const UserProfilePage = () => {
   const profile = isCurrentUser ? meUserProfile : otherUserProfile; // 決定顯示哪個使用者資料
 
   useEffect(() => {
+    setPosts([]);
     if (!isCurrentUser) {
       fetchUserProfile(userId); // 如果不是當前使用者，抓取指定用戶的資料
+      setOtherUserProfile([]);
     }
     fetchUserPostsData(userId); // 抓取指定用戶的發文
     // eslint-disable-next-line

@@ -29,7 +29,7 @@ const UserProfileInfo = ({ profile, isCurrentUser }) => {
 
   return (
     <div className="user-profile-info">
-      <h2>{name}</h2>
+      <h2>{name || "User"}</h2>
       
       {/* 將階段、原學校、交換學校顯示在同一行 */}
       <div className="profile-details">

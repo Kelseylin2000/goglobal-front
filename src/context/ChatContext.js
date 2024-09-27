@@ -1,7 +1,7 @@
 import React, { createContext, useState, useEffect, useRef, useContext } from 'react';
 import SockJS from 'sockjs-client';
 import { Stomp } from '@stomp/stompjs';
-import { getChatSessions, getChatHistory } from '../utils/api';
+import { getChatSessions, getChatHistory, getPendingFriendRequests, getUserFriends, rejectFriendRequestApi} from '../utils/api';
 import { WS_BASE_URL } from '../utils/constants';
 import { AuthContext } from '../context/AuthContext';
 
@@ -40,24 +40,25 @@ export const ChatProvider = ({ children }) => {
         console.log("receivedMessage", receivedMessage);
       });
 
-    // 訂閱好友請求和接受的頻道
+    // 訂閱 其他使用者對當前使用者 傳來的好友請求
     client.subscribe('/user/queue/friend-requests', (message) => {
         const receivedRequest = JSON.parse(message.body);
         handleIncomingFriendRequest(receivedRequest);
         console.log('Received friend request:', receivedRequest);
     });
 
+    // 訂閱 其他使用者對當前使用者 接受成為好友
     client.subscribe('/user/queue/friend-accept', (message) => {
         const receivedAccept = JSON.parse(message.body);
         handleFriendAccept(receivedAccept);
         console.log('Friend request accepted:', receivedAccept);
     });
 
-    client.subscribe('/user/queue/friend-reject', (message) => {
-        const receivedReject = JSON.parse(message.body);
-        handleFriendReject(receivedReject);
-        console.log('Friend request rejected:', receivedReject);
-    });
+    // client.subscribe('/user/queue/friend-reject', (message) => {
+    //     const receivedReject = JSON.parse(message.body);
+    //     handleFriendReject(receivedReject);
+    //     console.log('Friend request rejected:', receivedReject);
+    // });
   
     });
 
@@ -74,8 +75,6 @@ export const ChatProvider = ({ children }) => {
   };
 
   const handleIncomingMessage = (message) => {
-    console.log("New message received:", message);
-    console.log("currentChatRef.current:", currentChatRef.current);
 
     if (
       currentChatRef.current &&
@@ -171,21 +170,59 @@ export const ChatProvider = ({ children }) => {
   const [pendingRequests, setPendingRequests] = useState([]);
   const [friends, setFriends] = useState([]);
 
-    // 接受好友請求
-      const acceptFriendRequest = (userId, targetUserId) => {
-        if (stompClient) {
-            const request = { userId, targetUserId };
-            stompClient.send('/app/friend.acceptRequest', {}, JSON.stringify(request));
-        }
+  useEffect(() => {
+    if (token) {
+      loadPendingFriendRequests();
+      loadUserFriends();
+    }
+  }, [token]);
+
+  const loadPendingFriendRequests = async () => {
+    try {
+      const data = await getPendingFriendRequests(token);
+      setPendingRequests(data);
+    } catch (error) {
+      console.error('Error fetching pending friend requests:', error);
+    }
+  };
+
+  const loadUserFriends = async () => {
+    try {
+      const data = await getUserFriends(token);
+      setFriends(data);
+    } catch (error) {
+      console.error('Error fetching friends list:', error);
+    }
+  };
+
+  // 接受好友請求
+    const acceptFriendRequest = (userId, targetUserId, newFriendInfo) => {
+      if (stompClient) {
+          const request = { userId, targetUserId };
+          stompClient.send('/app/friend.acceptRequest', {}, JSON.stringify(request));
+      }
+
+      setFriends((prevFriends) => [...prevFriends, newFriendInfo]);
+      setPendingRequests((prevRequests) => prevRequests.filter(req => req.userId !== newFriendInfo.userId));
     };
 
-    // 拒絕好友請求
-    const rejectFriendRequest = (userId, targetUserId) => {
-        if (stompClient) {
-            const request = { userId, targetUserId };
-            stompClient.send('/app/friend.rejectRequest', {}, JSON.stringify(request));
-        }
+    // 送出好友請求
+    const sendFriendRequest = (userId, targetUserId) => {
+      if (stompClient) {
+          const request = { userId, targetUserId };
+          stompClient.send('/app/friend.sendRequest', {}, JSON.stringify(request));
+      }
     };
+
+  // 拒絕好友請求
+  const rejectFriendRequest = async (request) => {
+    try {
+      await rejectFriendRequestApi(token, userId, request.userId);
+      setPendingRequests((prevRequests) => prevRequests.filter(req => req.userId !== request.userId));
+    } catch (error) {
+      console.error('Error rejecting the friend request:', error);
+    }
+  };
 
     // 處理收到的好友請求
     const handleIncomingFriendRequest = (request) => {
@@ -195,13 +232,21 @@ export const ChatProvider = ({ children }) => {
     // 處理好友請求接受
     const handleFriendAccept = (friendInfo) => {
         setFriends((prevFriends) => [...prevFriends, friendInfo]);
-        setPendingRequests((prevRequests) => prevRequests.filter(req => req.targetUserId !== friendInfo.userId));
+        // setPendingRequests((prevRequests) => prevRequests.filter(req => req.userId !== friendInfo.userId));
     };
 
+    // const rejectFriendRequest = (userId, targetUserId) => {
+    //     if (stompClient) {
+    //         const request = { userId, targetUserId };
+    //         stompClient.send('/app/friend.rejectRequest', {}, JSON.stringify(request));
+    //     }
+    // };
+
     // 處理好友請求拒絕
-    const handleFriendReject = (request) => {
-        setPendingRequests((prevRequests) => prevRequests.filter(req => req.targetUserId !== request.userId));
-    };
+    // const handleFriendReject = (request) => {
+    //     setPendingRequests((prevRequests) => prevRequests.filter(req => req.targetUserId !== request.userId));
+    // };
+    
 
   return (
     <ChatContext.Provider
@@ -213,6 +258,9 @@ export const ChatProvider = ({ children }) => {
         closeChatWindow,
         sendMessage,
         loadSessions,
+        acceptFriendRequest,
+        sendFriendRequest,
+        rejectFriendRequest
       }}
     >
       {children}

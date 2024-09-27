@@ -15,9 +15,10 @@ export const SaveProvider = ({ children }) => {
   const [savedPosts, setSavedPosts] = useState([]);
   const [isSavedModalOpen, setIsSavedModalOpen] = useState(false);
 
-  useEffect(() => {
-    loadSavedPosts();
-  }, []);
+  // useEffect(() => {
+  //   console.log("直接載");
+  //   loadSavedPosts();
+  // }, []);
 
   useEffect(() => {
     loadSavedPosts();

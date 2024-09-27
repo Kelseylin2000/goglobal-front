@@ -37,16 +37,22 @@ const PostItem = ({ post, userId, handleUploadInDetails = null }) => {
             setIsSavedModalOpen(false); 
             navigate(`/post/${post.postId}`); 
         }}>
-        <div className="post-header" onClick={(e) => {
-          e.stopPropagation(); // 阻止事件冒泡
-          setIsSavedModalOpen(false); 
-          navigate(`/user/${post.userId}`);
-        }}>
+        <div className="post-header">
           <img
             src={`https://i.pravatar.cc/200?u=${post.userId}`}
             alt="Avatar"
+            onClick={(e) => {
+              e.stopPropagation(); // 阻止事件冒泡
+              setIsSavedModalOpen(false); 
+              navigate(`/user/${post.userId}`);
+            }}
           />
-        <div className="author-info">
+        <div className="author-info"
+          onClick={(e) => {
+            e.stopPropagation(); // 阻止事件冒泡
+            setIsSavedModalOpen(false); 
+            navigate(`/user/${post.userId}`);
+          }}>
             <h3>{post.name}</h3>
               <div className="profile-details">
                 <p className="phase">{post.phase ? phaseMapping[post.phase] : '未設定階段'}</p>

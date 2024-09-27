@@ -12,9 +12,9 @@ export const UserProvider = ({ children }) => {
 
   const { token } = useContext(AuthContext); 
 
-  useEffect(() => {
-    fetchMyProfile();
-    }, []);
+  // useEffect(() => {
+  //   fetchMyProfile();
+  //   }, []);
 
   useEffect(() => {
     if (token) {
@@ -61,7 +61,8 @@ export const UserProvider = ({ children }) => {
         otherUserProfile,
         fetchUserProfile,
         setMeUserProfile, // 導出 setMeUserProfile 以便後續更新
-        updateUserProfile
+        updateUserProfile,
+        setOtherUserProfile
       }}
     >
       {children}
