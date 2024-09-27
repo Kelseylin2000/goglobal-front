@@ -48,18 +48,18 @@ const Header = () => {
   return (
     <header>
       <div className="brand" onClick={goToHome} style={{ cursor: 'pointer' }}>
-        <h1>Goglobal</h1>
+        <img src="/img/GoGlobal.png" alt="GoGlobal" />
       </div>
       <div className='header-actions'>
         {meUserProfile && <p>你好，{meUserProfile.name}</p>}
         <button className="saved-button" onClick={toggleSavedPostsModal}>
-          <img src="/img/saved.png" alt="我的收藏" />
+          <img src="/img/b-saved.png" alt="我的收藏" />
         </button>
         <button className="chat-button" onClick={openSessionsModal}>
-          <img src="/img/chat.png" alt="聊天" />
+          <img src="/img/b-chat.png" alt="聊天" />
         </button>
         <button className="friends-button" onClick={openFriendsModal}>
-          <img src="/img/friends.png" alt="好友" />
+          <img src="/img/b-friends.png" alt="好友" />
         </button>
         <button className="user-button" onClick={goToUserProfile}>
           <img src="/img/user.png" alt="使用者" />

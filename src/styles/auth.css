@@ -33,7 +33,7 @@
 .container button {
     width: 100%;
     padding: 12px;
-    background-color: #ff6e40;
+    background-color: #0091AD;
     color: #fff;
     border: none;
     border-radius: 5px;
@@ -44,7 +44,7 @@
 }
 
 .container button:hover {
-    background-color: #e65c34;
+    background-color: #00778f;
 }
 
 .container form {
