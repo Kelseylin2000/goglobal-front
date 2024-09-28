@@ -58,7 +58,9 @@ a {
 /* Header 樣式 */
 header {
   background-color: #ffffff;
-  color: #0091AD;
+  /* color: #0091AD; */
+  color: #0082ad;
+
   /* color: #1e3d59; */
   height: 70px;
   padding: 15px 30px;
@@ -83,21 +85,21 @@ header .brand h1 {
   font-size: 24px;
 }
 
-.header-actions {
+.header-actions, .header-nav {
   display: flex;
   align-items: center;
 }
 
-.header-actions p{
+.header-actions p, .header-nav{
   margin-right: 20px;
   font-weight: 550;
 }
 
-.header-actions button{
+.header-actions button,
+.header-nav button{
   background-color: transparent;
   border: none;
   padding: 8px;
-  border-radius: 50%;
   cursor: pointer;
   font-size: 16px;
   display: flex;
@@ -106,12 +108,27 @@ header .brand h1 {
   margin-left: 15px;
 }
 
+.header-actions button{
+  border-radius: 50%;
+}
+
+.header-nav button{
+  border-radius: 5px;
+}
+
+.header-nav p{
+  margin-top: 5px;
+  margin-bottom: 5px;
+  color: #0082ad;
+}
+
 .header-actions button img{
   width: 20px;
   height: 20px;
 }
 
-.header-actions button:hover{
+.header-actions button:hover,
+.header-nav button:hover{
   background-color: #0d91ad26;
 }
 
@@ -268,7 +285,7 @@ main {
 }
 
 /* 貼文樣式 */
-.post, .user-profile-info {
+.post, .user-profile-info, .simple-user-profile-info {
   background-color: #fff;
   padding: 30px;
   margin-bottom: 25px;
@@ -355,7 +372,7 @@ main {
 }
 
 .mutual-info{
-  background-color: #fffbe9;
+  background-color: #fff7e3;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   border-radius: 20px;
   padding: 20px 30px;
@@ -574,12 +591,18 @@ main {
 } */
 
 .user-profile-info p {
-  font-size: 16px;
+  /* font-size: 16px; */
   margin: 5px 0;
 }
 
 .user-profile-info p span {
   font-weight: bold;
+}
+
+.user-profile-info img{
+  border-radius: 50%;
+  width: 100px;
+  height: 100px;
 }
 
 .profile-details {
@@ -608,57 +631,64 @@ main {
   font-size: 8px;
 }
 
-
-
-
-.relationship-actions button{
+.relationship-actions button,
+.relationship-status{
+  font-size: 14px;
   border: none;
-  cursor: pointer;
   margin-left: 10px;
   transition: transform 0.2s;
+  border-radius: 5px;
+  padding: 8px 12px;
 }
 
-.relationship-status {
-  font-size: 16px;
-  color: #333;
+.relationship-actions button{
+  cursor: pointer;
+}
+
+.relationship-status-friend {
+  background-color: #e2f4f6;
+}
+
+.relationship-status-sent{
+  background-color: #ebebeb;
 }
 
 .request-actions {
   display: flex;
   gap: 10px;
+  flex-direction: column;
 }
 
-.accept-button, .reject-button, .send-request-button {
-  padding: 8px 12px;
-  border: none;
-  cursor: pointer;
-  border-radius: 5px;
-  transition: background-color 0.3s;
-}
-
-.accept-button {
-  background-color: #4CAF50;
+.accept-button,
+.send-request-button {
+  background-color: #0091AD;
   color: white;
+}
+
+.send-request-button:hover,
+.accept-button:hover {
+  background-color: #007a92;
 }
 
 .reject-button {
-  background-color: #f44336;
-  color: white;
-}
-
-.send-request-button {
-  background-color: #1e3d59;
-  color: white;
-}
-
-.accept-button:hover {
-  background-color: #45a049;
+  background-color: #d6e7ea;
+  color: #0091AD;
 }
 
 .reject-button:hover {
-  background-color: #e53935;
+  background-color: #bbdfe5;
 }
 
-.send-request-button:hover {
-  background-color: #153744;
+.page-subtitle{
+  color: #545454;
+  margin-bottom: 40px;
+}
+
+.page-title{
+  margin-bottom: 0;
+}
+
+.page-subtitle-em{
+  color: #1e3d59;
+  font-weight: 500;
 }

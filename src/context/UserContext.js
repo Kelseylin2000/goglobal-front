@@ -1,6 +1,6 @@
 
 import React, { createContext, useState, useEffect, useContext } from 'react';
-import { getMyProfile, getUserProfile, updateUserProfileApi } from '../utils/api';
+import { getMyProfile, getUserProfile, updateUserProfileApi, getUsersFromOrToSameSchool } from '../utils/api';
 import { AuthContext } from './AuthContext';
 import { toast } from 'react-toastify';
 
@@ -9,6 +9,7 @@ export const UserContext = createContext();
 export const UserProvider = ({ children }) => {
   const [meUserProfile, setMeUserProfile] = useState(null);
   const [otherUserProfile, setOtherUserProfile] = useState(null);
+  const [sameSchoolUserProfiles, setSameSchoolUserProfiles] = useState(null);
 
   const { token } = useContext(AuthContext); 
 
@@ -19,6 +20,7 @@ export const UserProvider = ({ children }) => {
   useEffect(() => {
     if (token) {
       fetchMyProfile();
+      fetchSameSchoolUserProfiles();
     }
   }, [token]);
 
@@ -27,7 +29,7 @@ export const UserProvider = ({ children }) => {
       const response = await getMyProfile(token);
       setMeUserProfile(response.data);
     } catch (error) {
-      console.error('獲取我的個人信息時出錯:', error);
+      console.error('獲取我的個人訊息時出錯:', error);
     }
   };
 
@@ -36,7 +38,16 @@ export const UserProvider = ({ children }) => {
       const response = await getUserProfile(userId, token);
       setOtherUserProfile(response.data);
     } catch (error) {
-      console.error('獲取用戶個人信息時出錯:', error);
+      console.error('獲取用戶個人訊息時出錯:', error);
+    }
+  };
+
+  const fetchSameSchoolUserProfiles = async () => {
+    try {
+      const response = await getUsersFromOrToSameSchool(token);
+      setSameSchoolUserProfiles(response.data);
+    } catch (error) {
+      console.error('獲取同校夥伴時出錯:', error);
     }
   };
 
@@ -59,6 +70,8 @@ export const UserProvider = ({ children }) => {
       value={{
         meUserProfile,
         otherUserProfile,
+        sameSchoolUserProfiles,
+        setSameSchoolUserProfiles,
         fetchUserProfile,
         setMeUserProfile, // 導出 setMeUserProfile 以便後續更新
         updateUserProfile,

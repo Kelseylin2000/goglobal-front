@@ -134,6 +134,11 @@ export const updateUserProfileApi = (token, profileData) => {
   .then((res) => res.json());
 };
 
+export const getUsersFromOrToSameSchool = (token) =>
+  fetch(`${API_USER_URL}/same-school`, {
+    headers: headers(token),
+  }).then((res) => res.json());
+
 // Friend APIs
 export const getPendingFriendRequests = (token) =>
   fetch(`${API_FRIEND_URL}/pending`, {

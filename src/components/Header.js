@@ -39,6 +39,10 @@ const Header = () => {
     navigate('/');
   };
 
+  const goToConnection = () => {
+    navigate('/find-partner');
+  };
+
   const goToUserProfile = () => {
     if (meUserProfile) {
       navigate(`/user/${meUserProfile.userId}`);
@@ -49,6 +53,14 @@ const Header = () => {
     <header>
       <div className="brand" onClick={goToHome} style={{ cursor: 'pointer' }}>
         <img src="/img/GoGlobal.png" alt="GoGlobal" />
+      </div>
+      <div className='header-nav'>
+      <button onClick={goToHome} style={{ cursor: 'pointer' }}>
+          <p>找資訊</p>
+        </button>
+        <button onClick={goToConnection} style={{ cursor: 'pointer' }}>
+          <p>找夥伴</p>
+        </button>
       </div>
       <div className='header-actions'>
         {meUserProfile && <p>你好，{meUserProfile.name}</p>}

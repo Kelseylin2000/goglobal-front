@@ -8,6 +8,8 @@ import PostPage from './pages/PostPage';
 import SignInPage from './pages/SignInPage';
 import SignUpPage from './pages/SignUpPage';
 import UserProfilePage from './pages/UserProfilePage';
+import FindPartnerPage from './pages/FindPartnerPage';
+
 
 import PrivateRoute from './components/PrivateRoute';
 import Header from './components/Header';
@@ -65,6 +67,14 @@ return (
                     element={
                       <PrivateRoute>
                         <PostPage />
+                      </PrivateRoute>
+                    } 
+                  />
+                  <Route 
+                    path="/find-partner" 
+                    element={
+                      <PrivateRoute>
+                        <FindPartnerPage />
                       </PrivateRoute>
                     } 
                   />
