@@ -1,4 +1,4 @@
-import { API_POST_URL, API_AUTH_URL, API_CHAT_URL, API_USER_URL, API_FRIEND_URL } from './constants';
+import { API_POST_URL, API_AUTH_URL, API_CHAT_URL, API_USER_URL, API_FRIEND_URL, API_SCHOOL_URL, API_NATION_URL } from './constants';
 
 export const headers = (token) => ({
   Authorization: `Bearer ${token}`,
@@ -139,6 +139,59 @@ export const getUsersFromOrToSameSchool = (token) =>
     headers: headers(token),
   }).then((res) => res.json());
 
+export const updateInterestedSchools = (token, schoolIds) => {
+  return fetch(`${API_USER_URL}/interested-schools`, {
+    method: 'PUT',
+    headers: {
+      ...headers(token),
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(schoolIds),
+  }).then((res) => res.json());
+};
+
+export const deleteAllInterestedSchools = (token) => {
+  return fetch(`${API_USER_URL}/interested-schools`, {
+    method: 'DELETE',
+    headers: {
+      ...headers(token),
+    },
+  }).then((res) => res.json());
+};
+
+export const updateUserPhase = (token, phase) => {
+  return fetch(`${API_USER_URL}/me/phase`, {
+    method: 'PUT',
+    headers: {
+      ...headers(token),
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(phase),
+  }).then((res) => res.json());
+};
+
+export const updateUserExchangeSchool = (token, schoolId) => {
+  return fetch(`${API_USER_URL}/me/exchange-school`, {
+    method: 'PUT',
+    headers: {
+      ...headers(token),
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(schoolId),
+  }).then((res) => res.json());
+};
+
+export const updateUserOriginSchool = (token, schoolId) => {
+  return fetch(`${API_USER_URL}/me/origin-school`, {
+    method: 'PUT',
+    headers: {
+      ...headers(token),
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(schoolId),
+  }).then((res) => res.json());
+};
+
 // Friend APIs
 export const getPendingFriendRequests = (token) =>
   fetch(`${API_FRIEND_URL}/pending`, {
@@ -158,5 +211,42 @@ export const rejectFriendRequestApi = (token, userId, targetUserId) => {
           'Authorization': `Bearer ${token}`,
       },
       body: JSON.stringify({ userId, targetUserId })
+  }).then((res) => res.json());
+};
+
+// School APIs
+export const getSchools = (token, nationId = null, name = null) => {
+  let url = `${API_SCHOOL_URL}?`;
+
+  if (nationId) {
+    url += `nationId=${nationId}`;
+  } else if (name) {
+    url += `name=${name}`;
+  }
+
+  return fetch(url, {
+    method: 'GET',
+    headers: {
+      ...headers(token),
+    },
+  }).then((res) => res.json());
+};
+
+export const getSchoolEmailDomain = (token, schoolId) => {
+  return fetch(`${API_SCHOOL_URL}/${schoolId}/email-domain`, {
+    method: 'GET',
+    headers: {
+      ...headers(token),
+    },
+  }).then((res) => res.json());
+};
+
+// Nation API
+export const getAllNations = (token) => {
+  return fetch(`${API_NATION_URL}/list`, {
+    method: 'GET',
+    headers: {
+      ...headers(token),
+    },
   }).then((res) => res.json());
 };
