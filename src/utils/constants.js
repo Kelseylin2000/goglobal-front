@@ -62,8 +62,8 @@ export const interestsOptions = [
 
   export const phaseMapping = {
     'APPLYING': '申請中',
-    'ADMITTED': '已申請上',
+    'ADMITTED': '已錄取',
     'STUDYING_ABROAD': '出國中',
-    'RETURNED': '已回國',
+    'RETURNED': '已返國',
   };
   

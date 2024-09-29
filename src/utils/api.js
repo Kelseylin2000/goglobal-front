@@ -242,11 +242,7 @@ export const getSchoolEmailDomain = (token, schoolId) => {
 };
 
 // Nation API
-export const getAllNations = (token) => {
-  return fetch(`${API_NATION_URL}/list`, {
-    method: 'GET',
-    headers: {
-      ...headers(token),
-    },
-  }).then((res) => res.json());
+export const getAllNations = () => {
+  return fetch(`${API_NATION_URL}/list`)
+  .then((res) => res.json());
 };

@@ -14,6 +14,8 @@ import FindPartnerPage from './pages/FindPartnerPage';
 import PrivateRoute from './components/PrivateRoute';
 import Header from './components/Header';
 import ChatWindow from './components/ChatWindow';
+import PhaseModal from './components/PhaseModal';
+
 
 import { PostProvider } from './context/PostContext';
 import { SaveProvider } from './context/SaveContext';
@@ -28,11 +30,15 @@ const Layout = ({ children }) => {
 
   const showHeader = !noHeaderRoutes.includes(location.pathname);
 
+  const showPhaseModalRoutes = ['/', '/find-partner'];
+  const showPhaseModal = showPhaseModalRoutes.includes(location.pathname);
+
   return (
     <>
       {showHeader && <Header />} 
       {children}
       {showHeader && <ChatWindow />}
+      {showHeader && showPhaseModal && <PhaseModal />}
     </>
   );
 };

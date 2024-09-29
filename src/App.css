@@ -14,6 +14,7 @@ body {
   margin: 0;
   padding: 0;
   color: #333;
+  padding-top: 70px;
 }
 
 a {
@@ -68,6 +69,12 @@ header {
   align-items: center;
   justify-content: space-between;
   box-shadow: 0 2px 4px rgba(25, 25, 25, 0.1);
+
+  position: fixed; /* 固定 header */
+  top: 0; /* 使 header 靠近螢幕頂端 */
+  left: 0;
+  width: 100%; /* 確保 header 寬度與螢幕相同 */
+  z-index: 1000; /* 讓 header 置於其他內容之上 */
 }
 
 header .brand {
@@ -610,7 +617,7 @@ main {
   align-items: center;
 }
 
-.profile-details p {
+.profile-details p, .phase-info p {
   padding: 5px 10px;
   margin-right: 5px;
   font-size: 13px;
@@ -670,12 +677,13 @@ main {
   background-color: #007a92;
 }
 
-.reject-button {
+.reject-button, .phase-info button {
   background-color: #d6e7ea;
   color: #0091AD;
 }
 
-.reject-button:hover {
+.reject-button:hover,
+.phase-info button:hover {
   background-color: #bbdfe5;
 }
 
@@ -691,4 +699,40 @@ main {
 .page-subtitle-em{
   color: #1e3d59;
   font-weight: 500;
+}
+
+
+
+
+
+.phase-modal-container {
+  position: fixed;
+  top: 110px; /* 確保不會擋住 header */
+  left: 2.5%;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  z-index: 900;
+  width: 20%;
+  background-color: #ffffff;
+}
+
+.phase-modal-container img{
+  margin-top: 10px;
+  width: 50%;
+}
+
+.phase-info{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.phase-info button {
+  margin: 20px;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 85%;
 }

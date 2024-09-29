@@ -54,11 +54,16 @@ const PostItem = ({ post, userId, handleUploadInDetails = null }) => {
             navigate(`/user/${post.userId}`);
           }}>
             <h3>{post.name}</h3>
-              <div className="profile-details">
-                <p className="phase">{post.phase ? phaseMapping[post.phase] : '未設定階段'}</p>
-                <p className="origin-school">{post.originSchoolName ? post.originSchoolName : '未設定原學校'}</p>
-                <span className='profile-details-arrow'>▶</span>
-                <p className="exchange-school"> {post.exchangeSchoolName ? post.exchangeSchoolName : '未設定目的學校'}</p>
+            <div className="profile-details">
+              <p className="phase">{post.phase ? phaseMapping[post.phase] : '未設定階段'}</p>
+              
+              {['ADMITTED', 'STUDYING_ABROAD', 'RETURNED'].includes(post.phase) && (
+                <>
+                  <p className="origin-school">{post.originSchoolName ? post.originSchoolName : '未設定原學校'}</p>
+                  <span className='profile-details-arrow'>▶</span>
+                  <p className="exchange-school">{post.exchangeSchoolName ? post.exchangeSchoolName : '未設定目的學校'}</p>
+                </>
+              )}
             </div>
           </div>
         </div>

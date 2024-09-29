@@ -103,11 +103,16 @@ const UserProfileInfo = ({ profile, isCurrentUser }) => {
 
       {/* 顯示階段、原學校、交換學校 */}
       <div className="profile-details">
-        <p className="phase">{phase ? phaseMapping[phase] : '未設定階段'}</p>
-        <p className="origin-school">{originSchoolName ? originSchoolName : '未設定原學校'}</p>
-        <span className="profile-details-arrow">▶</span>
-        <p className="exchange-school">{exchangeSchoolName ? exchangeSchoolName : '未設定目的學校'}</p>
-      </div>
+          <p className="phase">{phase ? phaseMapping[phase] : '未設定階段'}</p>
+          
+          {['ADMITTED', 'STUDYING_ABROAD', 'RETURNED'].includes(phase) && (
+            <>
+              <p className="origin-school">{originSchoolName ? originSchoolName : '未設定原學校'}</p>
+              <span className='profile-details-arrow'>▶</span>
+              <p className="exchange-school">{exchangeSchoolName ? exchangeSchoolName : '未設定目的學校'}</p>
+            </>
+          )}
+        </div>
 
       {introduction && <p>{introduction}</p>}
 
