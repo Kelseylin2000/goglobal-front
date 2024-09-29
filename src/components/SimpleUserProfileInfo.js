@@ -112,14 +112,6 @@ const SimpleUserProfileInfo = ({ profile }) => {
       {/* 渲染共同興趣和共同好友 */}
       {((mutualInterests && mutualInterests.length > 0) || (mutualFriends && mutualFriends.length > 0)) && (
         <div className="mutual-info">
-          {mutualInterests && mutualInterests.length > 0 && (
-            <div className="user-interests">
-              {mutualInterests.length} 項共同興趣
-              {mutualInterests.map((mutualInterest, index) => (
-                <span key={index} className="interest-tag">{mutualInterest}</span>
-              ))}
-            </div>
-          )}
 
           {mutualFriends && mutualFriends.length > 0 && (
             <div className="user-interests">
@@ -129,6 +121,16 @@ const SimpleUserProfileInfo = ({ profile }) => {
               ))}
             </div>
           )}
+
+          {mutualInterests && mutualInterests.length > 0 && (
+            <div className="user-interests">
+              {mutualInterests.length} 項共同興趣
+              {mutualInterests.map((mutualInterest, index) => (
+                <span key={index} className="interest-tag">{mutualInterest}</span>
+              ))}
+            </div>
+          )}
+          
         </div>
       )}
 
