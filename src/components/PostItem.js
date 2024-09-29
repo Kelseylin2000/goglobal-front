@@ -57,11 +57,11 @@ const PostItem = ({ post, userId, handleUploadInDetails = null }) => {
             <div className="profile-details">
               <p className="phase">{post.phase ? phaseMapping[post.phase] : '未設定階段'}</p>
               
-              {['ADMITTED', 'STUDYING_ABROAD', 'RETURNED'].includes(post.phase) && (
+              {['APPLYING', 'ADMITTED', 'STUDYING_ABROAD', 'RETURNED'].includes(post.phase) && (
                 <>
                   <p className="origin-school">{post.originSchoolName ? post.originSchoolName : '未設定原學校'}</p>
                   <span className='profile-details-arrow'>▶</span>
-                  <p className="exchange-school">{post.exchangeSchoolName ? post.exchangeSchoolName : '未設定目的學校'}</p>
+                  <p className="exchange-school">{post.exchangeSchoolName ? post.exchangeSchoolName : '?'}</p>
                 </>
               )}
             </div>

@@ -105,11 +105,11 @@ const UserProfileInfo = ({ profile, isCurrentUser }) => {
       <div className="profile-details">
           <p className="phase">{phase ? phaseMapping[phase] : '未設定階段'}</p>
           
-          {['ADMITTED', 'STUDYING_ABROAD', 'RETURNED'].includes(phase) && (
+          {['APPLYING', 'ADMITTED', 'STUDYING_ABROAD', 'RETURNED'].includes(phase) && (
             <>
               <p className="origin-school">{originSchoolName ? originSchoolName : '未設定原學校'}</p>
               <span className='profile-details-arrow'>▶</span>
-              <p className="exchange-school">{exchangeSchoolName ? exchangeSchoolName : '未設定目的學校'}</p>
+              <p className="exchange-school">{exchangeSchoolName ? exchangeSchoolName : '?'}</p>
             </>
           )}
         </div>

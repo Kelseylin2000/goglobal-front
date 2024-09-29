@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -25,13 +25,15 @@ import { UserProvider } from './context/UserContext';
 
 
 const Layout = ({ children }) => {
+  const [userId, setUserId] = useState(localStorage.getItem('userId'));
+
   const location = useLocation();
   const noHeaderRoutes = ['/signin', '/signup'];
 
   const showHeader = !noHeaderRoutes.includes(location.pathname);
 
-  const showPhaseModalRoutes = ['/', '/find-partner'];
-  const showPhaseModal = showPhaseModalRoutes.includes(location.pathname);
+  const showPhaseModal = ['/', '/find-partner'].includes(location.pathname) || 
+    location.pathname.startsWith('/user/'); 
 
   return (
     <>

@@ -1,6 +1,15 @@
-
 import React, { createContext, useState, useEffect, useContext } from 'react';
-import { getMyProfile, getUserProfile, updateUserProfileApi, getUsersFromOrToSameSchool } from '../utils/api';
+import { 
+  getMyProfile, 
+  getUserProfile, 
+  updateUserProfileApi, 
+  getUsersFromOrToSameSchool,
+  updateInterestedSchools,
+  deleteAllInterestedSchools,
+  updateUserPhase,
+  updateUserExchangeSchool,
+  updateUserOriginSchool
+} from '../utils/api';
 import { AuthContext } from './AuthContext';
 import { toast } from 'react-toastify';
 
@@ -12,10 +21,6 @@ export const UserProvider = ({ children }) => {
   const [sameSchoolUserProfiles, setSameSchoolUserProfiles] = useState(null);
 
   const { token } = useContext(AuthContext); 
-
-  // useEffect(() => {
-  //   fetchMyProfile();
-  //   }, []);
 
   useEffect(() => {
     if (token) {
@@ -65,6 +70,78 @@ export const UserProvider = ({ children }) => {
     }
   };
 
+  const handleUpdateInterestedSchools = async (schoolIds, schoolNames) => {
+    try {
+      await updateInterestedSchools(token, schoolIds);
+      setMeUserProfile((prevProfile) => ({
+        ...prevProfile,
+        interestedSchools: schoolNames,
+      }));
+      fetchSameSchoolUserProfiles();
+      toast.success('興趣學校更新成功');
+    } catch (error) {
+      console.error('更新興趣學校時出錯:', error);
+      toast.error('興趣學校更新失敗，請稍後再試');
+    }
+  };
+
+  const handleDeleteAllInterestedSchools = async () => {
+    try {
+      await deleteAllInterestedSchools(token);
+      setMeUserProfile((prevProfile) => ({
+        ...prevProfile,
+        interestedSchools: [],
+      }));
+      fetchSameSchoolUserProfiles();
+    } catch (error) {
+      console.error('刪除興趣學校失敗:', error);
+      toast.error('刪除興趣學校失敗，請稍後再試');
+    }
+  };
+
+  const handleUpdateUserPhase = async (phase) => {
+    try {
+      await updateUserPhase(token, phase);
+      setMeUserProfile((prevProfile) => ({
+        ...prevProfile,
+        phase,
+      }));
+      toast.success('階段更新成功');
+    } catch (error) {
+      console.error('更新使用者階段失敗:', error);
+      toast.error('更新階段失敗，請稍後再試');
+    }
+  };
+
+  const handleUpdateUserExchangeSchool = async (schoolId, schoolName) => {
+    try {
+      await updateUserExchangeSchool(token, schoolId);
+      setMeUserProfile((prevProfile) => ({
+        ...prevProfile,
+        exchangeSchoolName: schoolName,
+      }));
+      fetchSameSchoolUserProfiles();
+      toast.success('目的學校更新成功');
+    } catch (error) {
+      console.error('更新目的學校失敗:', error);
+      toast.error('更新目的學校失敗，請稍後再試');
+    }
+  };
+
+  const handleUpdateUserOriginSchool = async (schoolId, schoolName) => {
+    try {
+      await updateUserOriginSchool(token, schoolId);
+      setMeUserProfile((prevProfile) => ({
+        ...prevProfile,
+        originSchoolName: schoolName,
+      }));
+      toast.success('原學校更新成功');
+    } catch (error) {
+      console.error('更新原學校失敗:', error);
+      toast.error('更新原學校失敗，請稍後再試');
+    }
+  };
+
   return (
     <UserContext.Provider
       value={{
@@ -73,9 +150,14 @@ export const UserProvider = ({ children }) => {
         sameSchoolUserProfiles,
         setSameSchoolUserProfiles,
         fetchUserProfile,
-        setMeUserProfile, // 導出 setMeUserProfile 以便後續更新
+        setMeUserProfile, 
         updateUserProfile,
-        setOtherUserProfile
+        setOtherUserProfile,
+        handleUpdateInterestedSchools,
+        handleDeleteAllInterestedSchools,
+        handleUpdateUserPhase,
+        handleUpdateUserExchangeSchool,
+        handleUpdateUserOriginSchool
       }}
     >
       {children}

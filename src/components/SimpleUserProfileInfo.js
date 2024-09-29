@@ -104,7 +104,7 @@ const SimpleUserProfileInfo = ({ profile }) => {
             <p className="phase">{phase ? phaseMapping[phase] : '未設定階段'}</p>
             <p className="origin-school">{originSchoolName ? originSchoolName : '未設定原學校'}</p>
             <span className="profile-details-arrow">▶</span>
-            <p className="exchange-school">{exchangeSchoolName ? exchangeSchoolName : '未設定目的學校'}</p>
+            <p className="exchange-school">{exchangeSchoolName ? exchangeSchoolName : '?'}</p>
         </div>
       </div>
     </div>

@@ -28,9 +28,14 @@ const { userId: currentUserId } = useContext(AuthContext); // 當前登入者的
             <h3>{friend.name}</h3>
               <div className="profile-details">
                 <p className="phase">{friend.phase ? phaseMapping[friend.phase] : '未設定階段'}</p>
-                <p className="origin-school">{friend.originSchoolName ? friend.originSchoolName : '未設定原學校'}</p>
-                <span className='profile-details-arrow'>▶</span>
-                <p className="exchange-school"> {friend.exchangeSchoolName ? friend.exchangeSchoolName : '未設定目的學校'}</p>
+
+                {['APPLYING', 'ADMITTED', 'STUDYING_ABROAD', 'RETURNED'].includes(friend.phase) && (
+                  <>
+                    <p className="origin-school">{friend.originSchoolName ? friend.originSchoolName : '未設定原學校'}</p>
+                    <span className='profile-details-arrow'>▶</span>
+                    <p className="exchange-school">{friend.exchangeSchoolName ? friend.exchangeSchoolName : '?'}</p>
+                  </>
+                )}
             </div>
           </div>
         
