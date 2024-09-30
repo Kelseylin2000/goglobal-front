@@ -336,10 +336,23 @@ main {
   color: #1e3d59;
 }
 
-.post-create-time {
+.post-mini-text{
   margin-bottom: 10px;
+}
+
+.post-mini-text p,
+.post-mini-text button {
+  margin-right: 10px;
   font-size: 12px;
   color: #888;
+  display: inline;
+}
+
+.post-mini-text button{
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
 }
 
 .post-content {

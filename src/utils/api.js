@@ -1,4 +1,4 @@
-import { API_POST_URL, API_AUTH_URL, API_CHAT_URL, API_USER_URL, API_FRIEND_URL, API_SCHOOL_URL, API_NATION_URL } from './constants';
+import { API_POST_URL, API_AUTH_URL, API_CHAT_URL, API_USER_URL, API_FRIEND_URL, API_SCHOOL_URL, API_NATION_URL, API_TRANSLATE_URL } from './constants';
 
 export const headers = (token) => ({
   Authorization: `Bearer ${token}`,
@@ -245,4 +245,33 @@ export const getSchoolEmailDomain = (token, schoolId) => {
 export const getAllNations = () => {
   return fetch(`${API_NATION_URL}/list`)
   .then((res) => res.json());
+};
+
+// Translate API
+
+export const getCurrentUserLanguage = () => {
+  return navigator.language || navigator.userLanguage;
+};
+
+export const translateText = async (text) => {
+  const lang = getCurrentUserLanguage();
+  
+  try {
+    const response = await fetch(`${API_TRANSLATE_URL}/text?text=${encodeURIComponent(text)}&lang=${lang}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to fetch translation');
+    }
+
+    const translatedText = await response.text();
+    return translatedText;
+  } catch (error) {
+    console.error('Error fetching translation:', error);
+    throw error;
+  }
 };
