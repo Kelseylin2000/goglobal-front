@@ -58,10 +58,6 @@ a {
 /* Header 樣式 */
 header {
   background-color: #ffffff;
-  /* color: #0091AD; */
-  color: #0082ad;
-
-  /* color: #1e3d59; */
   height: 70px;
   padding: 15px 30px;
   display: flex;
@@ -89,6 +85,10 @@ header .brand img {
 header .brand h1 {
   margin: 0;
   font-size: 24px;
+}
+
+.header-actions{
+  color: #0082ad;
 }
 
 .header-actions, .header-nav {

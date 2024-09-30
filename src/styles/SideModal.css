@@ -5,14 +5,28 @@
     overflow-y: auto;
   }
   
-  .session-item {
+  .session-item, .friend-item {
     padding: 10px;
     border-bottom: 1px solid #ccc;
     cursor: pointer;
   }
   
-  .session-item:hover {
+  .session-item:hover,
+  .friend-item:hover {
     background-color: #f9fafb;
+  }
+
+  .friend-item{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+  }
+
+  .friend-info{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
   
   .session-details-container {
@@ -33,14 +47,21 @@
     flex-direction: column;
   }
 
-  .session-img{
-    width: 50px;
-    height: 50px;
+  .session-img, .friend-img{
+    width: 45px;
+    height: 45px;
     border-radius: 50%;
+  }
+
+  .session-img{
     margin-right: 10px;
   }
+
+  .friend-img{
+    margin-top: 10px;
+  }
   
-  .participant-name {
+  .participant-name, .friend-name {
     font-weight: bold;
     color: #1e3d59;
   }

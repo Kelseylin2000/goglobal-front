@@ -3,9 +3,10 @@ import { useNavigate } from 'react-router-dom';
 import { ChatContext } from '../context/ChatContext';
 import { AuthContext } from '../context/AuthContext';
 import {phaseMapping} from '../utils/constants';
+import '../styles/SideModal.css';
 
 const FriendsModal = ({ onClose }) => {
-  const { friends, pendingRequests, acceptFriendRequest, rejectFriendRequest } = useContext(ChatContext);
+  const { friends, pendingRequests, acceptFriendRequest, rejectFriendRequest, openChatWindow } = useContext(ChatContext);
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('friends'); // 預設顯示好友列表
 const { userId: currentUserId } = useContext(AuthContext); // 當前登入者的 userId
@@ -13,7 +14,7 @@ const { userId: currentUserId } = useContext(AuthContext); // 當前登入者的
   const renderFriendInfo = (friend, isRequest = false) => {
     return (
     <div 
-        className="post-header"
+        className="friend-item"
         key={friend.userId}
         onClick={(e) => {
             e.stopPropagation(); // 阻止事件冒泡
@@ -23,9 +24,10 @@ const { userId: currentUserId } = useContext(AuthContext); // 當前登入者的
           <img
             src={`https://i.pravatar.cc/200?u=${friend.userId}`}
             alt="Avatar"
+            className='friend-img'
           />
-        <div className="author-info">
-            <h3>{friend.name}</h3>
+        <div className="friend-info">
+            <div className='friend-name'>{friend.name}</div>
               <div className="profile-details">
                 <p className="phase">{friend.phase ? phaseMapping[friend.phase] : '未設定階段'}</p>
 
@@ -38,6 +40,25 @@ const { userId: currentUserId } = useContext(AuthContext); // 當前登入者的
                 )}
             </div>
           </div>
+
+          {!isRequest && (
+        <div className='post-actions'>
+          <button 
+            onClick={(e) => {
+              e.stopPropagation();
+              const chatId =
+              currentUserId < friend.userId
+                ? `${currentUserId}_${friend.userId}`
+                : `${friend.userId}_${currentUserId}`;
+            
+              // 傳遞 chatId 和 friend.userId
+              openChatWindow(chatId, friend.userId, friend.name);
+              onClose();
+            }}>
+            <img src="/img/b-chat.png" alt="聊天" />
+          </button>
+        </div>
+      )}
         
         {isRequest && ( // 只有在好友請求的情況下才顯示按鈕
           <div className="request-buttons">
@@ -68,10 +89,7 @@ const { userId: currentUserId } = useContext(AuthContext); // 當前登入者的
   return (
     <div className="side-modal">
       <div className="modal-header">
-        <button className="close-button" onClick={onClose}>X</button>
-        <h2>好友</h2>
       </div>
-      <div className="modal-content">
         <div className="tab-buttons">
           <button
             className={`friends-tab ${activeTab === 'friends' ? 'active' : ''}`}
@@ -107,7 +125,6 @@ const { userId: currentUserId } = useContext(AuthContext); // 當前登入者的
             </div>
           )}
         </div>
-      </div>
     </div>
   );
 };

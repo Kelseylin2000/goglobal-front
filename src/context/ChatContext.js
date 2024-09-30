@@ -97,23 +97,35 @@ export const ChatProvider = ({ children }) => {
     );
   };
 
-  const openChatWindow = async (chatId, friendId) => {
+  const openChatWindow = async (chatId, friendId, friendName = null) => {
     try {
+      // 嘗試獲取聊天歷史記錄
       const chatHistory = await getChatHistory(token, chatId);
       const messages = chatHistory.data.reverse();
       const friendName = getFriendName(friendId);
-
+  
+      // 設置當前聊天
       setCurrentChat({
         chatId,
         friendId,
         friendName,
         messages,
       });
-      setIsChatWindowOpen(true);
     } catch (error) {
-      console.error('Error opening chat window:', error);
+      console.error('Error opening chat window or no chat history found:', error);
+  
+      // 如果發生錯誤或沒有聊天記錄，初始化空的聊天記錄      
+      setCurrentChat({
+        chatId,
+        friendId,
+        friendName,
+        messages: [], // 設置空消息列表
+      });
+    } finally {
+      // 無論是否有錯誤，都打開聊天窗口
+      setIsChatWindowOpen(true);
     }
-  };
+  };  
 
   const getFriendName = (friendId) => {
     let friendName = userNameCache[friendId];
