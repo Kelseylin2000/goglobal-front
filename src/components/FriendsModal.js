@@ -101,7 +101,7 @@ const { userId: currentUserId } = useContext(AuthContext); // 當前登入者的
             className={`requests-tab ${activeTab === 'requests' ? 'active' : ''}`}
             onClick={() => setActiveTab('requests')}
           >
-            收到的好友請求
+            好友邀請
           </button>
         </div>
 

@@ -84,3 +84,39 @@
     margin-top: 5px;
   }
   
+  .request-buttons{
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .tab-buttons{
+    padding: 20px;
+    display: flex;
+    justify-content: space-around;
+    border-bottom: 1px solid #ccc;
+  }
+
+  .tab-buttons .active{
+    background-color: #0090adb1;
+    color: #fff;
+  }
+
+  .tab-buttons button{
+    border: transparent;
+    padding: 10px 30px;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+
+  .request-buttons button{
+  border: none;
+  cursor: pointer;
+  margin-bottom: 5px;
+  transition: transform 0.2s;
+  border-radius: 8px;
+  padding: 5px;
+}
