@@ -4,6 +4,8 @@ import { AuthContext } from '../context/AuthContext';
 import { getAllNations, getSchools } from '../utils/api';
 import { phaseMapping } from '../utils/constants';
 
+import '../styles/PhaseModal.css';
+
 const PhaseModal = () => {
   const {
     meUserProfile,
@@ -107,15 +109,26 @@ const PhaseModal = () => {
     setTempOriginSchoolName(meUserProfile.originSchoolName || '');
     setTempExchangeSchoolName(meUserProfile.exchangeSchoolName || '');
     setTempInterestedSchoolNames(meUserProfile.interestedSchools || []);
+
     setIsPhaseModalOpen(true);
   };
+
 
   const handleCloseModal = () => {
     // 關閉模態框時，恢覆臨時狀態變量到之前的值
     setTempPhase(meUserProfile.phase || '');
+
+    setTempOriginNationId('');
+    setTempOriginSchoolId('');
     setTempOriginSchoolName(meUserProfile.originSchoolName || '');
+
+    setTempExchangeNationId('');
+    setTempExchangeSchoolId('');
     setTempExchangeSchoolName(meUserProfile.exchangeSchoolName || '');
+
+    setTempInterestedSchoolIds('');
     setTempInterestedSchoolNames(meUserProfile.interestedSchools || []);
+
     setIsPhaseModalOpen(false);
   };
 
@@ -236,7 +249,7 @@ const PhaseModal = () => {
       </div>
 
       {isPhaseModalOpen && (
-        <div className="modal-overlay">
+        <div className="small-modal">
           <div className="modal-content">
             <h2>設置階段與學校</h2>
 
@@ -257,7 +270,7 @@ const PhaseModal = () => {
             {/* 選擇原學校 */}
             {tempPhase && (
               <>
-                <label>選擇原學校國家：</label>
+                <label>選擇原學校：</label>
                 <select
                   value={tempOriginNationId}
                   onChange={(e) => {
@@ -273,7 +286,6 @@ const PhaseModal = () => {
                   ))}
                 </select>
 
-                <label>選擇原學校：</label>
                 <select
                   value={tempOriginSchoolId}
                   onChange={(e) => {
@@ -295,7 +307,7 @@ const PhaseModal = () => {
                 {/* 根據階段顯示不同的學校選擇 */}
                 {tempPhase === 'APPLYING' && (
                   <>
-                    <label>選擇感興趣的學校國家：</label>
+                    <label>選擇感興趣或正在申請中的學校（可多選）：</label>
                     <select
                       value={tempExchangeNationId}
                       onChange={(e) => {
@@ -311,7 +323,6 @@ const PhaseModal = () => {
                       ))}
                     </select>
 
-                    <label>選擇感興趣的學校（可多選）：</label>
                     <select
                       value=""
                       onChange={(e) => {
@@ -357,7 +368,7 @@ const PhaseModal = () => {
 
                 {tempPhase !== 'APPLYING' && (
                   <>
-                    <label>選擇目的學校國家：</label>
+                    <label>選擇目的學校：</label>
                     <select
                       value={tempExchangeNationId}
                       onChange={(e) => {
@@ -373,7 +384,6 @@ const PhaseModal = () => {
                       ))}
                     </select>
 
-                    <label>選擇目的學校：</label>
                     <select
                       value={tempExchangeSchoolId}
                       onChange={(e) => {
@@ -394,8 +404,10 @@ const PhaseModal = () => {
                   </>
                 )}
 
-                <button onClick={handleSavePhaseAndSchools}>保存</button>
-                <button onClick={handleCloseModal}>取消</button>
+                <div className="submit-button-container">
+                  <button className="btn-primary" onClick={handleSavePhaseAndSchools}>保存</button>
+                  <button className="btn-primary" onClick={handleCloseModal}>取消</button>
+                </div>
               </>
             )}
           </div>
