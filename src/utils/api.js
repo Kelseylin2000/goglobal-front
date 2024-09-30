@@ -166,7 +166,7 @@ export const updateUserPhase = (token, phase) => {
       ...headers(token),
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify(phase),
+    body: phase,
   }).then((res) => res.json());
 };
 

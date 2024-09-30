@@ -36,16 +36,22 @@ const PhaseModal = () => {
   const [exchangeSchools, setExchangeSchools] = useState([]);
   const [interestedSchools, setInterestedSchools] = useState([]);
 
-  // 初始化狀態變量
-  useEffect(() => {
-    if (meUserProfile) {
-      // 在打開模態框之前，保存當前的用戶數據到臨時狀態變量
-      setTempPhase(meUserProfile.phase || '');
-      setTempOriginSchoolName(meUserProfile.originSchoolName || '');
-      setTempExchangeSchoolName(meUserProfile.exchangeSchoolName || '');
-      setTempInterestedSchoolNames(meUserProfile.interestedSchools || []);
-    }
-  }, [meUserProfile]);
+  console.log("tempPhase");
+  console.log(tempPhase);
+
+  console.log("meUserProfile");
+  console.log(meUserProfile);
+
+  // // 初始化狀態變量
+  // useEffect(() => {
+  //   if (meUserProfile) {
+  //     // 在打開模態框之前，保存當前的用戶數據到臨時狀態變量
+  //     setTempPhase(meUserProfile.phase || '');
+  //     setTempOriginSchoolName(meUserProfile.originSchoolName || '');
+  //     setTempExchangeSchoolName(meUserProfile.exchangeSchoolName || '');
+  //     setTempInterestedSchoolNames(meUserProfile.interestedSchools || []);
+  //   }
+  // }, [meUserProfile]);
 
   useEffect(() => {
     // 獲取所有國家
@@ -105,42 +111,52 @@ const PhaseModal = () => {
 
   const handleOpenModal = () => {
     // 在打開模態框時，保存當前的用戶數據到臨時狀態變量
-    setTempPhase(meUserProfile.phase || '');
-    setTempOriginSchoolName(meUserProfile.originSchoolName || '');
-    setTempExchangeSchoolName(meUserProfile.exchangeSchoolName || '');
-    setTempInterestedSchoolNames(meUserProfile.interestedSchools || []);
+    setTempOriginNationId('');
+    setTempOriginSchoolId('');
+    setTempOriginSchoolName('');
+
+    setTempExchangeNationId('');
+    setTempExchangeSchoolId('');
+    setTempExchangeSchoolName('');
+
+    setTempInterestedSchoolIds([]);
+    setTempInterestedSchoolNames([]);
 
     setIsPhaseModalOpen(true);
   };
 
 
+
   const handleCloseModal = () => {
     // 關閉模態框時，恢覆臨時狀態變量到之前的值
-    setTempPhase(meUserProfile.phase || '');
+    setTempPhase('');
 
     setTempOriginNationId('');
     setTempOriginSchoolId('');
-    setTempOriginSchoolName(meUserProfile.originSchoolName || '');
+    setTempOriginSchoolName('');
 
     setTempExchangeNationId('');
     setTempExchangeSchoolId('');
-    setTempExchangeSchoolName(meUserProfile.exchangeSchoolName || '');
+    setTempExchangeSchoolName('');
 
-    setTempInterestedSchoolIds('');
-    setTempInterestedSchoolNames(meUserProfile.interestedSchools || []);
+    setTempInterestedSchoolIds([]);
+    setTempInterestedSchoolNames([]);
 
     setIsPhaseModalOpen(false);
   };
 
   const handleSavePhaseAndSchools = async () => {
-    if (!tempOriginSchoolId) {
+
+    if (meUserProfile.originSchoolName == null && !tempOriginSchoolId) {
       alert('請先選擇原學校');
       return;
     }
 
     try {
-      await handleUpdateUserOriginSchool(tempOriginSchoolId, tempOriginSchoolName);
-      await handleUpdateUserPhase(tempPhase);
+
+      if(tempOriginSchoolId != '' && tempOriginSchoolName != ''){
+        await handleUpdateUserOriginSchool(tempOriginSchoolId, tempOriginSchoolName);
+      }
 
       if (tempPhase === 'APPLYING') {
         if (tempInterestedSchoolIds.length === 0) {
@@ -148,12 +164,24 @@ const PhaseModal = () => {
           return;
         }
         await handleUpdateInterestedSchools(tempInterestedSchoolIds, tempInterestedSchoolNames);
+      
       } else {
+
         if (!tempExchangeSchoolId) {
           alert('請先選擇目的學校');
           return;
         }
         await handleUpdateUserExchangeSchool(tempExchangeSchoolId, tempExchangeSchoolName);
+
+      }
+
+      if(tempPhase != ''){
+        await handleUpdateUserPhase(tempPhase);
+      }
+
+      if(tempPhase === 'ADMITTED'){
+        // 清空感興趣的學校
+        await handleDeleteAllInterestedSchools();
       }
 
       setIsPhaseModalOpen(false);
@@ -163,33 +191,29 @@ const PhaseModal = () => {
   };
 
   const handlePhaseAdvance = async () => {
-    if (tempPhase === 'APPLYING') {
+    if (meUserProfile.phase === 'APPLYING') {
       // 我錄取了
-      const confirmAdvance = window.confirm('是否錄取了並設置目的學校？');
+      const confirmAdvance = window.confirm('恭喜你錄取！是否要現在設定即將前往的學校？');
       if (confirmAdvance) {
-        // 清空感興趣的學校
-        await handleDeleteAllInterestedSchools();
-        // 打開設置目的學校的模態框
+        // 打開設定目的學校的模態框
         setTempPhase('ADMITTED');
         setIsPhaseModalOpen(true);
       }
-    } else if (tempPhase === 'ADMITTED') {
+    } else if (meUserProfile.phase === 'ADMITTED') {
       // 我出國了
-      const confirmAdvance = window.confirm('是否將階段調整為留學中？');
+      const confirmAdvance = window.confirm('是否將階段調整為出國中？');
       if (confirmAdvance) {
         await handleUpdateUserPhase('STUDYING_ABROAD');
-        setTempPhase('STUDYING_ABROAD');
       }
-    } else if (tempPhase === 'STUDYING_ABROAD') {
+    } else if (meUserProfile.phase === 'STUDYING_ABROAD') {
       // 我回國了
       const confirmAdvance = window.confirm('是否將階段調整為已返國？');
       if (confirmAdvance) {
         await handleUpdateUserPhase('RETURNED');
-        setTempPhase('RETURNED');
       }
-    } else if (tempPhase === 'RETURNED') {
+    } else if (meUserProfile.phase === 'RETURNED') {
       // 邁向下次旅程
-      const confirmAdvance = window.confirm('是否已完全結束此次國外學習，開始設置新的一次？');
+      const confirmAdvance = window.confirm('是否已完全結束此次國外學習，開始設定新的一次？');
       if (confirmAdvance) {
         // 重置所有狀態並打開模態框
         setTempPhase('');
@@ -216,12 +240,12 @@ const PhaseModal = () => {
         {meUserProfile.phase === null || meUserProfile.phase === '' ? (
           <>
             <h2>Let's Go Global!</h2>
-            <p>現在就進行階段與目標學校設置，GoGlobal 將為您推薦最佳內容與夥伴！</p>
-            <button onClick={handleOpenModal}>設置階段</button>
+            <p>現在就進行階段與目標學校設定，GoGlobal 將為您推薦最佳內容與夥伴！</p>
+            <button onClick={handleOpenModal}>設定階段</button>
           </>
         ) : (
           <>
-            <p className="phase">{phaseMapping[meUserProfile.phase] || '未設置'}</p>
+            <p className="phase">{phaseMapping[meUserProfile.phase] || '未設定'}</p>
             {meUserProfile.phase === 'APPLYING' && (
               <>
                   {meUserProfile.interestedSchools && meUserProfile.interestedSchools.length > 0 ? (
@@ -229,13 +253,13 @@ const PhaseModal = () => {
                       <p key={index} className="exchange-school">{interestedSchoolName}</p>
                     ))
                   ) : (
-                    <p>未設置</p>
+                    <p>未設定</p>
                   )}
               </>
             )}
             {meUserProfile.phase !== 'APPLYING' && (
               <>
-                <p className="exchange-school">{meUserProfile.exchangeSchoolName || '未設置'}</p>
+                <p className="exchange-school">{meUserProfile.exchangeSchoolName || '未設定'}</p>
               </>
             )}
             <button onClick={handlePhaseAdvance}>
@@ -251,7 +275,7 @@ const PhaseModal = () => {
       {isPhaseModalOpen && (
         <div className="small-modal">
           <div className="modal-content">
-            <h2>設置階段與學校</h2>
+            <h2>設定階段與學校</h2>
 
             {/* 選擇階段 */}
             {!tempPhase && (
@@ -261,7 +285,7 @@ const PhaseModal = () => {
                   <option value="">-- 請選擇階段 --</option>
                   <option value="APPLYING">申請中</option>
                   <option value="ADMITTED">已錄取</option>
-                  <option value="STUDYING_ABROAD">留學中</option>
+                  <option value="STUDYING_ABROAD">出國中</option>
                   <option value="RETURNED">已返國</option>
                 </select>
               </>
@@ -270,6 +294,8 @@ const PhaseModal = () => {
             {/* 選擇原學校 */}
             {tempPhase && (
               <>
+              {meUserProfile.originSchoolName == null && (
+                <>
                 <label>選擇原學校：</label>
                 <select
                   value={tempOriginNationId}
@@ -303,6 +329,8 @@ const PhaseModal = () => {
                     </option>
                   ))}
                 </select>
+                </>
+              )}
 
                 {/* 根據階段顯示不同的學校選擇 */}
                 {tempPhase === 'APPLYING' && (
@@ -366,7 +394,7 @@ const PhaseModal = () => {
                   </>
                 )}
 
-                {tempPhase !== 'APPLYING' && (
+                {(((tempPhase === 'ADMITTED') || (tempPhase === 'STUDYING_ABROAD') || (tempPhase === 'RETURNED')) && ((meUserProfile.exchangeSchoolName == null) || (meUserProfile.phase === 'RETURNED'))) && (
                   <>
                     <label>選擇目的學校：</label>
                     <select
