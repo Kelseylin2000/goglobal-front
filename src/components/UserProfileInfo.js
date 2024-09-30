@@ -96,8 +96,8 @@ const UserProfileInfo = ({ profile, isCurrentUser }) => {
   return (
     <div className="user-profile-info">
       <img 
-          src={`https://i.pravatar.cc/200?u=${userId}`}
-          alt="Avatar"
+        src={userId ? `https://i.pravatar.cc/200?u=${userId}` : '/img/profile.png'}
+        alt="Avatar"
         />
       <h2>{name || 'User'}</h2>
 

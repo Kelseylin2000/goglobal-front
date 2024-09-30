@@ -59,20 +59,23 @@ const Header = () => {
           <p>找夥伴</p>
         </button>
       </div>
-      <div className="header-actions">
-        {meUserProfile && <p>你好，{meUserProfile.name}</p>}
-        <button className="saved-button" onClick={toggleSavedPostsModal}>
-          <img src="/img/b-saved.png" alt="我的收藏" />
-        </button>
-        <button className="chat-button" onClick={toggleSessionsModal}>
-          <img src="/img/b-chat.png" alt="聊天" />
-        </button>
-        <button className="friends-button" onClick={toggleFriendsModal}>
-          <img src="/img/b-friends.png" alt="好友" />
-        </button>
-        <button className="user-button" onClick={goToUserProfile}>
-          <img src="/img/user.png" alt="使用者" />
-        </button>
+      <div className='header-right'>
+        <div className="header-actions">
+          <button className="saved-button" onClick={toggleSavedPostsModal}>
+            <img src="/img/b-saved.png" alt="我的收藏" />
+          </button>
+          <button className="chat-button" onClick={toggleSessionsModal}>
+            <img src="/img/b-chat.png" alt="聊天" />
+          </button>
+          <button className="friends-button" onClick={toggleFriendsModal}>
+            <img src="/img/b-friends.png" alt="好友" />
+          </button>
+        </div>
+        {meUserProfile &&(
+          <button className="user-button" onClick={goToUserProfile}>
+              <img src={`https://i.pravatar.cc/200?u=${meUserProfile.userId}`} alt="使用者" />
+          </button>
+        )}
       </div>
       {isSessionsModalOpen && (
         <ChatSessionsModal onClose={toggleSessionsModal} />

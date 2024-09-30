@@ -138,6 +138,25 @@ header .brand h1 {
   background-color: #0d91ad26;
 }
 
+.user-button{
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  margin-left: 15px;
+}
+
+.user-button img{
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.header-right{
+  display: flex;
+
+}
+
 /* 主要內容區域 */
 main {
   width: 50%;
