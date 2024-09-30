@@ -66,7 +66,7 @@ const { userId: currentUserId } = useContext(AuthContext); // 當前登入者的
   };
 
   return (
-    <div className="modal friends-modal">
+    <div className="side-modal">
       <div className="modal-header">
         <button className="close-button" onClick={onClose}>X</button>
         <h2>好友</h2>

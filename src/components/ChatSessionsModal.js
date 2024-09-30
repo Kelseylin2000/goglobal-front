@@ -7,16 +7,11 @@ const ChatSessionsModal = ({ onClose }) => {
   const userId = localStorage.getItem('userId');
 
   return (
-    <div className="modal" onClick={onClose}>
-      <div
+    <div className="side-modal">
+      {/* <div
         className="modal-content sessions-modal"
         onClick={(e) => e.stopPropagation()}
-      >
-        <button className="modal-close" onClick={onClose}>
-          &times;
-        </button>
-        <h2>聊天列表</h2>
-
+      > */}
         <div className="session-list">
           {chatSessions.length === 0 ? (
             <div className="no-sessions-message">
@@ -50,14 +45,17 @@ const ChatSessionsModal = ({ onClose }) => {
                   }}
                 >
                   <div className="session-details-container">
-                    <div className="session-details">
-                      <div className="participant-name">{friendName}</div>
-                      <div className="latest-message">
-                      {session.latestMessage.content}
+                    <div className="session-main">
+                      <img className="session-img" src={`https://i.pravatar.cc/200?u=${friendId}`}></img>
+                      <div className="session-details">
+                        <div className="participant-name">{friendName}</div>
+                        <div className="latest-message">
+                        {session.latestMessage.content}
+                        </div>
                       </div>
                     </div>
                     <div className="session-time">
-                        {latestMessageDate} {latestMessageTime}
+                        <span>{latestMessageDate}</span> <span>{latestMessageTime}</span>
                     </div>
                   </div>
                 </div>
@@ -65,7 +63,7 @@ const ChatSessionsModal = ({ onClose }) => {
             })
           )}
         </div>
-      </div>
+      {/* </div> */}
     </div>
   );
 };

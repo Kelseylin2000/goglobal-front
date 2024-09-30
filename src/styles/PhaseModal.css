@@ -1,3 +1,29 @@
+.phase-options {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+  flex-direction: column;
+}
+
+.phase-button {
+  padding: 10px 20px;
+  border: none;
+  background-color: #0090adb1;
+  color: #fff;
+  cursor: pointer;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+.phase-button.selected {
+  background-color: #01778eb1;
+  color: white;
+}
+
+.phase-button:hover {
+  background-color: #026376b1;
+}
+
 .small-modal {
     position: fixed;
     top: 0;
@@ -26,12 +52,14 @@
   
   .small-modal  .modal-content label {
     display: block;
-    margin: 10px 0 5px;
+    margin: 20px 0 5px;
   }
   
   .small-modal  .modal-content select {
+    border: 1px solid #cccccc;
     width: 100%;
     padding: 8px;
+    margin-top: 5px;
     margin-bottom: 15px;
   }
   

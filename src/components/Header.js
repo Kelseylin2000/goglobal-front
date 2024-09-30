@@ -1,5 +1,4 @@
 import React, { useState, useContext } from 'react';
-
 import { SaveContext } from '../context/SaveContext';
 import { ChatContext } from '../context/ChatContext';
 import { useNavigate } from 'react-router-dom';
@@ -18,21 +17,19 @@ const Header = () => {
   const [isSessionsModalOpen, setIsSessionsModalOpen] = useState(false);
   const [isFriendsModalOpen, setIsFriendsModalOpen] = useState(false);
 
-  const openSessionsModal = () => {
-    loadSessions();
-    setIsSessionsModalOpen(true);
+  const toggleSessionsModal = () => {
+    if (isSessionsModalOpen) {
+      setIsSessionsModalOpen(false);
+    } else {
+      loadSessions();
+      setIsSessionsModalOpen(true);
+      setIsFriendsModalOpen(false);
+    }
   };
 
-  const closeSessionsModal = () => {
+  const toggleFriendsModal = () => {
+    setIsFriendsModalOpen(!isFriendsModalOpen); // 切換好友 modal 狀態
     setIsSessionsModalOpen(false);
-  };
-
-  const openFriendsModal = () => {
-    setIsFriendsModalOpen(true); // 打開好友 modal
-  };
-
-  const closeFriendsModal = () => {
-    setIsFriendsModalOpen(false); // 關閉好友 modal
   };
 
   const goToHome = () => {
@@ -54,23 +51,23 @@ const Header = () => {
       <div className="brand" onClick={goToHome} style={{ cursor: 'pointer' }}>
         <img src="/img/GoGlobal.png" alt="GoGlobal" />
       </div>
-      <div className='header-nav'>
-      <button onClick={goToHome} style={{ cursor: 'pointer' }}>
+      <div className="header-nav">
+        <button onClick={goToHome} style={{ cursor: 'pointer' }}>
           <p>找資訊</p>
         </button>
         <button onClick={goToConnection} style={{ cursor: 'pointer' }}>
           <p>找夥伴</p>
         </button>
       </div>
-      <div className='header-actions'>
+      <div className="header-actions">
         {meUserProfile && <p>你好，{meUserProfile.name}</p>}
         <button className="saved-button" onClick={toggleSavedPostsModal}>
           <img src="/img/b-saved.png" alt="我的收藏" />
         </button>
-        <button className="chat-button" onClick={openSessionsModal}>
+        <button className="chat-button" onClick={toggleSessionsModal}>
           <img src="/img/b-chat.png" alt="聊天" />
         </button>
-        <button className="friends-button" onClick={openFriendsModal}>
+        <button className="friends-button" onClick={toggleFriendsModal}>
           <img src="/img/b-friends.png" alt="好友" />
         </button>
         <button className="user-button" onClick={goToUserProfile}>
@@ -78,7 +75,7 @@ const Header = () => {
         </button>
       </div>
       {isSessionsModalOpen && (
-        <ChatSessionsModal onClose={closeSessionsModal} />
+        <ChatSessionsModal onClose={toggleSessionsModal} />
       )}
       {isSavedModalOpen && (
         <SavedPostsModal
@@ -88,7 +85,7 @@ const Header = () => {
         />
       )}
       {isFriendsModalOpen && (
-        <FriendsModal onClose={closeFriendsModal} />
+        <FriendsModal onClose={toggleFriendsModal} />
       )}
     </header>
   );

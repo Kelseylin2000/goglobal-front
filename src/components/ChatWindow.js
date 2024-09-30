@@ -1,4 +1,3 @@
-
 import React, { useContext, useState, useRef, useEffect } from 'react';
 import '../styles/ChatWindow.css';
 import { ChatContext } from '../context/ChatContext';
@@ -8,6 +7,7 @@ const ChatWindow = () => {
     useContext(ChatContext);
   const [messageContent, setMessageContent] = useState('');
   const messageAreaRef = useRef(null);
+  const userId = localStorage.getItem('userId');
 
   useEffect(() => {
     if (messageAreaRef.current) {
@@ -28,38 +28,47 @@ const ChatWindow = () => {
   return (
     <div className="chat-window">
       <div className="chat-header">
-        <span className="chat-title">與 {currentChat.friendName} 的聊天室</span>
+        <span className="chat-title">{currentChat.friendName}</span>
         <button className="close-chat-button" onClick={closeChatWindow}>
           &times;
         </button>
       </div>
       <div className="message-area" ref={messageAreaRef}>
         {currentChat.messages.map((message, index) => {
-            const isSentByUser = message.senderId == localStorage.getItem('userId');
-            const messageDate = new Date(message.createdAt);
-            const formattedDate = messageDate.toLocaleDateString('zh-TW');
-            const formattedTime = messageDate.toLocaleTimeString('zh-TW', {
+          const isSentByUser = message.senderId == userId;
+          const messageDate = new Date(message.createdAt);
+          const formattedDate = messageDate.toLocaleDateString('zh-TW');
+          const formattedTime = messageDate.toLocaleTimeString('zh-TW', {
             hour: '2-digit',
             minute: '2-digit',
-            });
+          });
 
-            return (
+          return (
             <div
-                key={index}
-                className={`message-block ${
+              key={index}
+              className={`message-block ${
                 isSentByUser ? 'sent-message' : 'received-message'
-                }`}
+              }`}
             >
-                <div className="message-item">
-                <div className="message-sender"><b>{isSentByUser ? '你' : currentChat.friendName}:</b> {message.content}</div>
+              {!isSentByUser && (
+                <img
+                  src={`https://i.pravatar.cc/200?u=${currentChat.friendId}`}
+                  alt={currentChat.friendName}
+                  className="message-friend-avatar"
+                />
+              )}
+              <div className="message-item">
+                <div className="message-sender">
+                  {message.content}
+                </div>
                 <div className="message-time">
-                    {formattedDate} {formattedTime}
+                  {formattedDate} {formattedTime}
                 </div>
-                </div>
+              </div>
             </div>
-            );
+          );
         })}
-        </div>
+      </div>
 
       <form className="message-input-area" onSubmit={handleSendMessage}>
         <input

@@ -36,23 +36,6 @@ const PhaseModal = () => {
   const [exchangeSchools, setExchangeSchools] = useState([]);
   const [interestedSchools, setInterestedSchools] = useState([]);
 
-  console.log("tempPhase");
-  console.log(tempPhase);
-
-  console.log("meUserProfile");
-  console.log(meUserProfile);
-
-  // // 初始化狀態變量
-  // useEffect(() => {
-  //   if (meUserProfile) {
-  //     // 在打開模態框之前，保存當前的用戶數據到臨時狀態變量
-  //     setTempPhase(meUserProfile.phase || '');
-  //     setTempOriginSchoolName(meUserProfile.originSchoolName || '');
-  //     setTempExchangeSchoolName(meUserProfile.exchangeSchoolName || '');
-  //     setTempInterestedSchoolNames(meUserProfile.interestedSchools || []);
-  //   }
-  // }, [meUserProfile]);
-
   useEffect(() => {
     // 獲取所有國家
     const fetchNations = async () => {
@@ -275,19 +258,41 @@ const PhaseModal = () => {
       {isPhaseModalOpen && (
         <div className="small-modal">
           <div className="modal-content">
+          <button className="modal-close" onClick={handleCloseModal}>
+            &times;
+          </button>
             <h2>設定階段與學校</h2>
 
             {/* 選擇階段 */}
             {!tempPhase && (
               <>
                 <label>請選擇您的階段：</label>
-                <select value={tempPhase} onChange={(e) => setTempPhase(e.target.value)}>
-                  <option value="">-- 請選擇階段 --</option>
-                  <option value="APPLYING">申請中</option>
-                  <option value="ADMITTED">已錄取</option>
-                  <option value="STUDYING_ABROAD">出國中</option>
-                  <option value="RETURNED">已返國</option>
-                </select>
+                <div className="phase-options">
+                  <button
+                    className={`phase-button ${tempPhase === 'APPLYING' ? 'selected' : ''}`}
+                    onClick={() => setTempPhase('APPLYING')}
+                  >
+                    申請中
+                  </button>
+                  <button
+                    className={`phase-button ${tempPhase === 'ADMITTED' ? 'selected' : ''}`}
+                    onClick={() => setTempPhase('ADMITTED')}
+                  >
+                    已錄取
+                  </button>
+                  <button
+                    className={`phase-button ${tempPhase === 'STUDYING_ABROAD' ? 'selected' : ''}`}
+                    onClick={() => setTempPhase('STUDYING_ABROAD')}
+                  >
+                    出國中
+                  </button>
+                  <button
+                    className={`phase-button ${tempPhase === 'RETURNED' ? 'selected' : ''}`}
+                    onClick={() => setTempPhase('RETURNED')}
+                  >
+                    已返國
+                  </button>
+                </div>
               </>
             )}
 
@@ -434,7 +439,6 @@ const PhaseModal = () => {
 
                 <div className="submit-button-container">
                   <button className="btn-primary" onClick={handleSavePhaseAndSchools}>保存</button>
-                  <button className="btn-primary" onClick={handleCloseModal}>取消</button>
                 </div>
               </>
             )}
