@@ -3,7 +3,7 @@ import { createNewPost } from '../utils/api';
 import { tagsList } from '../utils/constants';
 import { toast } from 'react-toastify';
 
-const PostForm = ({ token, onPostCreated, showLoading, hideLoading }) => {
+const PostForm = ({ token, onPostCreated, showLoading, hideLoading, onClose }) => {
   const [content, setContent] = useState('');
   const [selectedTags, setSelectedTags] = useState([]);
   const [images, setImages] = useState([]); // 保存File對象的陣列
@@ -60,10 +60,16 @@ const PostForm = ({ token, onPostCreated, showLoading, hideLoading }) => {
       .finally(() => {
         hideLoading();
       });
+
+      onClose();
   };
 
   return (
-    <div className="post-form">
+    <div className="modal">
+      <div className="modal-content">
+        <button className="modal-close" onClick={onClose}>
+          &times;
+        </button>
       <h2>創建新貼文</h2>
       <textarea
         value={content}
@@ -99,6 +105,7 @@ const PostForm = ({ token, onPostCreated, showLoading, hideLoading }) => {
         <button className="btn-primary" onClick={handleSubmit}>
           發佈
         </button>
+      </div>
       </div>
     </div>
   );
