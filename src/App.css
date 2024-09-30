@@ -758,13 +758,13 @@ main {
   flex-direction: column;
 }
 
-.phase-modal-container img,
-.side-div img{
-  margin-top: 10px;
-  width: 50%;
+.phase-modal-container img{
+  margin-top: 15px;
+  width: 45%;
 }
 
 .side-div img{
+  width: 50%;
   margin: 15px auto 0 auto;
 }
 
