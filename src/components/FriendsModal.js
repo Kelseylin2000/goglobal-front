@@ -111,7 +111,10 @@ const { userId: currentUserId } = useContext(AuthContext); // 當前登入者的
               {friends && friends.length > 0 ? (
                 friends.map(friend => renderFriendInfo(friend))
               ) : (
-                <p>目前沒有好友。</p>
+                <div className="no-sessions-message">
+                  <p>目前還沒有好友，</p>
+                  <p>快去找尋夥伴吧！</p>
+              </div>
               )}
             </div>
           )}
@@ -120,7 +123,10 @@ const { userId: currentUserId } = useContext(AuthContext); // 當前登入者的
               {pendingRequests && pendingRequests.length > 0 ? (
                 pendingRequests.map(request => renderFriendInfo(request, true)) // 第二個參數用來標記這是好友請求
               ) : (
-                <p>目前沒有收到好友請求。</p>
+                <div className="no-sessions-message">
+                    <p>目前沒有收到好友請求，</p>
+                    <p>快去找尋夥伴吧！</p>
+                </div>
               )}
             </div>
           )}

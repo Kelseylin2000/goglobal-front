@@ -3,6 +3,7 @@ import { UserContext } from '../context/UserContext';
 import { AuthContext } from '../context/AuthContext';
 import { getAllNations, getSchools } from '../utils/api';
 import { phaseMapping } from '../utils/constants';
+import ReactDOM from 'react-dom';
 
 import '../styles/PhaseModal.css';
 
@@ -216,6 +217,198 @@ const PhaseModal = () => {
     return null;
   }
 
+
+  const renderModal = () => (
+      <div className="small-modal">
+        <div className="modal-content">
+        <button className="modal-close" onClick={handleCloseModal}>
+          &times;
+        </button>
+          <h2>設定階段與學校</h2>
+
+          {/* 選擇階段 */}
+          {!tempPhase && (
+            <>
+              <label>請選擇您的階段：</label>
+              <div className="phase-options">
+                <button
+                  className={`phase-button ${tempPhase === 'APPLYING' ? 'selected' : ''}`}
+                  onClick={() => setTempPhase('APPLYING')}
+                >
+                  申請中
+                </button>
+                <button
+                  className={`phase-button ${tempPhase === 'ADMITTED' ? 'selected' : ''}`}
+                  onClick={() => setTempPhase('ADMITTED')}
+                >
+                  已錄取
+                </button>
+                <button
+                  className={`phase-button ${tempPhase === 'STUDYING_ABROAD' ? 'selected' : ''}`}
+                  onClick={() => setTempPhase('STUDYING_ABROAD')}
+                >
+                  出國中
+                </button>
+                <button
+                  className={`phase-button ${tempPhase === 'RETURNED' ? 'selected' : ''}`}
+                  onClick={() => setTempPhase('RETURNED')}
+                >
+                  已返國
+                </button>
+              </div>
+            </>
+          )}
+
+          {/* 選擇原學校 */}
+          {tempPhase && (
+            <>
+            {meUserProfile.originSchoolName == null && (
+              <>
+              <label>選擇原學校：</label>
+              <select
+                value={tempOriginNationId}
+                onChange={(e) => {
+                  setTempOriginNationId(e.target.value);
+                  fetchOriginSchoolsByNation(e.target.value);
+                }}
+              >
+                <option value="">-- 請選擇國家 --</option>
+                {allNations.map((nation) => (
+                  <option key={nation.nationId} value={nation.nationId}>
+                    {nation.name}
+                  </option>
+                ))}
+              </select>
+
+              <select
+                value={tempOriginSchoolId}
+                onChange={(e) => {
+                  setTempOriginSchoolId(e.target.value);
+                  const selectedSchool = originSchools.find(
+                    (school) => school.schoolId === parseInt(e.target.value)
+                  );
+                  setTempOriginSchoolName(selectedSchool ? selectedSchool.name : '');
+                }}
+              >
+                <option value="">-- 請選擇學校 --</option>
+                {originSchools.map((school) => (
+                  <option key={school.schoolId} value={school.schoolId}>
+                    {school.name}
+                  </option>
+                ))}
+              </select>
+              </>
+            )}
+
+              {/* 根據階段顯示不同的學校選擇 */}
+              {tempPhase === 'APPLYING' && (
+                <>
+                  <label>選擇感興趣或正在申請中的學校（可多選）：</label>
+                  <select
+                    value={tempExchangeNationId}
+                    onChange={(e) => {
+                      setTempExchangeNationId(e.target.value);
+                      fetchInterestedSchoolsByNation(e.target.value);
+                    }}
+                  >
+                    <option value="">-- 請選擇國家 --</option>
+                    {allNations.map((nation) => (
+                      <option key={nation.nationId} value={nation.nationId}>
+                        {nation.name}
+                      </option>
+                    ))}
+                  </select>
+
+                  <select
+                    value=""
+                    onChange={(e) => {
+                      const selectedId = e.target.value;
+                      const selectedSchool = interestedSchools.find(
+                        (school) => school.schoolId === parseInt(selectedId)
+                      );
+                      if (selectedSchool && !tempInterestedSchoolIds.includes(selectedId)) {
+                        setTempInterestedSchoolIds([...tempInterestedSchoolIds, selectedId]);
+                        setTempInterestedSchoolNames([...tempInterestedSchoolNames, selectedSchool.name]);
+                      }
+                    }}
+                  >
+                    <option value="">-- 請選擇學校 --</option>
+                    {interestedSchools.map((school) => (
+                      <option key={school.schoolId} value={school.schoolId}>
+                        {school.name}
+                      </option>
+                    ))}
+                  </select>
+
+                  <div>
+                    {tempInterestedSchoolNames.map((name, index) => (
+                      <span key={index} className="interest-tag">
+                        {name}
+                        <button
+                          onClick={() => {
+                            const newIds = [...tempInterestedSchoolIds];
+                            const newNames = [...tempInterestedSchoolNames];
+                            newIds.splice(index, 1);
+                            newNames.splice(index, 1);
+                            setTempInterestedSchoolIds(newIds);
+                            setTempInterestedSchoolNames(newNames);
+                          }}
+                        >
+                          ×
+                        </button>
+                      </span>
+                    ))}
+                  </div>
+                </>
+              )}
+
+              {(((tempPhase === 'ADMITTED') || (tempPhase === 'STUDYING_ABROAD') || (tempPhase === 'RETURNED')) && ((meUserProfile.exchangeSchoolName == null) || (meUserProfile.phase === 'RETURNED'))) && (
+                <>
+                  <label>選擇目的學校：</label>
+                  <select
+                    value={tempExchangeNationId}
+                    onChange={(e) => {
+                      setTempExchangeNationId(e.target.value);
+                      fetchExchangeSchoolsByNation(e.target.value);
+                    }}
+                  >
+                    <option value="">-- 請選擇國家 --</option>
+                    {allNations.map((nation) => (
+                      <option key={nation.nationId} value={nation.nationId}>
+                        {nation.name}
+                      </option>
+                    ))}
+                  </select>
+
+                  <select
+                    value={tempExchangeSchoolId}
+                    onChange={(e) => {
+                      setTempExchangeSchoolId(e.target.value);
+                      const selectedSchool = exchangeSchools.find(
+                        (school) => school.schoolId === parseInt(e.target.value)
+                      );
+                      setTempExchangeSchoolName(selectedSchool ? selectedSchool.name : '');
+                    }}
+                  >
+                    <option value="">-- 請選擇學校 --</option>
+                    {exchangeSchools.map((school) => (
+                      <option key={school.schoolId} value={school.schoolId}>
+                        {school.name}
+                      </option>
+                    ))}
+                  </select>
+                </>
+              )}
+
+              <div className="submit-button-container">
+                <button className="btn-primary" onClick={handleSavePhaseAndSchools}>保存</button>
+              </div>
+            </>
+          )}
+        </div>
+      </div>
+  );
+
   return (
     <div className="phase-modal-container">
       <div className="phase-info">
@@ -255,196 +448,8 @@ const PhaseModal = () => {
         )}
       </div>
 
-      {isPhaseModalOpen && (
-        <div className="small-modal">
-          <div className="modal-content">
-          <button className="modal-close" onClick={handleCloseModal}>
-            &times;
-          </button>
-            <h2>設定階段與學校</h2>
-
-            {/* 選擇階段 */}
-            {!tempPhase && (
-              <>
-                <label>請選擇您的階段：</label>
-                <div className="phase-options">
-                  <button
-                    className={`phase-button ${tempPhase === 'APPLYING' ? 'selected' : ''}`}
-                    onClick={() => setTempPhase('APPLYING')}
-                  >
-                    申請中
-                  </button>
-                  <button
-                    className={`phase-button ${tempPhase === 'ADMITTED' ? 'selected' : ''}`}
-                    onClick={() => setTempPhase('ADMITTED')}
-                  >
-                    已錄取
-                  </button>
-                  <button
-                    className={`phase-button ${tempPhase === 'STUDYING_ABROAD' ? 'selected' : ''}`}
-                    onClick={() => setTempPhase('STUDYING_ABROAD')}
-                  >
-                    出國中
-                  </button>
-                  <button
-                    className={`phase-button ${tempPhase === 'RETURNED' ? 'selected' : ''}`}
-                    onClick={() => setTempPhase('RETURNED')}
-                  >
-                    已返國
-                  </button>
-                </div>
-              </>
-            )}
-
-            {/* 選擇原學校 */}
-            {tempPhase && (
-              <>
-              {meUserProfile.originSchoolName == null && (
-                <>
-                <label>選擇原學校：</label>
-                <select
-                  value={tempOriginNationId}
-                  onChange={(e) => {
-                    setTempOriginNationId(e.target.value);
-                    fetchOriginSchoolsByNation(e.target.value);
-                  }}
-                >
-                  <option value="">-- 請選擇國家 --</option>
-                  {allNations.map((nation) => (
-                    <option key={nation.nationId} value={nation.nationId}>
-                      {nation.name}
-                    </option>
-                  ))}
-                </select>
-
-                <select
-                  value={tempOriginSchoolId}
-                  onChange={(e) => {
-                    setTempOriginSchoolId(e.target.value);
-                    const selectedSchool = originSchools.find(
-                      (school) => school.schoolId === parseInt(e.target.value)
-                    );
-                    setTempOriginSchoolName(selectedSchool ? selectedSchool.name : '');
-                  }}
-                >
-                  <option value="">-- 請選擇學校 --</option>
-                  {originSchools.map((school) => (
-                    <option key={school.schoolId} value={school.schoolId}>
-                      {school.name}
-                    </option>
-                  ))}
-                </select>
-                </>
-              )}
-
-                {/* 根據階段顯示不同的學校選擇 */}
-                {tempPhase === 'APPLYING' && (
-                  <>
-                    <label>選擇感興趣或正在申請中的學校（可多選）：</label>
-                    <select
-                      value={tempExchangeNationId}
-                      onChange={(e) => {
-                        setTempExchangeNationId(e.target.value);
-                        fetchInterestedSchoolsByNation(e.target.value);
-                      }}
-                    >
-                      <option value="">-- 請選擇國家 --</option>
-                      {allNations.map((nation) => (
-                        <option key={nation.nationId} value={nation.nationId}>
-                          {nation.name}
-                        </option>
-                      ))}
-                    </select>
-
-                    <select
-                      value=""
-                      onChange={(e) => {
-                        const selectedId = e.target.value;
-                        const selectedSchool = interestedSchools.find(
-                          (school) => school.schoolId === parseInt(selectedId)
-                        );
-                        if (selectedSchool && !tempInterestedSchoolIds.includes(selectedId)) {
-                          setTempInterestedSchoolIds([...tempInterestedSchoolIds, selectedId]);
-                          setTempInterestedSchoolNames([...tempInterestedSchoolNames, selectedSchool.name]);
-                        }
-                      }}
-                    >
-                      <option value="">-- 請選擇學校 --</option>
-                      {interestedSchools.map((school) => (
-                        <option key={school.schoolId} value={school.schoolId}>
-                          {school.name}
-                        </option>
-                      ))}
-                    </select>
-
-                    <div>
-                      {tempInterestedSchoolNames.map((name, index) => (
-                        <span key={index} className="interest-tag">
-                          {name}
-                          <button
-                            onClick={() => {
-                              const newIds = [...tempInterestedSchoolIds];
-                              const newNames = [...tempInterestedSchoolNames];
-                              newIds.splice(index, 1);
-                              newNames.splice(index, 1);
-                              setTempInterestedSchoolIds(newIds);
-                              setTempInterestedSchoolNames(newNames);
-                            }}
-                          >
-                            ×
-                          </button>
-                        </span>
-                      ))}
-                    </div>
-                  </>
-                )}
-
-                {(((tempPhase === 'ADMITTED') || (tempPhase === 'STUDYING_ABROAD') || (tempPhase === 'RETURNED')) && ((meUserProfile.exchangeSchoolName == null) || (meUserProfile.phase === 'RETURNED'))) && (
-                  <>
-                    <label>選擇目的學校：</label>
-                    <select
-                      value={tempExchangeNationId}
-                      onChange={(e) => {
-                        setTempExchangeNationId(e.target.value);
-                        fetchExchangeSchoolsByNation(e.target.value);
-                      }}
-                    >
-                      <option value="">-- 請選擇國家 --</option>
-                      {allNations.map((nation) => (
-                        <option key={nation.nationId} value={nation.nationId}>
-                          {nation.name}
-                        </option>
-                      ))}
-                    </select>
-
-                    <select
-                      value={tempExchangeSchoolId}
-                      onChange={(e) => {
-                        setTempExchangeSchoolId(e.target.value);
-                        const selectedSchool = exchangeSchools.find(
-                          (school) => school.schoolId === parseInt(e.target.value)
-                        );
-                        setTempExchangeSchoolName(selectedSchool ? selectedSchool.name : '');
-                      }}
-                    >
-                      <option value="">-- 請選擇學校 --</option>
-                      {exchangeSchools.map((school) => (
-                        <option key={school.schoolId} value={school.schoolId}>
-                          {school.name}
-                        </option>
-                      ))}
-                    </select>
-                  </>
-                )}
-
-                <div className="submit-button-container">
-                  <button className="btn-primary" onClick={handleSavePhaseAndSchools}>保存</button>
-                </div>
-              </>
-            )}
-          </div>
-        </div>
-      )}
+      {isPhaseModalOpen && ReactDOM.createPortal(renderModal(), document.body)}
+      
     </div>
   );
 };

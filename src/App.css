@@ -164,7 +164,6 @@ main {
 }
 
 /* 表單樣式 */
-.post-form,
 .comment-form,
 .modal-content {
   background-color: #fff;
@@ -174,7 +173,6 @@ main {
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-.post-form h2,
 .modal-content h2 {
   margin-top: 0;
   margin-bottom: 15px;
@@ -182,7 +180,6 @@ main {
   color: #1e3d59;
 }
 
-.post-form textarea,
 .comment-form textarea,
 .modal-content textarea
  {
@@ -592,7 +589,7 @@ main {
 .modal-content {
   background-color: #fff;
   margin: 5% auto;
-  padding: 20px;
+  padding: 30px;
   border-radius: 8px;
   width: 50%;
   position: relative;
@@ -799,4 +796,16 @@ main {
   border-left: 1px solid #e0e0e0;
   display: flex;
   flex-direction: column;
+}
+
+.no-sessions-message{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 40%;
+}
+
+.no-sessions-message p{
+  margin: 5px;
+  color: #4f4f4f;
 }

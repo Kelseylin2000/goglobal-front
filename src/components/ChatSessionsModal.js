@@ -11,7 +11,8 @@ const ChatSessionsModal = ({ onClose }) => {
         <div className="session-list">
           {chatSessions.length === 0 ? (
             <div className="no-sessions-message">
-              目前還沒有聊天記錄，快去找尋夥伴聊聊吧！
+              <p>目前還沒有聊天記錄，</p>
+              <p>快去找尋夥伴聊聊吧！</p>
             </div>
           ) : (
             chatSessions.map((session) => {
