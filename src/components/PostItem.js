@@ -90,7 +90,9 @@ const PostItem = ({ post, userId, handleUploadInDetails = null }) => {
         </div>
 
         <div className='post-mini-text'>
-          <p>於 {new Date(post.createdAt).toLocaleString()} 發表文章</p> 
+          <p>
+            於 {new Date(post.createdAt + 'Z').toLocaleDateString()} {new Date(post.createdAt + 'Z').toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} 發表文章
+          </p>
           <p className='dot'>·</p>
           <button
             onClick={(e) => {

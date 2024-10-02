@@ -47,7 +47,8 @@ const SimpleUserProfileInfo = ({ profile }) => {
           <div className="request-actions">
             <button
               className="accept-button"
-              onClick={() => {
+              onClick={(e) => {
+                e.stopPropagation();
                 acceptFriendRequest(currentUserId, userId, profile);
                 updateRelationship('FRIENDS');
               }}
@@ -56,7 +57,8 @@ const SimpleUserProfileInfo = ({ profile }) => {
             </button>
             <button
               className="reject-button"
-              onClick={() => {
+              onClick={(e) => {
+                e.stopPropagation();
                 rejectFriendRequest(profile);
                 updateRelationship('NO_RELATION');
               }}
@@ -70,7 +72,8 @@ const SimpleUserProfileInfo = ({ profile }) => {
         return (
           <button
             className="send-request-button"
-            onClick={() => {
+            onClick={(e) => {
+              e.stopPropagation();
               sendFriendRequest(currentUserId, userId);
               updateRelationship('FRIEND_REQUEST_SENT');
             }}

@@ -36,9 +36,13 @@ const ChatWindow = () => {
       <div className="message-area" ref={messageAreaRef}>
         {currentChat.messages.map((message, index) => {
           const isSentByUser = message.senderId == userId;
-          const messageDate = new Date(message.createdAt);
-          const formattedDate = messageDate.toLocaleDateString('zh-TW');
-          const formattedTime = messageDate.toLocaleTimeString('zh-TW', {
+          let createdAtString = message.createdAt;
+          if (!message.createdAt.endsWith('Z')) {
+              createdAtString += 'Z';
+          }
+          const messageDate = new Date(createdAtString);
+          const formattedDate = messageDate.toLocaleDateString();
+          const formattedTime = messageDate.toLocaleTimeString([], {
             hour: '2-digit',
             minute: '2-digit',
           });

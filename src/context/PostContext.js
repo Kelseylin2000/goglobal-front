@@ -18,9 +18,18 @@ export const PostProvider = ({ children }) => {
   //   loadPosts();
   // }, []);
 
+
   useEffect(() => {
     loadPosts();
   }, [token]);
+
+  // useEffect(() => {
+  //   if(posts){
+  //     console.log("posts:", posts);
+  //     // console.log("posts:", posts[0].createdAt);
+  //   }
+  
+  // }, [posts]);
 
   const loadPosts = () => {
     getRecommendedPosts(token)

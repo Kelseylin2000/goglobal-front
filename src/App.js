@@ -25,7 +25,6 @@ import { UserProvider } from './context/UserContext';
 
 
 const Layout = ({ children }) => {
-  const [userId, setUserId] = useState(localStorage.getItem('userId'));
 
   const location = useLocation();
   const noHeaderRoutes = ['/signin', '/signup'];

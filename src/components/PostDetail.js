@@ -61,10 +61,12 @@ const PostDetail = ({
 
     const formatTimeAgo = (timestamp) => {
         const now = new Date();
-        const diffInMs = now - new Date(timestamp);
+        const diffInMs = now - new Date(timestamp  + 'Z');
         const diffInSeconds = Math.floor(diffInMs / 1000);
       
-        if (diffInSeconds < 60) {
+        if (diffInSeconds <= 0){
+          return '0秒前';
+        }else if (diffInSeconds < 60) {
           return `${diffInSeconds}秒前`;
         } else if (diffInSeconds < 3600) {
           const minutes = Math.floor(diffInSeconds / 60);
@@ -76,7 +78,7 @@ const PostDetail = ({
           const days = Math.floor(diffInSeconds / 86400);
           return `${days}天前`;
         } else {
-          return new Date(timestamp).toLocaleDateString('zh-TW'); // 超過一周顯示日期
+          return new Date(timestamp  + 'Z').toLocaleDateString(); // 超過一周顯示日期
         }
       };
 

@@ -6,6 +6,10 @@ const ChatSessionsModal = ({ onClose }) => {
   const { chatSessions, openChatWindow } = useContext(ChatContext);
   const userId = localStorage.getItem('userId');
 
+  console.log("userId");
+  console.log(userId);
+  console.log(chatSessions);
+
   return (
     <div className="side-modal">
         <div className="session-list">
@@ -17,17 +21,19 @@ const ChatSessionsModal = ({ onClose }) => {
           ) : (
             chatSessions.map((session) => {
               const friendId = session.participants.find((id) => id != userId);
+              console.log("friendId");
+              console.log(friendId);
               const friendName =
                 session.participantsName[
                   session.participants.indexOf(friendId)
                 ];
 
               const latestMessageDate = new Date(
-                session.latestMessage.createdAt
-              ).toLocaleDateString('zh-TW');
+                session.latestMessage.createdAt + 'Z'
+              ).toLocaleDateString();
               const latestMessageTime = new Date(
-                session.latestMessage.createdAt
-              ).toLocaleTimeString('zh-TW', {
+                session.latestMessage.createdAt + 'Z'
+              ).toLocaleTimeString([],{
                 hour: '2-digit',
                 minute: '2-digit',
               });
