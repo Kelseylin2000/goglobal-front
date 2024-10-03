@@ -120,7 +120,16 @@ const SimpleUserProfileInfo = ({ profile }) => {
             <div className="user-interests">
               {mutualFriends.length} 位共同好友
               {mutualFriends.map((mutualFriend, index) => (
-                <span key={index} className="interest-tag">{mutualFriend}</span>
+                  <img
+                    key={index}
+                    src={`https://i.pravatar.cc/200?u=${mutualFriend}`}
+                    alt="Avatar"
+                    className="mutualfriend"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      navigate(`/user/${mutualFriend}`);
+                    }}
+                  />
               ))}
             </div>
           )}

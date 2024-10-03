@@ -113,9 +113,7 @@ const Header = () => {
       const results = await searchPosts(keyword);
       setSearchResults(results.data);
     }
-  }, 300);
-
-
+  }, 200);
 
   const handleSelectPost = (postId) => {
     navigate(`/post/${postId}`);
@@ -124,34 +122,38 @@ const Header = () => {
   const extractSummary = (content, keyword) => {
     const sentences = content.match(/[^，。！？,\.!\?]+[，。！？,\.!\?]+/g) || [content];
   
-    if (sentences.length > 3) {
-      // 查找包含關鍵字的句子
-      const keywordIndex = sentences.findIndex(sentence =>
-        sentence.includes(keyword)
-      );
+    // 查找包含關鍵字的句子
+    const keywordIndex = sentences.findIndex((sentence) =>
+      sentence.includes(keyword)
+    );
   
-      // 如果找到了關鍵字
-      if (keywordIndex !== -1) {
-        const firstSentence = sentences[0];
-        const secondSentence = sentences[1];
-        const lastSentence = sentences[sentences.length - 1];
-  
-        // 如果關鍵字在前兩句或最後一句中，按原樣返回摘要
-        if (keywordIndex === 0 || keywordIndex === 1 || keywordIndex === sentences.length - 1) {
-          return `${firstSentence} ${secondSentence} ... ${lastSentence}`;
-        }
-  
-        // 如果關鍵字在其他地方，返回第一句、關鍵字句子和最後一句
-        return `${firstSentence} ... ${sentences[keywordIndex]} ... ${lastSentence}`;
-      }
+    // 如果未找到關鍵字，返回 null
+    if (keywordIndex === -1) {
+      return null;
     }
   
-    // 如果句子少於三句，或者關鍵字未找到，返回整個內容
-    return content;
-  };
+    // 如果句子數小於或等於 3 且找到關鍵字，返回完整的摘要
+    if (sentences.length <= 3) {
+      return sentences.join(' ');
+    }
+  
+    // 當句子多於 3 並且找到關鍵字時
+    const firstSentence = sentences[0];
+    const secondSentence = sentences[1];
+    const lastSentence = sentences[sentences.length - 1];
+  
+    // 如果關鍵字在前兩句或最後一句，按原樣返回摘要
+    if (keywordIndex === 0 || keywordIndex === 1 || keywordIndex === sentences.length - 1) {
+      return `${firstSentence} ${secondSentence} ... ${lastSentence}`;
+    }
+  
+    // 如果關鍵字在其他句子中，返回第一句、關鍵字句子和最後一句
+    return `${firstSentence} ... ${sentences[keywordIndex]} ... ${lastSentence}`;
+  };  
 
   const highlightMatch = (text, keyword) => {
     if (!keyword) return text;
+    if (!text) return text;
     const regex = new RegExp(`(${keyword})`, 'gi');
     const parts = text.split(regex);
     return parts.map((part, index) =>
@@ -180,18 +182,22 @@ const Header = () => {
             value={searchKeyword}
             onChange={handleSearchChange}
             onKeyDown={handleKeyDown}
-            placeholder="搜尋貼文內容..."
+            placeholder="搜尋貼文..."
           />
           {isDropdownOpen && searchResults.length > 0 && (
             <div className="autocomplete-dropdown" ref={dropdownRef}>
               {searchResults.map((post) => (
+                <>
+                {renderSummaryWithHighlight(post.content, searchKeyword) && (
                 <div
                   key={post.postId}
                   className="autocomplete-item"
                   onClick={() => handleSelectPost(post.postId)}
                 >
-                  <p>{renderSummaryWithHighlight(post.content, searchKeyword)}</p>
+                    <p>{renderSummaryWithHighlight(post.content, searchKeyword)}</p>
                 </div>
+                )}
+                </>
               ))}
             </div>
           )}

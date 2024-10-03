@@ -405,6 +405,9 @@ main {
 .user-interests{
   margin-top: 10px;
   margin-bottom: 10px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 }
 
 .user-interests-main{
@@ -520,12 +523,23 @@ main {
   background-color: #f1f5f9;
 }
 
-.comment .avatar {
+.comment .avatar{
   width: 40px;
   height: 40px;
   border-radius: 50%;
   margin-right: 15px;
   flex-shrink: 0;
+  cursor: pointer;
+}
+
+.mutualfriend {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  margin-left: 15px;
+  flex-shrink: 0;
+  cursor: pointer;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
 }
 
 .comment-content {
@@ -640,12 +654,6 @@ main {
 
 /* user profile */
 
-/* .user-profile-info h2 {
-  font-size: 24px;
-  color: #333;
-  margin-bottom: 10px;
-} */
-
 .user-profile-info p {
   /* font-size: 16px; */
   margin: 5px 0;
@@ -655,7 +663,7 @@ main {
   font-weight: bold;
 }
 
-.user-profile-info img{
+.user-profile-info-img{
   border-radius: 50%;
   width: 100px;
   height: 100px;
@@ -841,7 +849,7 @@ main {
 
 .search-bar input{
   border: none;
-  background-color: #d6e7ea;
+  background-color: #e3eef0;
   padding: 10px;
   padding-left: 20px;
   border-radius: 30px;

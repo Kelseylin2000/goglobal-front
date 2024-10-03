@@ -28,6 +28,13 @@ export const ChatProvider = ({ children }) => {
 
   const connectChat = () => {
 
+    if (stompClient) {
+      console.log('Disconnecting previous WebSocket connection...');
+      stompClient.disconnect(() => {
+        console.log('Disconnected from WebSocket');
+      });
+    }
+
     const socket = new SockJS(`${WS_BASE_URL}?token=${token}`);
     const client = Stomp.over(socket);
 
@@ -75,7 +82,9 @@ export const ChatProvider = ({ children }) => {
   };
 
   const handleIncomingMessage = (message) => {
-
+    let sessionFound = false; // 用來標記是否找到匹配的 session
+  
+    // 更新當前聊天視窗中的消息
     if (
       currentChatRef.current &&
       message.chatId == currentChatRef.current.chatId
@@ -85,17 +94,27 @@ export const ChatProvider = ({ children }) => {
         messages: [...prevChat.messages, message],
       }));
     }
+  
+    // 更新會話列表中的最新消息
     setChatSessions((prevSessions) =>
-      prevSessions.map((session) =>
-        session.chatId == message.chatId
-          ? {
-              ...session,
-              latestMessage: message,
-            }
-          : session
-      )
+      prevSessions.map((session) => {
+        if (session.chatId == message.chatId) {
+          sessionFound = true; // 如果找到匹配的 session，設置為 true
+          return {
+            ...session,
+            latestMessage: message,
+          };
+        }
+        return session;
+      })
     );
+  
+    // 如果沒有找到匹配的 session，重新加載會話列表
+    if (!sessionFound) {
+      loadSessions();
+    }
   };
+  
 
   const openChatWindow = async (chatId, friendId, friendName = null) => {
     try {

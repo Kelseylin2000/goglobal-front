@@ -4,13 +4,14 @@ import { ChatContext } from '../context/ChatContext';
 import { AuthContext } from '../context/AuthContext';
 import { UserContext } from '../context/UserContext';
 import { phaseMapping } from '../utils/constants';
+import { useNavigate } from 'react-router-dom';
 
 const UserProfileInfo = ({ profile, isCurrentUser }) => {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false); // 控制編輯模態框狀態
   const { acceptFriendRequest, sendFriendRequest, rejectFriendRequest } = useContext(ChatContext);
   const { userId: currentUserId } = useContext(AuthContext); // 當前登入者的 userId
   const { setOtherUserProfile } = useContext(UserContext); // 從 UserContext 獲取當前使用者和其他使用者資料
-
+  const navigate = useNavigate();
 
   const {
     userId,
@@ -98,6 +99,7 @@ const UserProfileInfo = ({ profile, isCurrentUser }) => {
       <img 
         src={userId ? `https://i.pravatar.cc/200?u=${userId}` : '/img/profile.png'}
         alt="Avatar"
+        className="user-profile-info-img"
         />
       <h2>{name || 'User'}</h2>
 
@@ -133,7 +135,16 @@ const UserProfileInfo = ({ profile, isCurrentUser }) => {
             <div className="user-interests">
               {mutualFriends.length} 位共同好友
               {mutualFriends.map((mutualFriend, index) => (
-                <span key={index} className="interest-tag">{mutualFriend}</span>
+                  <img
+                  key={index}
+                  src={`https://i.pravatar.cc/200?u=${mutualFriend}`}
+                  alt="Avatar"
+                  className="mutualfriend"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    navigate(`/user/${mutualFriend}`);
+                  }}
+                />
               ))}
             </div>
           )}

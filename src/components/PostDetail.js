@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { addComment, deleteComment } from '../utils/api';
 import PostItem from './PostItem';
 import { toast } from 'react-toastify';
@@ -12,7 +13,8 @@ const PostDetail = ({
     const token = localStorage.getItem('accessToken');
     const [commentContent, setCommentContent] = useState('');
     const [comments, setComments] = useState(post.comments || []);
-  
+    const navigate = useNavigate();
+
     useEffect(() => {
         setComments(post.comments || []);
       }, [post.comments]);
@@ -97,9 +99,13 @@ const PostDetail = ({
             post.comments.map((comment) => (
               <div className="comment" key={comment.commentId}>
                 <img
-                  src={`https://i.pravatar.cc/200?u=${comment.userId}`} // 添加評論者頭像
+                  src={`https://i.pravatar.cc/200?u=${comment.userId}`}
                   alt="Avatar"
                   className="avatar"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    navigate(`/user/${comment.userId}`);
+                  }}
                 />
                 <div className="comment-content">
                 <p className="comment-author">
