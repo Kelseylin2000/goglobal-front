@@ -14,7 +14,6 @@ const PostDetail = ({
     const [comments, setComments] = useState(post.comments || []);
   
     useEffect(() => {
-        console.log('post.comments 更新:', post.comments);
         setComments(post.comments || []);
       }, [post.comments]);
 
@@ -123,20 +122,18 @@ const PostDetail = ({
           )}
         </div>
         <div className="comment-form">
-          <textarea
+          <input
+            type="text"
             value={commentContent}
             onChange={(e) => setCommentContent(e.target.value)}
             placeholder="寫下你的想法..."
-          ></textarea>
+          ></input>
           <div className="submit-button-container">
             <button className="btn-primary" onClick={handleAddComment}>
               留言
             </button>
           </div>
         </div>
-        {/* <a href="#" className="navigate-back" onClick={navigateBack}>
-          返回貼文列表
-        </a> */}
       </div>
     </>
   );

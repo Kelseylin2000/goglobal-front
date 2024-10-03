@@ -72,6 +72,12 @@ header {
   z-index: 1000; /* 讓 header 置於其他內容之上 */
 }
 
+.header-left{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
 header .brand {
   display: flex;
   align-items: center;
@@ -173,6 +179,11 @@ main {
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
+.comment-form{
+  display: flex;
+  flex-direction: row;
+}
+
 .modal-content h2 {
   margin-top: 0;
   margin-bottom: 15px;
@@ -180,7 +191,6 @@ main {
   color: #1e3d59;
 }
 
-.comment-form textarea,
 .modal-content textarea
  {
   width: 100%;
@@ -191,6 +201,17 @@ main {
   border-radius: 5px;
   border: 1px solid #ccc;
   font-size: 16px;
+}
+
+.comment-form input{
+  width: 85%;
+  height: 42px;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+  margin-right: 20px;
+  margin-left: 10px;
 }
 
 .modal-content input{
@@ -808,4 +829,48 @@ main {
 .no-sessions-message p{
   margin: 5px;
   color: #4f4f4f;
+}
+
+
+
+.search-bar {
+  position: relative;
+  margin-left: 20px;
+  margin-right: 10px;
+}
+
+.search-bar input{
+  border: none;
+  background-color: #d6e7ea;
+  padding: 10px;
+  padding-left: 20px;
+  border-radius: 30px;
+  width: 300px;
+}
+
+.autocomplete-dropdown {
+  position: absolute;
+  background-color: white;
+  border: 1px solid #ccc;
+  width: 100%;
+  z-index: 1000;
+  max-height: 500px;
+  overflow-y: auto;
+  border-radius: 20px;
+}
+
+.autocomplete-item {
+  font-size: 14px;
+  padding: 20px;
+  cursor: pointer;
+  border-bottom: 1px rgb(209, 209, 209) solid;
+}
+
+.autocomplete-item:hover {
+  background-color: #f0f0f0;
+}
+
+.highlighted {
+  color: #0098b6;
+  font-weight: bold;
 }

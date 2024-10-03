@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { UserContext } from '../context/UserContext';
 import { AuthContext } from '../context/AuthContext';
+import { PostContext } from '../context/PostContext';
 import { getAllNations, getSchools } from '../utils/api';
 import { phaseMapping } from '../utils/constants';
 import ReactDOM from 'react-dom';
@@ -18,6 +19,7 @@ const PhaseModal = () => {
   } = useContext(UserContext);
 
   const { token } = useContext(AuthContext);
+  const { loadPosts } = useContext(PostContext);
 
   const [isPhaseModalOpen, setIsPhaseModalOpen] = useState(false);
 
@@ -169,6 +171,7 @@ const PhaseModal = () => {
       }
 
       setIsPhaseModalOpen(false);
+      loadPosts();
     } catch (error) {
       console.error('保存階段和學校時出錯', error);
     }

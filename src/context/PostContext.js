@@ -14,22 +14,10 @@ export const PostProvider = ({ children }) => {
   const {token} = useContext(AuthContext);
   const [posts, setPosts] = useState([]);
 
-  // useEffect(() => {
-  //   loadPosts();
-  // }, []);
-
 
   useEffect(() => {
     loadPosts();
   }, [token]);
-
-  // useEffect(() => {
-  //   if(posts){
-  //     console.log("posts:", posts);
-  //     // console.log("posts:", posts[0].createdAt);
-  //   }
-  
-  // }, [posts]);
 
   const loadPosts = () => {
     getRecommendedPosts(token)

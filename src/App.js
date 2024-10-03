@@ -9,7 +9,7 @@ import SignInPage from './pages/SignInPage';
 import SignUpPage from './pages/SignUpPage';
 import UserProfilePage from './pages/UserProfilePage';
 import FindPartnerPage from './pages/FindPartnerPage';
-
+import SearchResultPage from './pages/SearchResultPage';
 
 import PrivateRoute from './components/PrivateRoute';
 import Header from './components/Header';
@@ -88,6 +88,7 @@ return (
                   <Route path="/signin" element={<SignInPage />} />
                   <Route path="/signup" element={<SignUpPage />} />
                   <Route path="/user/:userId" element={<UserProfilePage />} />
+                  <Route path="/search" element={<SearchResultPage />} />
                 </Routes>
               </Layout>
             </Router>

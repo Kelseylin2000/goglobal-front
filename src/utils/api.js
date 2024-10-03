@@ -99,6 +99,10 @@ export const getUserPosts = (userId, token) =>
     headers: headers(token),
   }).then((res) => res.json());
 
+
+export const searchPosts = (keyword) =>
+  fetch(`${API_POST_URL}?keyword=${keyword}`).then((res) => res.json());
+
 // chat
   export const getChatSessions = (token) =>
     fetch(`${API_CHAT_URL}/sessions`, {

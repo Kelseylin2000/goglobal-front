@@ -7,6 +7,7 @@ export const AuthProvider = ({ children }) => {
   const [userId, setUserId] = useState(localStorage.getItem('userId'));
 
   useEffect(() => {
+
     const handleStorageChange = () => {
       setToken(localStorage.getItem('accessToken'));
       setUserId(localStorage.getItem('userId'));

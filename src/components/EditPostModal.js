@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { editPost } from '../utils/api';  // 確保這個 API 存在
 import { tagsList } from '../utils/constants';  // 確保有導入 tagsList 常量
 import { toast } from 'react-toastify';
