@@ -79,7 +79,6 @@ export const UserProvider = ({ children }) => {
         interestedSchools: schoolNames,
       }));
       fetchSameSchoolUserProfiles();
-      toast.success('興趣學校更新成功');
     } catch (error) {
       console.error('更新興趣學校時出錯:', error);
       toast.error('興趣學校更新失敗，請稍後再試');
@@ -136,7 +135,6 @@ export const UserProvider = ({ children }) => {
         exchangeSchoolName: schoolName,
       }));
       fetchSameSchoolUserProfiles();
-      toast.success('目的學校更新成功');
     } catch (error) {
       console.error('更新目的學校失敗:', error);
       toast.error('更新目的學校失敗，請稍後再試');
@@ -150,7 +148,6 @@ export const UserProvider = ({ children }) => {
         ...prevProfile,
         originSchoolName: schoolName,
       }));
-      toast.success('原學校更新成功');
     } catch (error) {
       console.error('更新原學校失敗:', error);
       toast.error('更新原學校失敗，請稍後再試');
