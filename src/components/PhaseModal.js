@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import { UserContext } from '../context/UserContext';
 import { AuthContext } from '../context/AuthContext';
 import { PostContext } from '../context/PostContext';
-import { getAllNations, getSchools } from '../utils/api';
+import { getAllNations, getSchools} from '../utils/api';
 import { phaseMapping } from '../utils/constants';
 import ReactDOM from 'react-dom';
 
@@ -16,6 +16,7 @@ const PhaseModal = () => {
     handleUpdateUserPhase,
     handleUpdateUserExchangeSchool,
     handleUpdateUserOriginSchool,
+    handleDeleteUserExchangeSchool
   } = useContext(UserContext);
 
   const { token } = useContext(AuthContext);
@@ -211,6 +212,7 @@ const PhaseModal = () => {
         setTempInterestedSchoolIds([]);
         setTempInterestedSchoolNames([]);
         setIsPhaseModalOpen(true);
+        handleDeleteUserExchangeSchool();
       }
     }
   };

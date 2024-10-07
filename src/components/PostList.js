@@ -6,9 +6,11 @@ const PostList = ({
   userId,
 }) => {
 
+  console.log(posts);
+
   return (
     <div id="postList">
-      {posts && (posts.map((post) => (
+      {posts && posts.length > 0 && (posts.map((post) => (
         <PostItem
           key={post.postId}
           post={post}

@@ -8,7 +8,8 @@ import {
   deleteAllInterestedSchools,
   updateUserPhase,
   updateUserExchangeSchool,
-  updateUserOriginSchool
+  updateUserOriginSchool,
+  deleteUserExchangeSchool
 } from '../utils/api';
 import { AuthContext } from './AuthContext';
 import { toast } from 'react-toastify';
@@ -99,6 +100,20 @@ export const UserProvider = ({ children }) => {
     }
   };
 
+  const handleDeleteUserExchangeSchool = async () => {
+    try {
+      await deleteUserExchangeSchool(token);
+      setMeUserProfile((prevProfile) => ({
+        ...prevProfile,
+        exchangeSchoolName: '',
+      }));
+      fetchSameSchoolUserProfiles();
+    } catch (error) {
+      console.error('刪除目的學校失敗:', error);
+      toast.error('刪除目的學校失敗，請稍後再試');
+    }
+  };
+
   const handleUpdateUserPhase = async (phase) => {
     try {
       await updateUserPhase(token, phase);
@@ -157,7 +172,8 @@ export const UserProvider = ({ children }) => {
         handleDeleteAllInterestedSchools,
         handleUpdateUserPhase,
         handleUpdateUserExchangeSchool,
-        handleUpdateUserOriginSchool
+        handleUpdateUserOriginSchool,
+        handleDeleteUserExchangeSchool
       }}
     >
       {children}

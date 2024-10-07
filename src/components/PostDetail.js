@@ -1,19 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { addComment, deleteComment } from '../utils/api';
+import { addComment, deleteComment, recordPostInteraction } from '../utils/api';
 import PostItem from './PostItem';
 import { toast } from 'react-toastify';
 
 const PostDetail = ({
   post,
   userId,
-  navigateBack,
   loadPostDetail
 }) => {
     const token = localStorage.getItem('accessToken');
     const [commentContent, setCommentContent] = useState('');
     const [comments, setComments] = useState(post.comments || []);
     const navigate = useNavigate();
+
+    useEffect(() => {
+      recordPostInteraction(post.postId, token);
+      console.log("interaction");
+    }, [post]);
 
     useEffect(() => {
         setComments(post.comments || []);

@@ -60,12 +60,6 @@ export const ChatProvider = ({ children }) => {
         handleFriendAccept(receivedAccept);
         console.log('Friend request accepted:', receivedAccept);
     });
-
-    // client.subscribe('/user/queue/friend-reject', (message) => {
-    //     const receivedReject = JSON.parse(message.body);
-    //     handleFriendReject(receivedReject);
-    //     console.log('Friend request rejected:', receivedReject);
-    // });
   
     });
 

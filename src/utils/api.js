@@ -51,6 +51,14 @@ export const createNewPost = (formData, token) =>
     body: formData,
   }).then((res) => res.json());
 
+export const recordPostInteraction = (postId, token) =>
+  fetch(`${API_POST_URL}/${postId}/interactions`, {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${token}`,
+    }
+  }).then((res) => res.json());
+
 export const editPost = (postId, formData, token) =>
   fetch(`${API_POST_URL}/${postId}`, {
     method: 'PUT',
@@ -182,6 +190,15 @@ export const updateUserExchangeSchool = (token, schoolId) => {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify(schoolId),
+  }).then((res) => res.json());
+};
+
+export const deleteUserExchangeSchool = (token) => {
+  return fetch(`${API_USER_URL}/me/exchange-school`, {
+    method: 'DELETE',
+    headers: {
+      ...headers(token),
+    },
   }).then((res) => res.json());
 };
 
