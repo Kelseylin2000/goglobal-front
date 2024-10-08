@@ -1,9 +1,13 @@
 import React, { createContext, useState, useEffect, useRef, useContext } from 'react';
 import SockJS from 'sockjs-client';
 import { Stomp } from '@stomp/stompjs';
+import { toast } from 'react-toastify';
+
 import { getChatSessions, getChatHistory, getPendingFriendRequests, getUserFriends, rejectFriendRequestApi} from '../utils/api';
 import { WS_BASE_URL } from '../utils/constants';
 import { AuthContext } from '../context/AuthContext';
+import { UserContext } from '../context/UserContext';
+
 
 export const ChatContext = createContext();
 
@@ -11,16 +15,24 @@ export const ChatProvider = ({ children }) => {
   const [stompClient, setStompClient] = useState(null);
   const [chatSessions, setChatSessions] = useState([]);
   const [currentChat, setCurrentChat] = useState(null);
+
   const currentChatRef = useRef(currentChat); // 新增的 ref
+  const chatSessionsRef = useRef(chatSessions);
+
   const [userNameCache, setUserNameCache] = useState({});
   const [isChatWindowOpen, setIsChatWindowOpen] = useState(false);
   const {token, userId} = useContext(AuthContext);
+  const {setSameSchoolUserProfiles} = useContext(UserContext);
 
   // 更新 currentChatRef
   useEffect(() => {
     currentChatRef.current = currentChat;
   }, [currentChat]);
 
+  useEffect(() => {
+    chatSessionsRef.current = chatSessions;
+  }, [chatSessions]);
+  
   useEffect(() => {
     connectChat();
     loadSessions();
@@ -75,6 +87,8 @@ export const ChatProvider = ({ children }) => {
     }
   };
 
+
+
   const handleIncomingMessage = (message) => {
     let sessionFound = false; // 用來標記是否找到匹配的 session
   
@@ -107,6 +121,23 @@ export const ChatProvider = ({ children }) => {
     if (!sessionFound) {
       loadSessions();
     }
+
+    // 顯示通知並且在點擊通知時打開對應的聊天視窗
+    toast(    
+      <div style={{ display: 'flex', alignItems: 'center' }}>
+        <img
+          src={`https://i.pravatar.cc/200?u=${message.senderId}`}
+          alt={message.sender}
+          className='notify-img'
+        />
+          <p>{message.content}</p>
+      </div>, {
+      onClick: () => {
+        openChatWindow(message.chatId, message.senderId);
+        toast.dismiss();
+      },
+      autoClose: 5000, // 自動關閉時間
+    });
   };
   
 
@@ -115,8 +146,9 @@ export const ChatProvider = ({ children }) => {
       // 嘗試獲取聊天歷史記錄
       const chatHistory = await getChatHistory(token, chatId);
       const messages = chatHistory.data.reverse();
-      const friendName = getFriendName(friendId);
-  
+      if (!friendName) {
+        friendName = getFriendName(friendId);
+      }  
       // 設置當前聊天
       setCurrentChat({
         chatId,
@@ -143,7 +175,7 @@ export const ChatProvider = ({ children }) => {
   const getFriendName = (friendId) => {
     let friendName = userNameCache[friendId];
     if (!friendName) {
-      const session = chatSessions.find((s) =>
+      const session = chatSessionsRef.current.find((s) =>
         s.participants.includes(friendId)
       );
       if (session) {
@@ -151,11 +183,11 @@ export const ChatProvider = ({ children }) => {
         friendName = session.participantsName[index];
         setUserNameCache((prev) => ({ ...prev, [friendId]: friendName }));
       } else {
-        friendName = '未知用户';
+        friendName = '未知用戶';
       }
     }
     return friendName;
-  };
+  };  
 
   const closeChatWindow = () => {
     setIsChatWindowOpen(false);
@@ -173,21 +205,32 @@ export const ChatProvider = ({ children }) => {
         createdAt: new Date().toISOString()
       };
       stompClient.send('/app/chat.sendMessage', {}, JSON.stringify(message));
-      // 本地更新消息列表
+
       setCurrentChat((prevChat) => ({
         ...prevChat,
         messages: [...prevChat.messages, message],
       }));
-      setChatSessions((prevSessions) =>
-        prevSessions.map((session) =>
-          session.chatId == message.chatId
-            ? {
-                ...session,
-                latestMessage: message,
-              }
-            : session
-        )
-      );
+
+      let sessionFound = false;
+
+      setChatSessions((prevSessions) => {
+        const updatedSessions = prevSessions.map((session) => {
+          if (session.chatId == message.chatId) {
+            sessionFound = true;
+            return {
+              ...session,
+              latestMessage: message,
+            };
+          }
+          return session;
+        });
+  
+        if (!sessionFound) {
+          loadSessions();
+        }
+  
+        return updatedSessions;
+      });
     }
   };
 
@@ -220,6 +263,14 @@ export const ChatProvider = ({ children }) => {
     }
   };
 
+  const updateRelationship = (userId, newRelationship) => {
+    setSameSchoolUserProfiles((prevProfiles) =>
+      prevProfiles.map((p) =>
+        p.userId === userId ? { ...p, relationship: newRelationship } : p
+      )
+    );
+  };
+
   // 接受好友請求
     const acceptFriendRequest = (userId, targetUserId, newFriendInfo) => {
       if (stompClient) {
@@ -229,6 +280,8 @@ export const ChatProvider = ({ children }) => {
 
       setFriends((prevFriends) => [...prevFriends, newFriendInfo]);
       setPendingRequests((prevRequests) => prevRequests.filter(req => req.userId !== newFriendInfo.userId));
+
+      updateRelationship(targetUserId, 'FRIENDS');
     };
 
     // 送出好友請求
@@ -239,6 +292,7 @@ export const ChatProvider = ({ children }) => {
 
           console.log(request);
       }
+      updateRelationship(targetUserId, 'FRIEND_REQUEST_SENT');
     };
 
   // 拒絕好友請求
@@ -246,6 +300,7 @@ export const ChatProvider = ({ children }) => {
     try {
       await rejectFriendRequestApi(token, userId, request.userId);
       setPendingRequests((prevRequests) => prevRequests.filter(req => req.userId !== request.userId));
+      updateRelationship(request.userId, 'NO_RELATION');
     } catch (error) {
       console.error('Error rejecting the friend request:', error);
     }
@@ -254,26 +309,44 @@ export const ChatProvider = ({ children }) => {
     // 處理收到的好友請求
     const handleIncomingFriendRequest = (request) => {
         setPendingRequests((prevRequests) => [...prevRequests, request]);
+        updateRelationship(request.userId, 'FRIEND_REQUEST_RECEIVED');
+
+        toast(    
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <img
+              src={`https://i.pravatar.cc/200?u=${request.userId}`}
+              alt={request.name}
+              className='notify-img'
+            />
+              <p>{request.name} 向你傳送了交友邀請</p>
+          </div>, {
+          onClick: () => {
+            toast.dismiss();
+          },
+          autoClose: 5000,
+        });
     };
 
     // 處理好友請求接受
     const handleFriendAccept = (friendInfo) => {
         setFriends((prevFriends) => [...prevFriends, friendInfo]);
-        // setPendingRequests((prevRequests) => prevRequests.filter(req => req.userId !== friendInfo.userId));
+        updateRelationship(friendInfo.userId, 'FRIENDS');
+
+        toast(    
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <img
+              src={`https://i.pravatar.cc/200?u=${friendInfo.userId}`}
+              alt={friendInfo.name}
+              className='notify-img'
+            />
+              <p>{friendInfo.name} 接受你的交友邀請</p>
+          </div>, {
+          onClick: () => {
+            toast.dismiss();
+          },
+          autoClose: 5000,
+        });
     };
-
-    // const rejectFriendRequest = (userId, targetUserId) => {
-    //     if (stompClient) {
-    //         const request = { userId, targetUserId };
-    //         stompClient.send('/app/friend.rejectRequest', {}, JSON.stringify(request));
-    //     }
-    // };
-
-    // 處理好友請求拒絕
-    // const handleFriendReject = (request) => {
-    //     setPendingRequests((prevRequests) => prevRequests.filter(req => req.targetUserId !== request.userId));
-    // };
-    
 
   return (
     <ChatContext.Provider

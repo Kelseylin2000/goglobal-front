@@ -105,7 +105,7 @@ const PostItem = ({ post, userId, handleUploadInDetails = null }) => {
         </div>
 
         {/* 顯示翻譯內容或原內容 */}
-        <div className="post-content">
+        <div className="post-content" style={{ whiteSpace: 'pre-wrap' }}>
           {showOriginal ? post.content : translatedContent}
         </div>
 

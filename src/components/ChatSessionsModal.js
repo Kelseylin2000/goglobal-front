@@ -20,16 +20,18 @@ const ChatSessionsModal = ({ onClose }) => {
                 session.participantsName[
                   session.participants.indexOf(friendId)
                 ];
+              
+                let createdAt = session.latestMessage.createdAt;
 
-              const latestMessageDate = new Date(
-                session.latestMessage.createdAt + 'Z'
-              ).toLocaleDateString();
-              const latestMessageTime = new Date(
-                session.latestMessage.createdAt + 'Z'
-              ).toLocaleTimeString([],{
-                hour: '2-digit',
-                minute: '2-digit',
-              });
+                if (!createdAt.endsWith('Z')) {
+                  createdAt += 'Z';
+                }
+
+                const latestMessageDate = new Date(createdAt).toLocaleDateString();
+                const latestMessageTime = new Date(createdAt).toLocaleTimeString([], {
+                  hour: '2-digit',
+                  minute: '2-digit',
+                });
 
               return (
                 <div

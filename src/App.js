@@ -53,10 +53,10 @@ return (
           <ChatProvider>
             <Router>
               <ToastContainer 
-                position="top-center"
+                // position="top-center"
                 hideProgressBar={true}
-                autoClose={1800}
-                className="custom-toast-container"
+                autoClose={1000}
+                // className="custom-toast-container"
               />
               <Layout>
                 <Routes>

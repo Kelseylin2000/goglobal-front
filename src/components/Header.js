@@ -170,6 +170,14 @@ const Header = () => {
     return highlightMatch(summary, keyword);
   };
 
+  const handleLogout = () => {
+    const confirmLogout = window.confirm('你確定要登出嗎？');
+    if (confirmLogout) {
+      localStorage.removeItem('accessToken');
+      navigate('/signin');
+    }
+  };
+
   return (
     <header>
       <div className="header-left">
@@ -222,6 +230,9 @@ const Header = () => {
           </button>
           <button className="friends-button" onClick={toggleFriendsModal}>
             <img src="/img/b-friends.png" alt="好友" />
+          </button>
+          <button className="logout-button" onClick={handleLogout}>
+            <img src="/img/logout.png" alt="登出" />
           </button>
         </div>
         {meUserProfile && (

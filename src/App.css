@@ -26,34 +26,45 @@ a {
   right: 20px !important; 
 } */
 
+/*
 .custom-toast-container {
   position: fixed;
-  top: 7%; /* 控制垂直位置，這裡是畫面中上 */
-  left: 50%;
-  transform: translateX(-50%); /* 使其水平居中 */
-  z-index: 9999; /* 確保 Toast 在最上層顯示 */
+  top: 110px;
+  right: 20px;
+  transform: translateX(-50%); 
+  z-index: 9999;
 }
+*/
 
 .Toastify__toast {
   color: #282828;
+  box-shadow: 0 4px 4px rgba(29, 29, 29, 0.5); /* 調整陰影的強度 */
+  background-color: #f2fdff;
 }
 
 .Toastify__toast--success {
-  background-color: #f4fff7;
+  background-color: #e1ffe9;
 }
 
 .Toastify__toast--error {
-  background-color: #fff2f4;
+  background-color: #fde5e8;
 }
 
 /* .Toastify__toast--warning {
   background-color: hsl(45, 100%, 83%);
 }
+*/ 
 
-.Toastify__toast--info {
-  background-color: #c3e9ef; 
-} */ 
+/* .Toastify__toast--info {
+  background-color: #cce5e9; 
+}  */
 
+.notify-img{
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  margin: 0 10px;
+}
 
 /* Header 樣式 */
 header {
