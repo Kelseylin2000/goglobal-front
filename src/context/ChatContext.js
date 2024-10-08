@@ -323,7 +323,7 @@ export const ChatProvider = ({ children }) => {
           onClick: () => {
             toast.dismiss();
           },
-          autoClose: 5000,
+          autoClose: 2500,
         });
     };
 
@@ -344,7 +344,7 @@ export const ChatProvider = ({ children }) => {
           onClick: () => {
             toast.dismiss();
           },
-          autoClose: 5000,
+          autoClose: 2500,
         });
     };
 
