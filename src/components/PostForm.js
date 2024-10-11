@@ -1,9 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { createNewPost } from '../utils/api';
 import { tagsList } from '../utils/constants';
 import { toast } from 'react-toastify';
+import { PostContext } from '../context/PostContext';
 
-const PostForm = ({ token, onPostCreated, showLoading, hideLoading, onClose }) => {
+const PostForm = ({ token, showLoading, hideLoading, onClose }) => {
+  const { handlePostCreated } = useContext(PostContext);
+
   const [content, setContent] = useState('');
   const [selectedTags, setSelectedTags] = useState([]);
   const [images, setImages] = useState([]); // 保存File對象的陣列
@@ -52,7 +55,7 @@ const PostForm = ({ token, onPostCreated, showLoading, hideLoading, onClose }) =
         setContent(''); // 清空貼文內容
         setSelectedTags([]); // 清空標籤選擇
         setImages([]); // 清空已選圖片
-        onPostCreated(response.data); // 如果需要，通知父組件
+        handlePostCreated(response.data); // 如果需要，通知父組件
       })
       .catch((error) => {
         console.error('後端錯誤:', error.message);

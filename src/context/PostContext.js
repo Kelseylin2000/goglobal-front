@@ -3,7 +3,6 @@ import {
   getUserPosts,
   getRecommendedPosts,
   deletePost as apiDeletePost,
-  editPost as apiEditPost,
   getPostDetail as apiGetPostDetail
 } from '../utils/api';
 import { AuthContext } from '../context/AuthContext';
@@ -52,6 +51,7 @@ export const PostProvider = ({ children }) => {
         .then(() => {
           toast.success('貼文已刪除！');
           setPosts((prevPosts) => prevPosts.filter((post) => post.postId !== postId));
+          setMePosts((prevPosts) => prevPosts.filter((post) => post.postId !== postId));
         })
         .catch((error) => {
           console.error('刪除貼文時出錯:', error.message);
@@ -65,6 +65,16 @@ export const PostProvider = ({ children }) => {
         post.postId === updatedPost.postId ? updatedPost : post
       )
     );
+    setMePosts((prevPosts) =>
+      prevPosts.map((post) =>
+        post.postId === updatedPost.postId ? updatedPost : post
+      )
+    );
+  };
+
+  const handlePostCreated = (newPost) => {
+    setPosts([newPost, ...posts]);
+    setMePosts([newPost, ...mePosts]);
   };
 
   const getPostDetail = (postId) => {
@@ -81,7 +91,8 @@ export const PostProvider = ({ children }) => {
         fetchUserPostsData,
         setPosts, 
         handleDelete, 
-        handlePostUpdated, 
+        handlePostUpdated,
+        handlePostCreated,
         loadPosts, 
         getPostDetail 
       }}

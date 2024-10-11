@@ -9,7 +9,7 @@ import { AuthContext } from '../context/AuthContext';
 
 const HomePage = () => {
   const { token, userId } = useContext(AuthContext);
-  const { posts, setPosts } = useContext(PostContext);
+  const { posts } = useContext(PostContext);
 
   const [loading, setLoading] = useState(false);
   const [isPostFormVisible, setIsPostFormVisible] = useState(false); // 控制 PostForm 顯示狀態
@@ -17,9 +17,9 @@ const HomePage = () => {
   const showLoading = () => setLoading(true);
   const hideLoading = () => setLoading(false);
 
-  const handlePostCreated = (newPost) => {
-    setPosts([newPost, ...posts]); // 將新貼文推到最上面
-  };
+  // const handlePostCreated = (newPost) => {
+  //   setPosts([newPost, ...posts]); // 將新貼文推到最上面
+  // };
 
   const togglePostForm = () => {
     setIsPostFormVisible(!isPostFormVisible); // 切換 PostForm 的顯示狀態
@@ -40,7 +40,6 @@ const HomePage = () => {
         {isPostFormVisible && (
           <PostForm
             token={token}
-            onPostCreated={handlePostCreated}
             showLoading={showLoading}
             hideLoading={hideLoading}
             onClose={togglePostForm}
