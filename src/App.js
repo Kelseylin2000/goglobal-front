@@ -46,12 +46,12 @@ const Layout = ({ children }) => {
 
 function App() {
 return (
-  <AuthProvider>
-    <UserProvider>
-      <SaveProvider>
-        <PostProvider>
-          <ChatProvider>
-            <Router>
+  <Router>
+    <AuthProvider>
+      <UserProvider>
+        <SaveProvider>
+          <PostProvider>
+            <ChatProvider>
               <ToastContainer 
                 // position="top-center"
                 hideProgressBar={true}
@@ -91,12 +91,12 @@ return (
                   <Route path="/search" element={<SearchResultPage />} />
                 </Routes>
               </Layout>
-            </Router>
-          </ChatProvider>
-        </PostProvider>
-      </SaveProvider>
-    </UserProvider>
-  </AuthProvider>
+            </ChatProvider>
+          </PostProvider>
+        </SaveProvider>
+      </UserProvider>
+    </AuthProvider>
+  </Router>
 );
 }
 

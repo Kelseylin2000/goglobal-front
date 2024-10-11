@@ -7,6 +7,7 @@ import {
 } from '../utils/api';
 import { AuthContext } from '../context/AuthContext';
 import { toast } from 'react-toastify';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 export const PostContext = createContext();
 
@@ -15,6 +16,9 @@ export const PostProvider = ({ children }) => {
   const [posts, setPosts] = useState([]);
   const [mePosts, setMePosts] = useState([]);
   const [otherUserPosts, setOtherUserPosts] = useState([]);
+
+  const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     loadPosts();
@@ -52,6 +56,10 @@ export const PostProvider = ({ children }) => {
           toast.success('貼文已刪除！');
           setPosts((prevPosts) => prevPosts.filter((post) => post.postId !== postId));
           setMePosts((prevPosts) => prevPosts.filter((post) => post.postId !== postId));
+
+          if (location.pathname.includes('/post/')) {
+            navigate(-1);
+          }
         })
         .catch((error) => {
           console.error('刪除貼文時出錯:', error.message);

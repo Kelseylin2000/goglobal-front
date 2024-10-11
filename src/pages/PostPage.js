@@ -36,10 +36,6 @@ const PostPage = () => {
     loadPostDetail();
   }, [postId]);
 
-  const navigateBack = () => {
-    navigate('/');
-  };
-
   const onPostUpdated = (updatedPost) => {
     handlePostUpdated(updatedPost);
     loadPostDetail(); // 更新完後重新載入貼文詳情
@@ -47,7 +43,6 @@ const PostPage = () => {
 
   return (
     <>
-      {/* <Header /> */}
       <main>
         {!post ? (
           <LoadingSpinner />
@@ -55,7 +50,6 @@ const PostPage = () => {
           <PostDetail
             post={post}
             userId={userId}
-            navigateBack={navigateBack}
             loadPostDetail={loadPostDetail}
           />
         )}
