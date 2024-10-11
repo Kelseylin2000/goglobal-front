@@ -86,28 +86,86 @@ const PhaseModal = () => {
     setIsPhaseModalOpen(false);
   };
 
+
   const handleSavePhaseAndSchools = async () => {
     if (meUserProfile.originSchoolName == null && !tempOriginSchoolId) {
       alert('請先選擇原學校');
       return;
     }
   
-    // 顯示 loading 提示
-    const toastId = toast.loading("階段更新中...");
+    const overlay = document.createElement('div');
+    overlay.className = 'toast-overlay';
+    document.body.appendChild(overlay);
+  
+    let counter = 0;
+    const textStates = ["階段與學校更新中.", "階段與學校更新中..", "階段與學校更新中..."];
+  
+    // 初始化 Toast，並設置輪詢動畫
+    const toastId = toast.loading(
+      <div style={{ display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
+        {/* 圖片保持顯示 */}
+        <img 
+          src="/img/earth.jpg" 
+          alt="loading-icon" 
+          style={{ marginBottom: '10px', width: '180px'}} 
+        />
+        {/* 動態顯示的文字 */}
+        <p style={{ margin: 0 }}>{textStates[0]}</p>
+      </div>,
+      {
+        position: "top-center",
+        style: {
+          backgroundColor: "#ffffff",
+          color: "#000000",
+          fontSize: "20px",
+          fontWeight: "bold",
+          padding: "20px",
+          boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.1)",
+          zIndex: 9999,
+          width: "400px",
+          textAlign: "center",
+          marginTop: '250px'
+        },
+        icon: false,
+        closeOnClick: false,
+        draggable: false,
+      }
+    );
+  
+    // 使用 setInterval 來動態更新 "階段與學校更新中..." 的點數
+    const intervalId = setInterval(() => {
+      counter++;
+      toast.update(toastId, {
+        render: (
+          <div style={{ display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
+            {/* 圖片保持顯示 */}
+            <img 
+              src="/img/earth.jpg" 
+              alt="loading-icon" 
+              style={{ marginBottom: '10px', width: '180px'}} 
+            />
+            {/* 動態顯示的文字 */}
+            <p style={{ margin: 0 }}>{textStates[counter % textStates.length]}</p>
+          </div>
+        ),
+      });
+    }, 500); // 每 500 毫秒更新一次
   
     try {
       setIsPhaseModalOpen(false);
   
-      // 調用更新原學校的 API
+      // 更新原學校
       if (tempOriginSchoolId && tempOriginSchoolName) {
         await handleUpdateUserOriginSchool(tempOriginSchoolId, tempOriginSchoolName);
       }
   
-      // 調用更新感興趣的學校或目的學校的 API
+      // 更新感興趣的學校或目的學校
       if (tempPhase === 'APPLYING') {
         if (tempInterestedSchoolIds.length === 0) {
           alert('請至少選擇一個感興趣的學校');
           toast.dismiss(toastId);
+          clearInterval(intervalId);
+          document.body.removeChild(overlay);
           return;
         }
         await handleUpdateInterestedSchools(tempInterestedSchoolIds, tempInterestedSchoolNames);
@@ -115,22 +173,24 @@ const PhaseModal = () => {
         if (!tempExchangeSchoolId) {
           alert('請先選擇目的學校');
           toast.dismiss(toastId);
+          clearInterval(intervalId);
+          document.body.removeChild(overlay);
           return;
         }
         await handleUpdateUserExchangeSchool(tempExchangeSchoolId, tempExchangeSchoolName);
       }
   
-      // 調用更新階段的 API
+      // 更新階段
       if (tempPhase) {
         await handleUpdateUserPhase(tempPhase);
       }
   
-      // 如果階段是 ADMITTED，則刪除所有感興趣的學校
+      // 如果是 ADMITTED 階段，刪除所有感興趣的學校
       if (tempPhase === 'ADMITTED') {
         await handleDeleteAllInterestedSchools();
       }
   
-      // 最後刷新帖子列表
+      // 刷新帖子
       await loadPosts();
   
       // 更新 mePosts
@@ -143,27 +203,56 @@ const PhaseModal = () => {
         }))
       );
   
-      // 更新完成後將 Toast 提示改為成功提示
+      // 停止點動畫，並更新成功提示
+      clearInterval(intervalId);
       toast.update(toastId, {
-        render: "階段更新完成！",
+        render: (
+          <div style={{ display: 'flex', alignItems: 'center', flexDirection: 'column'}}>
+            {/* 圖片保持顯示 */}
+            <img 
+              src="/img/earth.jpg" 
+              alt="loading-icon" 
+              style={{ marginBottom: '10px', width: '180px'}} 
+            />
+            {/* 成功提示的文字 */}
+            <div style={{ display: 'flex', alignItems: 'center', flexDirection: 'row'}}>
+              <img
+                src="/img/check.png" 
+                alt="check" 
+                style={{ marginRight: '10px', width: '30px'}} 
+              />
+              <p style={{ margin: 0 }}>階段與學校更新完成！</p>
+            </div>
+          </div>
+        ),
         type: "success",
         isLoading: false,
-        autoClose: 1800, // 3秒後自動關閉
+        autoClose: 2600,
       });
+  
+      // 移除 overlay
+      setTimeout(() => {
+        document.body.removeChild(overlay);
+      }, 2800); 
   
       handleCloseModal();
     } catch (error) {
       console.error('保存階段和學校時出錯', error);
   
-      // 如果出現錯誤，更新 Toast 為錯誤提示
+      // 停止點動畫，並顯示錯誤提示
+      clearInterval(intervalId);
       toast.update(toastId, {
         render: "階段更新失敗，請重試。",
         type: "error",
         isLoading: false,
-        autoClose: 5000, // 5秒後自動關閉
+        autoClose: 5000,  // 5 秒後自動關閉
       });
+  
+      document.body.removeChild(overlay);
     }
-  };  
+  };
+  
+  
 
   const handlePhaseAdvance = async () => {
     try {
