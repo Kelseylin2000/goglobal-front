@@ -6,8 +6,6 @@ const PostList = ({
   userId,
 }) => {
 
-  console.log(posts);
-
   return (
     <div id="postList">
       {posts && posts.length > 0 && (posts.map((post) => (

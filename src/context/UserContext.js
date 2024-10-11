@@ -104,7 +104,7 @@ export const UserProvider = ({ children }) => {
       await deleteUserExchangeSchool(token);
       setMeUserProfile((prevProfile) => ({
         ...prevProfile,
-        exchangeSchoolName: '',
+        exchangeSchoolName: null,
       }));
       fetchSameSchoolUserProfiles();
     } catch (error) {
@@ -120,7 +120,9 @@ export const UserProvider = ({ children }) => {
         ...prevProfile,
         phase,
       }));
-      toast.success('階段更新成功');
+      if(phase === 'STUDYING_ABROAD' || phase === 'RETURNED'){
+        toast.success('階段更新成功');
+      }
     } catch (error) {
       console.error('更新使用者階段失敗:', error);
       toast.error('更新階段失敗，請稍後再試');
