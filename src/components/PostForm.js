@@ -3,15 +3,16 @@ import { createNewPost } from '../utils/api';
 import { tagsList } from '../utils/constants';
 import { toast } from 'react-toastify';
 import { PostContext } from '../context/PostContext';
+import { AuthContext } from '../context/AuthContext';
 
-const PostForm = ({ token, showLoading, hideLoading, onClose }) => {
+const PostForm = ({ onClose }) => {
   const { handlePostCreated } = useContext(PostContext);
+  const { token } = useContext(AuthContext);
 
   const [content, setContent] = useState('');
   const [selectedTags, setSelectedTags] = useState([]);
   const [images, setImages] = useState([]); // 保存File對象的陣列
 
-  // 選擇/取消標籤
   const toggleTag = (tag) => {
     if (selectedTags.includes(tag)) {
       setSelectedTags(selectedTags.filter((t) => t !== tag));
@@ -60,9 +61,6 @@ const PostForm = ({ token, showLoading, hideLoading, onClose }) => {
       .catch((error) => {
         console.error('後端錯誤:', error.message);
       })
-      .finally(() => {
-        hideLoading();
-      });
 
       onClose();
   };

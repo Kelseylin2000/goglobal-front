@@ -1,5 +1,4 @@
 import React, { useContext, useState } from 'react';
-
 import PostForm from '../components/PostForm';
 import PostList from '../components/PostList';
 import LoadingSpinner from '../components/LoadingSpinner';
@@ -12,23 +11,18 @@ const HomePage = () => {
   const { posts } = useContext(PostContext);
 
   const [loading, setLoading] = useState(false);
-  const [isPostFormVisible, setIsPostFormVisible] = useState(false); // 控制 PostForm 顯示狀態
+  const [isPostFormVisible, setIsPostFormVisible] = useState(false);
 
   const showLoading = () => setLoading(true);
   const hideLoading = () => setLoading(false);
 
-  // const handlePostCreated = (newPost) => {
-  //   setPosts([newPost, ...posts]); // 將新貼文推到最上面
-  // };
-
   const togglePostForm = () => {
-    setIsPostFormVisible(!isPostFormVisible); // 切換 PostForm 的顯示狀態
+    setIsPostFormVisible(!isPostFormVisible);
   };
 
   return (
     <>
       <main>
-        {/* 新增貼文按鈕 */}
         <div className="side-div">
           <img src='/img/earth-write.jpg'></img>
           <button className="new-post-button" onClick={togglePostForm}>
@@ -36,12 +30,8 @@ const HomePage = () => {
           </button>
         </div>
 
-        {/* Conditionally render PostForm */}
         {isPostFormVisible && (
           <PostForm
-            token={token}
-            showLoading={showLoading}
-            hideLoading={hideLoading}
             onClose={togglePostForm}
           />
         )}
