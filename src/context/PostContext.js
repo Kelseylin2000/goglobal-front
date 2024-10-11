@@ -95,6 +95,7 @@ export const PostProvider = ({ children }) => {
         posts, 
         mePosts,
         otherUserPosts,
+        setMePosts,
         setOtherUserPosts,
         fetchUserPostsData,
         setPosts, 

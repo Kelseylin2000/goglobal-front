@@ -1,10 +1,15 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { UserContext } from '../context/UserContext'; 
-import { interestsOptions } from '../utils/constants'; // 引入興趣選項
-// import '../styles/EditProfileModal.css'; // 新增樣式
+import { PostContext } from '../context/PostContext'; 
+import { AuthContext } from '../context/AuthContext'; 
+
+import { interestsOptions } from '../utils/constants';
 
 const EditProfileModal = ({ isOpen, onClose }) => {
+  const { userId: currentUserId } = useContext(AuthContext);
   const { meUserProfile, updateUserProfile } = useContext(UserContext);
+  const { setMePosts, setPosts } = useContext(PostContext);
+
   const [name, setName] = useState('');
   const [introduction, setIntroduction] = useState('');
   const [selectedInterests, setSelectedInterests] = useState([]);
@@ -39,7 +44,22 @@ const EditProfileModal = ({ isOpen, onClose }) => {
       interests: interestsAsNumbers // 將數字傳遞給後端
     };
 
-    updateUserProfile(updatedProfileString, updatedProfileInt);
+    updateUserProfile(updatedProfileString, updatedProfileInt).then(() => {
+      setPosts((prevPosts) => 
+        prevPosts.map((post) => 
+          post.userId == currentUserId ? { ...post, name: updatedProfileString.name } : post
+        )
+      );
+  
+      setMePosts((prevMePosts) =>
+        prevMePosts.map((post) => 
+          post.userId == currentUserId ? { ...post, name: updatedProfileString.name } : post
+        )
+      );
+    }).catch((error) => {
+      console.error("更新個人資料時出錯:", error);
+    });
+    
     onClose();
   };
 
