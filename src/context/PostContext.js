@@ -1,5 +1,6 @@
 import React, { createContext, useState, useEffect, useContext } from 'react';
 import {
+  getUserPosts,
   getRecommendedPosts,
   deletePost as apiDeletePost,
   editPost as apiEditPost,
@@ -11,12 +12,14 @@ import { toast } from 'react-toastify';
 export const PostContext = createContext();
 
 export const PostProvider = ({ children }) => {
-  const {token} = useContext(AuthContext);
+  const {token, userId: currentUserId } = useContext(AuthContext);
   const [posts, setPosts] = useState([]);
-
+  const [mePosts, setMePosts] = useState([]);
+  const [otherUserPosts, setOtherUserPosts] = useState([]);
 
   useEffect(() => {
     loadPosts();
+    fetchMyPosts();
   }, [token]);
 
   const loadPosts = () => {
@@ -27,6 +30,20 @@ export const PostProvider = ({ children }) => {
       .catch((error) => {
         console.error('後端錯誤:', error.message);
       });
+  };
+
+  const fetchMyPosts = async () => {
+    const response = await getUserPosts(currentUserId, token);
+    setMePosts(response.data);
+  };
+
+  const fetchUserPostsData = async (userId) => {
+    try {
+      const response = await getUserPosts(userId, token);
+      setOtherUserPosts(response.data);
+    } catch (error) {
+      console.error('獲取用戶 post 時出錯:', error);
+    }
   };
 
   const handleDelete = (postId) => {
@@ -53,11 +70,21 @@ export const PostProvider = ({ children }) => {
   const getPostDetail = (postId) => {
     return apiGetPostDetail(postId, token);
   };
-  
 
   return (
     <PostContext.Provider
-      value={{ posts, setPosts, handleDelete, handlePostUpdated, loadPosts, getPostDetail }}
+      value={{ 
+        posts, 
+        mePosts,
+        otherUserPosts,
+        setOtherUserPosts,
+        fetchUserPostsData,
+        setPosts, 
+        handleDelete, 
+        handlePostUpdated, 
+        loadPosts, 
+        getPostDetail 
+      }}
     >
       {children}
     </PostContext.Provider>

@@ -134,6 +134,8 @@ const PhaseModal = () => {
 
   const handleSavePhaseAndSchools = async () => {
 
+    setIsPhaseModalOpen(false);
+
     if (meUserProfile.originSchoolName == null && !tempOriginSchoolId) {
       alert('請先選擇原學校');
       return;
@@ -171,7 +173,6 @@ const PhaseModal = () => {
         await handleDeleteAllInterestedSchools();
       }
 
-      setIsPhaseModalOpen(false);
       loadPosts();
     } catch (error) {
       console.error('保存階段和學校時出錯', error);
