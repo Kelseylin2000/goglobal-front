@@ -222,19 +222,19 @@ const PhaseModal = () => {
                 alt="check" 
                 style={{ marginRight: '10px', width: '30px'}} 
               />
-              <p style={{ margin: 0 }}>階段與學校更新完成！</p>
+              <p style={{ margin: 0 }}>更新完成囉！</p>
             </div>
           </div>
         ),
         type: "success",
         isLoading: false,
-        autoClose: 1200,
+        autoClose: 1600,
       });
   
       // 移除 overlay
       setTimeout(() => {
         document.body.removeChild(overlay);
-      }, 1400); 
+      }, 1800); 
   
       handleCloseModal();
     } catch (error) {
