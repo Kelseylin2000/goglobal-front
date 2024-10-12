@@ -25,15 +25,14 @@ export const PostProvider = ({ children }) => {
     fetchMyPosts();
   }, [token]);
 
-  const loadPosts = () => {
-    getRecommendedPosts(token)
-      .then((data) => {
-        setPosts(data.content);
-      })
-      .catch((error) => {
-        console.error('後端錯誤:', error.message);
-      });
-  };
+  const loadPosts = async () => {
+    try {
+      const data = await getRecommendedPosts(token);
+      setPosts(data.content);
+    } catch (error) {
+      console.error('後端錯誤:', error.message);
+    }
+  };  
 
   const fetchMyPosts = async () => {
     const response = await getUserPosts(currentUserId, token);

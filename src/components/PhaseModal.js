@@ -99,15 +99,16 @@ const PhaseModal = () => {
   
     let counter = 0;
     const textStates = ["階段與學校更新中.", "階段與學校更新中..", "階段與學校更新中..."];
+    const loadingImgs = ['/img/loading-1.png', '/img/loading-2.png', '/img/loading-3.png']
   
     // 初始化 Toast，並設置輪詢動畫
     const toastId = toast.loading(
-      <div style={{ display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
+      <div style={{ display: 'flex', alignItems: 'center', flexDirection: 'column', marginBottom: '20px' }}>
         {/* 圖片保持顯示 */}
         <img 
-          src="/img/earth.jpg" 
+          src={loadingImgs[0]}
           alt="loading-icon" 
-          style={{ marginBottom: '10px', width: '180px'}} 
+          style={{ width: '250px'}} 
         />
         {/* 動態顯示的文字 */}
         <p style={{ margin: 0 }}>{textStates[0]}</p>
@@ -124,7 +125,7 @@ const PhaseModal = () => {
           zIndex: 9999,
           width: "400px",
           textAlign: "center",
-          marginTop: '250px'
+          marginTop: '220px'
         },
         icon: false,
         closeOnClick: false,
@@ -137,12 +138,12 @@ const PhaseModal = () => {
       counter++;
       toast.update(toastId, {
         render: (
-          <div style={{ display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
+          <div style={{ display: 'flex', alignItems: 'center', flexDirection: 'column', marginBottom: '20px' }}>
             {/* 圖片保持顯示 */}
             <img 
-              src="/img/earth.jpg" 
+              src={loadingImgs[counter % loadingImgs.length]}
               alt="loading-icon" 
-              style={{ marginBottom: '10px', width: '180px'}} 
+              style={{width: '250px'}} 
             />
             {/* 動態顯示的文字 */}
             <p style={{ margin: 0 }}>{textStates[counter % textStates.length]}</p>
@@ -207,12 +208,12 @@ const PhaseModal = () => {
       clearInterval(intervalId);
       toast.update(toastId, {
         render: (
-          <div style={{ display: 'flex', alignItems: 'center', flexDirection: 'column'}}>
+          <div style={{ display: 'flex', alignItems: 'center', flexDirection: 'column', marginBottom: '20px'}}>
             {/* 圖片保持顯示 */}
             <img 
-              src="/img/earth.jpg" 
+              src="/img/loading-4.png" 
               alt="loading-icon" 
-              style={{ marginBottom: '10px', width: '180px'}} 
+              style={{ width: '250px'}} 
             />
             {/* 成功提示的文字 */}
             <div style={{ display: 'flex', alignItems: 'center', flexDirection: 'row'}}>
@@ -227,13 +228,13 @@ const PhaseModal = () => {
         ),
         type: "success",
         isLoading: false,
-        autoClose: 2600,
+        autoClose: 1200,
       });
   
       // 移除 overlay
       setTimeout(() => {
         document.body.removeChild(overlay);
-      }, 2800); 
+      }, 1400); 
   
       handleCloseModal();
     } catch (error) {
@@ -317,7 +318,6 @@ const PhaseModal = () => {
           handleOpenModal();
           await handleDeleteUserExchangeSchool();
           await handleDeleteAllInterestedSchools();
-          await loadPosts();
         }
       }
     } catch (error) {
