@@ -37,6 +37,9 @@ const PostForm = ({ onClose }) => {
     return images.map((image) => URL.createObjectURL(image));
   };
 
+  const MAX_IMAGE_SIZE = 1 * 1024 * 1024;
+  const MAX_TOTAL_SIZE = 10 * 1024 * 1024;
+
   // 提交表單
   const handleSubmit = () => {
     if (!content.trim()) {
@@ -47,7 +50,24 @@ const PostForm = ({ onClose }) => {
     const formData = new FormData();
     formData.append('content', content); // 貼文內容
     selectedTags.forEach((tag) => formData.append('tags', tag)); // 標籤
-    images.forEach((image) => formData.append('imagesFiles', image)); // 圖片
+
+    let totalSize = 0;
+
+  for (const image of images) {
+    if (image.size > MAX_IMAGE_SIZE) {
+      toast.error(`圖片大小不能超過 ${MAX_IMAGE_SIZE / 1024 / 1024}MB`);
+      return;
+    }
+
+    totalSize += image.size;
+
+    if (totalSize > MAX_TOTAL_SIZE) {
+      toast.error(`總請求大小不能超過 ${MAX_TOTAL_SIZE / 1024 / 1024}MB`);
+      return;
+    }
+
+    formData.append('imagesFiles', image);
+  }
 
 
     createNewPost(formData, token)
