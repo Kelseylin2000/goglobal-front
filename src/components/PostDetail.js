@@ -137,9 +137,21 @@ const PostDetail = ({
             value={commentContent}
             onChange={(e) => setCommentContent(e.target.value)}
             placeholder="寫下你的想法..."
-          ></input>
+            onKeyDown={(e) => {
+              if (e.isComposing || e.keyCode === 229) {
+                return;
+              }
+              if (e.key === 'Enter') {
+                e.preventDefault();
+                handleAddComment();
+              }
+            }}
+          />
           <div className="submit-button-container">
-            <button className="btn-primary" onClick={handleAddComment}>
+            <button className="btn-primary" onClick={(e) => {
+              e.preventDefault();
+              handleAddComment();
+            }}>
               留言
             </button>
           </div>
