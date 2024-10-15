@@ -35,8 +35,12 @@ export const PostProvider = ({ children }) => {
   };  
 
   const fetchMyPosts = async () => {
-    const response = await getUserPosts(currentUserId, token);
-    setMePosts(response.data);
+    try {
+      const response = await getUserPosts(currentUserId, token);
+      setMePosts(response.data);
+    } catch (error) {
+      console.error('獲取用戶 post 時出錯:', error);
+    }
   };
 
   const fetchUserPostsData = async (userId) => {
