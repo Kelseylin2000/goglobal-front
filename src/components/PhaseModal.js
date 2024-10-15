@@ -21,7 +21,7 @@ const PhaseModal = () => {
   } = useContext(UserContext);
 
   const { token, userId: currentUserId } = useContext(AuthContext);
-  const { loadPosts, setMePosts, setPosts } = useContext(PostContext);
+  const { reLoadPosts, setMePosts, setPosts } = useContext(PostContext);
 
   const [isPhaseModalOpen, setIsPhaseModalOpen] = useState(false);
 
@@ -192,17 +192,17 @@ const PhaseModal = () => {
       }
   
       // 刷新帖子
-      await loadPosts();
+      await reLoadPosts();
   
       // 更新 mePosts
       setMePosts((prevMePosts) =>
         prevMePosts.map((post) => ({
           ...post,
           originSchoolName: tempOriginSchoolName !== '' ? tempOriginSchoolName : post.originSchoolName,
-          exchangeSchoolName: tempExchangeSchoolName !== '' ? tempExchangeSchoolName : post.exchangeSchoolName,
+          exchangeSchoolName: tempPhase === 'APPLYING' ? null : (tempExchangeSchoolName !== '' ? tempExchangeSchoolName : post.exchangeSchoolName),
           phase: tempPhase !== '' ? tempPhase : post.phase,
         }))
-      );
+      );      
   
       // 停止點動畫，並更新成功提示
       clearInterval(intervalId);

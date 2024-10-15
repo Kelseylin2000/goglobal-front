@@ -26,11 +26,10 @@ export const signUp = (name, email, password) => {
 };
 
 // Post APIs
-export const getRecommendedPosts = (token) =>
-  fetch(`${API_POST_URL}/recommended`, {
+export const getRecommendedPosts = (token, page = 0, size = 7) =>
+  fetch(`${API_POST_URL}/recommended?page=${page}&size=${size}`, {
     headers: headers(token),
   }).then((res) => res.json());
-
 
 export const getSavedPosts = (token) =>
   fetch(`${API_POST_URL}/saved`, {
