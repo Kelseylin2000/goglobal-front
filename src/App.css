@@ -831,6 +831,7 @@ main {
   border-radius: 5px;
   cursor: pointer;
   width: 85%;
+  font-size: 14px;
 }
 
 
@@ -878,6 +879,7 @@ main {
   padding-left: 20px;
   border-radius: 30px;
   width: 300px;
+  font-size: 14px;
 }
 
 .autocomplete-dropdown {
