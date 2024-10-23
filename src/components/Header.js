@@ -111,7 +111,7 @@ const Header = () => {
   const debounceSearch = debounce(async (keyword) => {
     if(searchKeyword !== ''){
       const results = await searchPosts(keyword);
-      setSearchResults(results.data);
+      setSearchResults(results.data || []);
     }
   }, 200);
 
@@ -192,7 +192,7 @@ const Header = () => {
             onKeyDown={handleKeyDown}
             placeholder="搜尋貼文..."
           />
-          {isDropdownOpen && searchResults.length > 0 && (
+          {isDropdownOpen && Array.isArray(searchResults) && searchResults.length > 0 && (
             <div className="autocomplete-dropdown" ref={dropdownRef}>
               {searchResults.map((post) => (
                 <>
