@@ -1,17 +1,51 @@
 .container {
-    max-width: 400px;
-    margin: 50px auto;
-    padding: 30px;
+    width: 950px;
+    margin: auto;
+    padding: 80px;
     background-color: #fff;
     border-radius: 8px;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    display: flex;
+    justify-content: space-between;
+}
+
+.main-container{
+    width: 400px;
+}
+
+.intro-container{
+    width: 300px;
+}
+
+.intro-container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.signin-img{
+    width: 250px;
+}
+.signin-logo{
+    width: 250px;
 }
 
 .container h2 {
     text-align: center;
-    margin-bottom: 20px;
     color: #1e3d59;
 }
+
+.main-container h2 {
+    margin-bottom: 20px;
+}
+
+/* .right-margin{
+    margin: 20px 80px 5px 0px;
+}
+
+.left-margin{
+    margin: 5px 0px 5px 80px;
+} */
 
 .container label {
     display: block;
@@ -30,11 +64,9 @@
     box-sizing: border-box;
 }
 
-.container button {
+.normal-btn, .highlight-btn{
     width: 100%;
     padding: 12px;
-    background-color: #0091AD;
-    color: #fff;
     border: none;
     border-radius: 5px;
     font-size: 16px;
@@ -43,27 +75,34 @@
     transition: background-color 0.3s;
 }
 
-.container button:hover {
+.normal-btn{
+    background-color: #0091AD;
+    color: #fff;
+}
+
+.normal-btn:hover {
     background-color: #00778f;
 }
 
-.container form {
-    margin-bottom: 15px;
+.highlight-btn{
+    background-color: #d6e7ea;
+    color: #0091AD;
 }
 
-.container > button {
-    width: 100%;
-    padding: 10px;
-    background-color: transparent;
-    color: #1e3d59;
-    border: 2px solid #1e3d59;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-    transition: background-color 0.3s, color 0.3s;
+.highlight-btn:hover{
+    background-color: #bbdfe5;
 }
 
-.container > button:hover {
-    background-color: #1e3d59;
-    color: #fff;
+.container p{
+    margin: 3px;
+    font-size: 14px;
+}
+
+.intro-container p:last-child{
+    margin-top: 20px;
+    font-weight: 700;
+}
+
+.blue-word{
+    color: #0091AD;
 }
