@@ -1,70 +1,80 @@
-# Getting Started with Create React App
+# GoGlobal
+a platform specifically designed for exchange and international students.
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Check out the demo of the project here: [Watch Demo on YouTube](https://www.youtube.com/watch?v=bzceF2sja3w)
 
-## Available Scripts
+[![homepage](./images/screenshot-find-info-page.png)](https://www.youtube.com/watch?v=bzceF2sja3w)
 
-In the project directory, you can run:
+## Project Overview
 
-### `npm start`
+Students studying abroad often face two key challenges: scattered information and difficulty connecting with peers from the same target schools. GoGlobal addresses these issues by offering phase and goal settings, which provide personalized recommendations for relevant information and student connections throughout the application and study process.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Features
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### 1. Phase and Goal Setting
+- **Phase Setting**: Users can set their current phase, including:
+  - Applying
+  - Accepted
+  - Abroad
+  - Returned
 
-### `npm test`
+- **Goal Setting**: Users can set their school goals related to the exchange program:
+  - Home School
+  - Interested Schools
+  - Target Schools
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### 2. Information
+- **Content Recommendation Algorithm**: Recommends relevant articles based on the user’s selected schools, countries, browsing tags, and post timing.
 
-### `npm run build`
+- **Post Features**:
+  - Create, edit, delete, and search posts
+  - Bookmark and unbookmark posts
+  - Leave and delete comments
+  - Personal profile page
+  - Translation tool
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### 3. Friend
+- **Friend Recommendation Algorithm**: Recommends companions based on the user’s target schools, shared friends, and interests.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+- **Friend Features**:
+  - Send, accept, and decline friend requests
+  - Friend list and friend request list
+  - Real-time chat rooms
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## System Architecture
+![System Architecture](./images/system-architecture.png)
 
-### `npm run eject`
+## Tech Stack
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+### Backend
+- **Spring Boot**: Used to build the backend application, leveraging Spring MVC to implement RESTful APIs, improving maintainability and readability.
+- **Spring Security**: Handles authentication and authorization within the application, ensuring secure access control.
+- **JWT (JSON Web Tokens)**: Used to securely manage API authentication with a stateless token-based mechanism.
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### Frontend
+- **React**: The main framework for building dynamic, responsive single-page applications (SPA) with a focus on user experience.
+- **React Router**: Provides efficient routing management, allowing smooth navigation across multiple pages within the frontend application.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+### Databases
+- **MySQL**: The primary relational database used to store structured user information such as email and password, providing data consistency.
+- **MongoDB**: A NoSQL database used to store unstructured data such as posts, chat history, and browsing records.
+- **Neo4j**: A graph database that manages social connections (friendships, interests, schools) and supports friend recommendation algorithms by matching users based on mutual friends and shared interests.
+- **Redis**: A caching system used to accelerate data retrieval for user data and browsing history, enhancing application performance. Browsing history is first cached in Redis before being batch-written to MongoDB.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+### Tools
+- **Visual Studio Code**: The primary development environment for writing, debugging, and managing code.
+- **Maven**: A build automation tool used for dependency management and building Spring Boot applications.
+- **Git & GitHub**: Version control systems used for managing code versions.
 
-## Learn More
+### Service Integrations
+- **Google Translate API**: Integrated within the platform to provide translation services, enhancing multilingual support for users.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+### Cloud Deployment
+- **AWS Route53**: Used for DNS management, providing stable domain name resolution services.
+- **AWS S3**: Utilized to store user-uploaded images and other static assets, offering a highly available storage solution.
+- **AWS CloudFront CDN**: Used to accelerate content delivery globally, optimizing static asset loading speeds and improving user experience.
+- **AWS EC2**: Hosts the backend application with systemd ensuring automatic startup and stable operation of backend services.
+- **AWS RDS**: A managed relational database service used to handle structured data with high availability and automated backups.
+- **AWS ElastiCache (Redis)**: A managed Redis service used to store user information and browsing history, providing caching and accelerating database queries, which improves overall application performance.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
 
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
