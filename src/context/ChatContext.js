@@ -22,7 +22,7 @@ export const ChatProvider = ({ children }) => {
   const [userNameCache, setUserNameCache] = useState({});
   const [isChatWindowOpen, setIsChatWindowOpen] = useState(false);
   const {token, userId} = useContext(AuthContext);
-  const {setSameSchoolUserProfiles} = useContext(UserContext);
+  const {setSameSchoolUserProfiles, setOtherUserProfile} = useContext(UserContext);
 
   // 更新 currentChatRef
   useEffect(() => {
@@ -268,6 +268,11 @@ export const ChatProvider = ({ children }) => {
       prevProfiles.map((p) =>
         p.userId === userId ? { ...p, relationship: newRelationship } : p
       )
+    );
+    setOtherUserProfile((prevProfile) => 
+      prevProfile && prevProfile.userId === userId 
+        ? { ...prevProfile, relationship: newRelationship } 
+        : prevProfile
     );
   };
 
